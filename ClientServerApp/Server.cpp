@@ -56,10 +56,8 @@ void Server::startRead()
         QString id = "-1";
 
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
-//for (int i = 0; i < query.record().count(); i++)
-        query.next();
-        for (int i = 0; i < 10*query.record().count(); i++)
-        {
+
+        while (query.next())
             if (query.record().value(1).toString().toStdString() == listIn.at(0).toStdString())
                 if (query.record().value(2).toString().toStdString() == listIn.at(1).toStdString())
                 {
@@ -75,8 +73,6 @@ void Server::startRead()
                     break;
                 }
 
-                query.next();
-        }
         if (id == "-1")
         {
             QSqlQuery query2;
