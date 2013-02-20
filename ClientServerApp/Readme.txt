@@ -1,0 +1,1 @@
+Server part for AwesomeShips Game.

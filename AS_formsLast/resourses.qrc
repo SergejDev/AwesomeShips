@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>deepness_1600.jpg</file>
+        <file>deepness_1600_small.jpg</file>
+        <file>Style.txt</file>
+        <file>db2_darker.png</file>
+        <file>dk2_darker.png</file>
+        <file>gun.png</file>
+        <file>plasma_bullet_small.png</file>
+    </qresource>
+</RCC>
