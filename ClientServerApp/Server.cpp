@@ -18,10 +18,10 @@ Server::Server(QObject* parent): QObject(parent)
     db.setHostName("server");
     db.setPassword("");
     if (!db.open())
+    {
         cout << "Failed to open db. Check it. You wouldn't be able to play!" << endl;
-//cout<< db.tables().count() <<endl;
-    connect(&server, SIGNAL(newConnection()),
-    this, SLOT(acceptConnection()));
+    }
+    connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
     server.listen(QHostAddress::Any, 9485);
 }
 
@@ -58,8 +58,9 @@ void Server::startRead()
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
 
         while (query.next())
-            if (query.record().value(1).toString().toStdString() == listIn.at(0).toStdString())
-                if (query.record().value(2).toString().toStdString() == listIn.at(1).toStdString())
+        {
+            if ((query.record().value(1).toString().toStdString() == listIn.at(0).toStdString())//username check
+                &&(query.record().value(2).toString().toStdString() == listIn.at(1).toStdString()))//pass check
                 {
                     QSqlRecord record = query.record();
                     id = record.value(0).toString();
@@ -68,12 +69,15 @@ void Server::startRead()
                     cout << "   Level  : " << record.value(3).toString().toStdString() << endl;
                     cout << "   Score  : " << record.value(4).toString().toStdString() << endl << endl;
                     for (int i = 0 ; i < 5; i++)
+                    {
                         list.append(record.value(i).toString());
+                    }
                     in << list;
                     break;
                 }
+        }
 
-        if (id == "-1")
+        if (id == "-1")//new user??
         {
             QSqlQuery query2;
             QString nam=listIn.at(0);
@@ -96,22 +100,23 @@ void Server::startRead()
         /*QStringList list;*/
         QByteArray source;
 
-        query.next();
-        for (int i = 0 ; i < query.record().count(); i++)
+        //for (int i = 0 ; i < query.record().count(); i++)
+        while(query.next())
         {
+            //query.next();
             for (int i = 0; i < 5; i++)
             {
                 source.append(query.record().value(i).toByteArray());
                 source.append(',');
             }
             source.append(':');
-            query.next();
+
         }
         in << source;
     }
 }
 
-void Server::stopConnection()
+void Server::stopConnection()//Nikita fix this!!!!!!!!!!
 {
     cout << "Connection is close" << endl;
 }

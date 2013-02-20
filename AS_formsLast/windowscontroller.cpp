@@ -29,7 +29,7 @@ WindowsController::~WindowsController()
 void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 {
     menuWindow=new MenuWindow();
-    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
+    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartRead()));
     connect(menuWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
     connect(menuWindow,SIGNAL(SettingsButtonPressed()),this,SLOT(SettingsSlot()));
     connect(menuWindow,SIGNAL(QuitButtonPressed()),this,SLOT(QuitGameSlot()));
@@ -43,7 +43,7 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 
 void WindowsController::ReturnToMenuSlot()
 {
-    qDebug()<<"return";
+    qDebug()<<"return from settings";
     menuWindow->show();
 }
 void WindowsController::RegisterSlot()
@@ -72,9 +72,9 @@ void WindowsController::RegisterStartRead()
     int id = userData.value(0).toInt();
     if (id!=-1)
     {
-       QMessageBox msg;
-       msg.setText("Nickname exists.");
-       msg.exec();
+        QMessageBox msg;
+        msg.setText("Nickname exists.");
+        msg.exec();
     }
     else
     {
@@ -86,28 +86,45 @@ void WindowsController::RegisterStartRead()
 
 void WindowsController::StartGameSlot()
 {
+    menuWindow->hide();
     if (onApplicationStart)
     {
         client = new QTcpSocket(this);
         QHostAddress addr(menuWindow->addr);
-        //QMessageBox msg;
         client->connectToHost(addr, 9485);
-        //msg.setText("Connecting to " + menuWindow->addr);
-        //msg.exec();
-        //User s(menuWindow->UserName, menuWindow->PassWord);
+
         QStringList list;
         list.append(menuWindow->UserName);
         list.append(menuWindow->PassWord);
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
+//////////////
+//        gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());///////
+//        connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+//        gameWindow->show();
+        onApplicationStart=false;
     }
     else
     {
-        QMessageBox msg;
-        msg.setText("App is already running, fool.");
-        msg.exec();
+        //        QMessageBox msg;
+        //        msg.setText("App is already running, fool.");
+        //        msg.exec();
+        gameWindow->ResumeGame();
     }
+
+    //    menuWindow->hide();
+    //        if(onApplicationStart)
+    //        {
+    //            gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());
+    //            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+    //            gameWindow->show();
+    //            onApplicationStart=false;
+    //        }
+    //        else
+    //        {
+    //
+    //        }
 }
 
 void WindowsController::SettingsSlot()
@@ -125,38 +142,33 @@ void WindowsController::StartRead()
     client->disconnect();
     in.~QDataStream();
     int id = userData.value(0).toInt();
-    if (id!=-1)
+    if (id!=-1)//Wrong nickname or password
     {
         menuWindow->hide();
-            if(onApplicationStart)
+        if(onApplicationStart)
+        {
+            int level=userData.value(3).toInt();
+            if (level == 5)
             {
-                int level=userData.value(3).toInt();
-                if (level == 5)
-                {
-                    level = 0;
-                }
-                gameWindow=new GameWindow(settingsWindow->GetLanguageID(),
-                                          settingsWindow->GetTopicID(),
-                                          userData.value(0).toInt(),
-                                          level,
-                                          userData.value(4).toInt(),
-                                          menuWindow->addr);
-                connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
-                gameWindow->show();
-                onApplicationStart=false;
-                gameStarted=true;
+                level = 0;
             }
-            else
-            {
-                gameWindow->ResumeGame();
-            }
+            gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
+            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+            gameWindow->show();
+            onApplicationStart=false;
+            gameStarted=true;
+        }
+        else
+        {
+            gameWindow->ResumeGame();
+        }
     }
     else
     {
-        QMessageBox msg;
-        QString str(id);
-        msg.setText("Wrong nickname or password." + str);
-        msg.exec();
+        QMessageBox message;
+        message.setWindowTitle("Login error");
+        message.setText("Wrong nickname or password.");
+        message.exec();
     }
 }
 

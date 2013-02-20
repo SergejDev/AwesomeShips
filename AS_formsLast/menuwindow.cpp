@@ -29,6 +29,7 @@ MenuWindow::~MenuWindow()
 
 void MenuWindow::GetUserData()
 {
+
     if(Validate())
     {
         UserName=ui->Username->text();
@@ -67,6 +68,7 @@ bool MenuWindow::Validate()
     if(ui->Username->text()=="")
     {
         QMessageBox message;
+        message.setWindowTitle("Validation error");
         message.setText("Enter nickname, please.");
         message.exec();
         return false;
@@ -74,6 +76,7 @@ bool MenuWindow::Validate()
     else if(ui->Password->text()=="")
     {
         QMessageBox message;
+        message.setWindowTitle("Validation error");
         message.setText("Enter password, please.");
         message.exec();
         return false;
@@ -81,6 +84,7 @@ bool MenuWindow::Validate()
     else if(ui->serverAddressEdit->text()=="")
     {
         QMessageBox message;
+        message.setWindowTitle("Validation error");
         message.setText("Enter server address, please.");
         message.exec();
         return false;
@@ -89,5 +93,4 @@ bool MenuWindow::Validate()
     {
         return true;
     }
-
 }

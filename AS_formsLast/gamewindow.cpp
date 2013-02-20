@@ -78,7 +78,7 @@ void GameWindow::StartRead()
 
 
     QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this); //2 Rows and 3 Columns
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nick")));
+    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nickname")));
     model->setHorizontalHeaderItem(1, new QStandardItem(QString("Level")));
     model->setHorizontalHeaderItem(2, new QStandardItem(QString("Score")));
     for (int i = 0 ; i < list1.count() ; i++)
