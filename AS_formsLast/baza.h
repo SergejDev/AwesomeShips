@@ -14,9 +14,21 @@ class Baza : public QDialog
 public:
     explicit Baza(QWidget *parent = 0);
     ~Baza();
-    
+private:
+    void SetWindowStyle();
+
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+
+signals:
+
+    void ButtonBackClicked();
 private:
     Ui::Baza *ui;
+     QString s;
 };
 
 #endif // BAZA_H
