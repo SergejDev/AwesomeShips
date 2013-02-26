@@ -17,6 +17,7 @@ WindowsController::WindowsController(QObject *parent):QObject(parent)
     settingsWindow=new ToolsWindow();
     connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ReturnToMenuSlot()));
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
+
     onApplicationStart=true;
 }
 

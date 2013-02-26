@@ -15,7 +15,7 @@ Server::Server(QObject* parent): QObject(parent)
     db=QSqlDatabase::addDatabase("QSQLITE");
     db.setUserName("user");
     db.setDatabaseName("Users.s3db");
-    db.setHostName("server");
+    //db.setHostName("server");
     db.setPassword("");
     if (!db.open())
     {

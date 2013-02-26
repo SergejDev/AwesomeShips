@@ -27,6 +27,7 @@ private:
 
     QPushButton *button_toMainMenu;
     QPushButton *button_Save;
+    QPushButton *button_baza;
 
     QLabel *label_Lang;
     //QLabel *label_Color;
@@ -44,9 +45,11 @@ private:
 private slots:
     void on_button_Save_clicked();
     void ButtonBackClickedSlot();
+    void button_baza_clicked();
 signals:
     void ButtonSaveClicked();
     void ButtonBackClicked();
+    void ButtonBazaClicked();
 };
 
 

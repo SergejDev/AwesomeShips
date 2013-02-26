@@ -15,6 +15,7 @@ ToolsWindow::ToolsWindow(QWidget *parent):
     //connect(button_Save,SIGNAL(clicked()), this, SIGNAL(ButtonSaveClicked()));
     //connect(button_toMainMenu,SIGNAL(clicked()), this, SIGNAL(ButtonBackClicked()));
     connect(button_toMainMenu,SIGNAL(clicked()), this, SLOT(ButtonBackClickedSlot()));
+    connect(button_baza, SIGNAL(clicked()),this,SLOT(button_baza_clicked()) );
 }
 
 ToolsWindow::~ToolsWindow()
@@ -57,12 +58,19 @@ void ToolsWindow::setupToolsWindow(QWidget *ToolsWindowForm)
 
     button_toMainMenu = new QPushButton(ToolsWindowForm);
     button_Save = new QPushButton(ToolsWindowForm);
+
+    button_baza = new QPushButton(ToolsWindowForm);
+    button_baza ->setObjectName("button_baza");
+    button_baza->setGeometry(165,310,120,35);
+    button_baza->setText(QString::fromUtf8("add data"));
+
     button_toMainMenu->setObjectName("button_toMainMenu");
     button_Save->setObjectName("button_Save");
-    button_toMainMenu->setGeometry(40, 310, 120, 35);
-    button_Save->setGeometry(290, 310, 120, 35);
+    button_toMainMenu->setGeometry(20, 310, 120, 35);
+    button_Save->setGeometry(310, 310, 120, 35);
     button_toMainMenu->setText(QString::fromUtf8("Back to menu"));
     button_Save->setText(QString::fromUtf8("Save"));
+
 
     label_Lang = new QLabel(ToolsWindowForm);
     label_Topic = new QLabel(ToolsWindowForm);
@@ -113,5 +121,9 @@ void ToolsWindow::ButtonBackClickedSlot()
     this->hide();
     emit ButtonBackClicked();
 }
-
+void ToolsWindow::button_baza_clicked()
+{
+    this->hide();
+    emit ButtonBackClicked();
+}
 
