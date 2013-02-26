@@ -4,6 +4,7 @@
 #include "QFile"
 #include "QTextStream"
 #include "workwithdb.h"
+#include "baza.h"
 
 ToolsWindow::ToolsWindow(QWidget *parent):
     QWidget (parent)
@@ -123,7 +124,8 @@ void ToolsWindow::ButtonBackClickedSlot()
 }
 void ToolsWindow::button_baza_clicked()
 {
-    this->hide();
-    emit ButtonBackClicked();
+   Baza *baza = new Baza;
+   baza->show();
+
 }
 
