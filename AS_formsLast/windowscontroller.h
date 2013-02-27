@@ -17,7 +17,10 @@ private:
     bool onApplicationStart;
     bool gameStarted;
     QTcpSocket *client;
-
+    bool hasConnection;
+    //QTimer *awaitConnectionTimer;
+    void StartAwaitTimer();
+    void ConnectionEstablished();
 public:
     WindowsController(QObject *parent=0);
     ~WindowsController();
@@ -34,6 +37,7 @@ private slots:
     void QuitGameSlot();
     void ReturnToMenuSlot();
     void StartRead();
+    void ConnectionTimeout();
 };
 
 #endif // WINDOWSCONTROLLER_H

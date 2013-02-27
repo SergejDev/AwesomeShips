@@ -6,10 +6,11 @@
 #include <QTcpSocket>
 #include "user.h"
 #include <QHostAddress>
-#include <iostream>
+//#include <iostream>
 #include <QMessageBox>
 #include <QString>
-#include <QHash>
+#include <QTimer>
+//#include <QHash>
 
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
@@ -19,6 +20,8 @@ WindowsController::WindowsController(QObject *parent):QObject(parent)
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
     onApplicationStart=true;
     client = new QTcpSocket(this);
+    //awaitConnectionTimer=new QTimer(this);
+    hasConnection=false;
 }
 
 WindowsController::~WindowsController()
@@ -44,7 +47,7 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 
 void WindowsController::ReturnToMenuSlot()
 {
-    qDebug()<<"return from settings";
+    //qDebug()<<"return from settings";
     menuWindow->show();
 }
 void WindowsController::RegisterSlot()
@@ -86,7 +89,7 @@ void WindowsController::StartGameSlot()
     {
         return;
     }
-    //ADD timer!~
+    StartAwaitTimer();//ADD timer
     if (onApplicationStart)
     {
         QHostAddress addr(menuWindow->addr);
@@ -115,10 +118,12 @@ void WindowsController::SettingsSlot()
 
 void WindowsController::StartRead()
 {
+    qDebug()<<"start read data from server";
+    ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    int id = userData.value(0).toInt();//////!!!!!!!!!!!!!!!!!!!!!!!
+    int id = userData.value(0).toInt();
     if (id!=-1)//Wrong nickname or password
     {
         menuWindow->hide();
@@ -149,7 +154,31 @@ void WindowsController::StartRead()
     }
 }
 
+void WindowsController::ConnectionTimeout()
+{
+    if(!hasConnection)
+    {
+        menuWindow->setCursor(Qt::ArrowCursor);
+        QMessageBox message;
+        message.setWindowTitle("Connection error");
+        message.setText("Sorry. Server unawailible.");
+        message.exec();
+    }
+}
+
 void WindowsController::QuitGameSlot()
 {
     QApplication::quit();
+}
+
+void WindowsController::StartAwaitTimer()
+{
+    QTimer::singleShot(2000, this, SLOT(ConnectionTimeout()));
+    menuWindow->setCursor(Qt::WaitCursor);
+}
+
+void WindowsController::ConnectionEstablished()
+{
+    hasConnection=true;
+    menuWindow->setCursor(Qt::ArrowCursor);
 }
