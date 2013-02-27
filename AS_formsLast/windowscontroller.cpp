@@ -18,6 +18,7 @@ WindowsController::WindowsController(QObject *parent):QObject(parent)
     connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ReturnToMenuSlot()));
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
     onApplicationStart=true;
+    client = new QTcpSocket(this);
 }
 
 WindowsController::~WindowsController()
@@ -29,7 +30,7 @@ WindowsController::~WindowsController()
 void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 {
     menuWindow=new MenuWindow();
-    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartRead()));
+    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
     connect(menuWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
     connect(menuWindow,SIGNAL(SettingsButtonPressed()),this,SLOT(SettingsSlot()));
     connect(menuWindow,SIGNAL(QuitButtonPressed()),this,SLOT(QuitGameSlot()));
@@ -48,7 +49,7 @@ void WindowsController::ReturnToMenuSlot()
 }
 void WindowsController::RegisterSlot()
 {
-    client = new QTcpSocket(this);
+
     QHostAddress addr(menuWindow->addr);
     //QMessageBox msg;
     client->connectToHost(addr, 9485);
@@ -68,7 +69,7 @@ void WindowsController::RegisterStartRead()
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    in.~QDataStream();
+    //in.~QDataStream();
     int id = userData.value(0).toInt();
     if (id!=-1)
     {
@@ -86,10 +87,14 @@ void WindowsController::RegisterStartRead()
 
 void WindowsController::StartGameSlot()
 {
+    if(!menuWindow->getCredentialsState())
+    {
+        return;
+    }
     menuWindow->hide();
     if (onApplicationStart)
     {
-        client = new QTcpSocket(this);
+        //client = new QTcpSocket(this);
         QHostAddress addr(menuWindow->addr);
         client->connectToHost(addr, 9485);
 
@@ -103,7 +108,7 @@ void WindowsController::StartGameSlot()
 //        gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());///////
 //        connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
 //        gameWindow->show();
-        onApplicationStart=false;
+        //onApplicationStart=false;
     }
     else
     {
@@ -129,7 +134,7 @@ void WindowsController::StartGameSlot()
 
 void WindowsController::SettingsSlot()
 {
-    qDebug()<<"settings";
+    //qDebug()<<"settings";
     menuWindow->hide();
     //settingsWindow=new ToolsWindow();
     settingsWindow->show();
@@ -140,8 +145,7 @@ void WindowsController::StartRead()
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    in.~QDataStream();
-    int id = userData.value(0).toInt();
+    int id = userData.value(0).toInt();//////!!!!!!!!!!!!!!!!!!!!!!!
     if (id!=-1)//Wrong nickname or password
     {
         menuWindow->hide();

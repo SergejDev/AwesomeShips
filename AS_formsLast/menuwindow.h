@@ -16,15 +16,18 @@ public:
     ~MenuWindow();
     void DisableSettingsButton();
     void EnableSettingsButton();
-    QString UserName;
+    QString UserName;///перенести в привате и дописать геттеры
     QString PassWord;
     QString addr;
+    bool getCredentialsState();
 
 private:
+
     Ui::MenuWindow *ui;
     void SetWindowStyle();
     bool Validate();
     QPushButton *RegisterButton;
+    bool credentialsValid;
 
 public slots:
     void GetUserData();

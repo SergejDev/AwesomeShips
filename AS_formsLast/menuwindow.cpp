@@ -29,12 +29,16 @@ MenuWindow::~MenuWindow()
 
 void MenuWindow::GetUserData()
 {
-
     if(Validate())
     {
+        credentialsValid=true;
         UserName=ui->Username->text();
         PassWord=ui->Password->text();
         addr=ui->serverAddressEdit->text();
+    }
+    else
+    {
+        credentialsValid=false;
     }
 }
 
@@ -46,6 +50,11 @@ void MenuWindow::DisableSettingsButton()
 void MenuWindow::EnableSettingsButton()
 {
     ui->settingsPushButton->setDisabled(false);
+}
+
+bool MenuWindow::getCredentialsState()
+{
+    return credentialsValid;
 }
 
 void MenuWindow::SetWindowStyle()
@@ -65,13 +74,14 @@ void MenuWindow::SetWindowStyle()
 
 bool MenuWindow::Validate()
 {
+    bool isValid=true;
     if(ui->Username->text()=="")
     {
         QMessageBox message;
         message.setWindowTitle("Validation error");
         message.setText("Enter nickname, please.");
         message.exec();
-        return false;
+        isValid=false;
     }
     else if(ui->Password->text()=="")
     {
@@ -79,7 +89,7 @@ bool MenuWindow::Validate()
         message.setWindowTitle("Validation error");
         message.setText("Enter password, please.");
         message.exec();
-        return false;
+        isValid=false;
     }
     else if(ui->serverAddressEdit->text()=="")
     {
@@ -87,10 +97,7 @@ bool MenuWindow::Validate()
         message.setWindowTitle("Validation error");
         message.setText("Enter server address, please.");
         message.exec();
-        return false;
+        isValid=false;
     }
-    else
-    {
-        return true;
-    }
+    return isValid;
 }

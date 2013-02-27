@@ -45,6 +45,7 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
+        //allShips[i]->GetCurrentHP()
         if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
         {
             return allShips[i]->GetPosition();

@@ -90,7 +90,9 @@ void GameWindow::StartRead()
             if (k==1 || k==3 || k==4)
             {
                 if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
+                {
                     model->removeRow(i);
+                }
                 QStandardItem *item = new QStandardItem(QString(list2.value(k)));
                 model->setItem(i,j,item);
                 j++;
