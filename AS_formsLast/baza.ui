@@ -42,25 +42,25 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>210</x>
      <y>40</y>
-     <width>71</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
    <item>
     <property name="text">
-     <string>1</string>
+     <string>Food</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>2</string>
+     <string>Weather</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>3</string>
+     <string>Animals</string>
     </property>
    </item>
   </widget>
@@ -77,13 +77,13 @@
     <string>Import</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit">
+  <widget class="QLineEdit" name="textEdit">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>90</y>
-     <width>231</width>
-     <height>21</height>
+     <width>251</width>
+     <height>31</height>
     </rect>
    </property>
   </widget>

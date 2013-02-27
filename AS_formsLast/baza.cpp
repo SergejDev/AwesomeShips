@@ -96,9 +96,18 @@ void Baza::on_pushButton_3_clicked()
                // ui->comboBox->currentIndex()+1
             temp = out.readLine();
             QStringList worlds = temp.split("-");
-
-             query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+QString::number(ui->comboBox->currentIndex()+1)+",'"+worlds[0]+"','"+worlds[1]+"');");
-
+            if(ui->comboBox->currentIndex()==0)
+            {
+                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(1,'"+worlds[0]+"','"+worlds[1]+"');");
+            }
+            if(ui->comboBox->currentIndex()==1)
+            {
+                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(2,'"+worlds[0]+"','"+worlds[1]+"');");
+            }
+            if(ui->comboBox->currentIndex()==2)
+            {
+                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(3,'"+worlds[0]+"','"+worlds[1]+"');");
+            }
 }
 
         file.close();
