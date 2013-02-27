@@ -74,9 +74,8 @@ void Baza::on_pushButton_3_clicked()
     }
     else
     {
-
         QFile file(s);
-        QString temp,temp2,str,str2;
+        QString temp;
         QTextStream out (&file);
         if (!file.open(QIODevice::ReadOnly ))
         {
@@ -93,18 +92,9 @@ void Baza::on_pushButton_3_clicked()
             {
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
-                if(ui->comboBox->currentIndex()==0)
-                {
-                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(1,'"+worlds[0]+"','"+worlds[1]+"');");
-                }
-                if(ui->comboBox->currentIndex()==1)
-                {
-                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(2,'"+worlds[0]+"','"+worlds[1]+"');");
-                }
-                if(ui->comboBox->currentIndex()==2)
-                {
-                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(3,'"+worlds[0]+"','"+worlds[1]+"');");
-                }
+                int topicId=ui->comboBox->currentIndex()+1;
+                QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                query.exec(queryString);
             }
             file.close();
         }
