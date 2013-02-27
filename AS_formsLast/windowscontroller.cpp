@@ -6,11 +6,11 @@
 #include <QTcpSocket>
 #include "user.h"
 #include <QHostAddress>
-
 #include <iostream>
 #include <QMessageBox>
 #include <QString>
 #include <QHash>
+
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
 {
@@ -51,11 +51,7 @@ void WindowsController::RegisterSlot()
 {
 
     QHostAddress addr(menuWindow->addr);
-    //QMessageBox msg;
     client->connectToHost(addr, 9485);
-    //msg.setText("Connecting to " + menuWindow->addr);
-    //msg.exec();
-    //User s(menuWindow->UserName, menuWindow->PassWord);
     QStringList list;
     list.append(menuWindow->UserName);
     list.append(menuWindow->PassWord);
@@ -69,7 +65,6 @@ void WindowsController::RegisterStartRead()
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    //in.~QDataStream();
     int id = userData.value(0).toInt();
     if (id!=-1)
     {
@@ -91,10 +86,9 @@ void WindowsController::StartGameSlot()
     {
         return;
     }
-    menuWindow->hide();
+    //ADD timer!~
     if (onApplicationStart)
     {
-        //client = new QTcpSocket(this);
         QHostAddress addr(menuWindow->addr);
         client->connectToHost(addr, 9485);
 
@@ -104,32 +98,11 @@ void WindowsController::StartGameSlot()
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
-//////////////
-//        gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());///////
-//        connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
-//        gameWindow->show();
-        //onApplicationStart=false;
     }
     else
     {
-        //        QMessageBox msg;
-        //        msg.setText("App is already running, fool.");
-        //        msg.exec();
         gameWindow->ResumeGame();
     }
-
-    //    menuWindow->hide();
-    //        if(onApplicationStart)
-    //        {
-    //            gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());
-    //            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
-    //            gameWindow->show();
-    //            onApplicationStart=false;
-    //        }
-    //        else
-    //        {
-    //
-    //        }
 }
 
 void WindowsController::SettingsSlot()

@@ -99,6 +99,7 @@ void GameWindow::StartRead()
             }
         }
     }
+    model->removeRow(model->rowCount()-1);
     tableDialog->ui->tableView->setModel(model);
     tableDialog->setModal(true);
     tableDialog->show();
