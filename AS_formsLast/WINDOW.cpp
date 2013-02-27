@@ -63,7 +63,7 @@ void ToolsWindow::setupToolsWindow(QWidget *ToolsWindowForm)
     button_baza = new QPushButton(ToolsWindowForm);
     button_baza ->setObjectName("button_baza");
     button_baza->setGeometry(165,310,120,35);
-    button_baza->setText(QString::fromUtf8("add data"));
+    button_baza->setText(QString::fromUtf8("Add data"));
 
     button_toMainMenu->setObjectName("button_toMainMenu");
     button_Save->setObjectName("button_Save");

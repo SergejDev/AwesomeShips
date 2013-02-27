@@ -10,12 +10,15 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QMainWindow>
 #include <QtGui/QPushButton>
+#include <QtGui/QTextEdit>
 #include <QString>
 #include "QTextStream"
 #include <QTextCodec>
 #include <iostream>
 #include <menuwindow.h>
+#include <QStringList>
 
+using namespace std;
 Baza::Baza(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Baza)
@@ -24,6 +27,7 @@ Baza::Baza(QWidget *parent) :
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     //setModal(true);
     SetWindowStyle();
+
 
 }
 
@@ -50,6 +54,7 @@ void Baza::SetWindowStyle()
     str=ts.readAll();
     inputFile.close();
     this->setStyleSheet(str);
+
 }
 
 void Baza::on_pushButton_2_clicked()
@@ -57,10 +62,48 @@ void Baza::on_pushButton_2_clicked()
 
     s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"),
   "/home","DB File(*.txt)");
+   ui->textEdit->setText(s);
+
+}
+void Baza::on_pushButton_3_clicked()
+{
+    QSqlDatabase db;
+        db=QSqlDatabase::addDatabase("QSQLITE");
+           db.setUserName("Vadim");
+           db.setDatabaseName("d:/VSRPP/AwesomeShips/As_formsLast/Words.s3db");
+          db.setHostName("Vadim-PC");
+           db.setPassword("");
+           if (!db.open())
+           {
+                 qDebug() << db.lastError().text()<<"error";
+           }
+           else
+           {
+
+        QFile file(s);
+        QString temp,temp2,str,str2;
+        QTextStream out (&file);
+        if (!file.open(QIODevice::ReadOnly ))
+        {
+            cout<<"";
+        }
+        else
+        {
+            QSqlQuery query;
+
+            while(!out.atEnd())
+            {
+               // ui->comboBox->currentIndex()+1
+            temp = out.readLine();
+            QStringList worlds = temp.split("-");
+
+             query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+QString::number(ui->comboBox->currentIndex()+1)+",'"+worlds[0]+"','"+worlds[1]+"');");
 
 }
 
-void Baza::on_pushButton_3_clicked()
-{
+        file.close();
 
+           }
+            db.close();
+}
 }

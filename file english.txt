@@ -1,0 +1,10 @@
+ветер-wind
+мороз-frost
+дождь-rain
+солнце-sun
+тепло-heat
+прохладо-cool
+лед-ice
+лужа-puddles
+грязь-dirt
+снег-snow
