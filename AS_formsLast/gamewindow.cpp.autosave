@@ -98,8 +98,7 @@ void GameWindow::StartRead()
         }
     }
     model->removeRow(model->rowCount()-1);
-    model->sort(2);
-    //tableDialog->ui->tableView->sortByColumn(2);
+    model->sort(2,Qt::DescendingOrder);
     tableDialog->ui->tableView->setModel(model);
 
     tableDialog->setModal(true);
