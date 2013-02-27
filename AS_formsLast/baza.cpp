@@ -17,6 +17,7 @@
 #include <iostream>
 #include <menuwindow.h>
 #include <QStringList>
+#include <QMessageBox>
 
 using namespace std;
 Baza::Baza(QWidget *parent) :
@@ -27,8 +28,6 @@ Baza::Baza(QWidget *parent) :
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     //setModal(true);
     SetWindowStyle();
-
-
 }
 
 Baza::~Baza()
@@ -54,65 +53,61 @@ void Baza::SetWindowStyle()
     str=ts.readAll();
     inputFile.close();
     this->setStyleSheet(str);
-
 }
 
 void Baza::on_pushButton_2_clicked()
 {
 
-    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"),
-  "/home","DB File(*.txt)");
-   ui->textEdit->setText(s);
+    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
+    ui->textEdit->setText(s);
 
 }
 void Baza::on_pushButton_3_clicked()
 {
     QSqlDatabase db;
-        db=QSqlDatabase::addDatabase("QSQLITE");
-           db.setUserName("Vadim");
-           db.setDatabaseName("d:/VSRPP/AwesomeShips/As_formsLast/Words.s3db");
-          db.setHostName("Vadim-PC");
-           db.setPassword("");
-           if (!db.open())
-           {
-                 qDebug() << db.lastError().text()<<"error";
-           }
-           else
-           {
+    db=QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("Words.s3db");
+    db.setPassword("");
+    if (!db.open())
+    {
+        qDebug() << db.lastError().text();
+    }
+    else
+    {
 
         QFile file(s);
         QString temp,temp2,str,str2;
         QTextStream out (&file);
         if (!file.open(QIODevice::ReadOnly ))
         {
-            cout<<"";
+            QMessageBox message;
+            message.setWindowTitle("Error");
+            message.setText("Wrong file name.");
+            message.exec();
+            return;
         }
         else
         {
             QSqlQuery query;
-
             while(!out.atEnd())
             {
-               // ui->comboBox->currentIndex()+1
-            temp = out.readLine();
-            QStringList worlds = temp.split("-");
-            if(ui->comboBox->currentIndex()==0)
-            {
-                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(1,'"+worlds[0]+"','"+worlds[1]+"');");
+                temp = out.readLine();
+                QStringList worlds = temp.split("-");
+                if(ui->comboBox->currentIndex()==0)
+                {
+                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(1,'"+worlds[0]+"','"+worlds[1]+"');");
+                }
+                if(ui->comboBox->currentIndex()==1)
+                {
+                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(2,'"+worlds[0]+"','"+worlds[1]+"');");
+                }
+                if(ui->comboBox->currentIndex()==2)
+                {
+                    query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(3,'"+worlds[0]+"','"+worlds[1]+"');");
+                }
             }
-            if(ui->comboBox->currentIndex()==1)
-            {
-                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(2,'"+worlds[0]+"','"+worlds[1]+"');");
-            }
-            if(ui->comboBox->currentIndex()==2)
-            {
-                query.exec("INSERT INTO MultiLanguage(topicId,Russian,English) VALUES(3,'"+worlds[0]+"','"+worlds[1]+"');");
-            }
-}
-
-        file.close();
-
-           }
-            db.close();
-}
+            file.close();
+        }
+        db.close();
+    }
 }
