@@ -98,8 +98,7 @@ void GameWindow::StartRead()
         }
     }
     model->removeRow(model->rowCount()-1);
-    model->sort(2);
-    //tableDialog->ui->tableView->sortByColumn(2);
+    model->sort(2,Qt::DescendingOrder);
     tableDialog->ui->tableView->setModel(model);
 
     tableDialog->setModal(true);
@@ -126,7 +125,7 @@ void GameWindow::InitializeRandom()
 void GameWindow::SQLConnectionOpen()
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    db.setHostName("Vadim-PC");
+    db.setHostName("Spirit-PC");
     db.setDatabaseName("Words.s3db");
     db.setUserName("root");
     db.setPassword("");
