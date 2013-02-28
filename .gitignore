@@ -29,6 +29,7 @@ Release/
 *.Release
 *.jpg
 *.png
+*.s3db
 
 #################
 ## Eclipse
