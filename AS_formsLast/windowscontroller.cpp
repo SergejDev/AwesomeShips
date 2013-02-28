@@ -6,11 +6,9 @@
 #include <QTcpSocket>
 #include "user.h"
 #include <QHostAddress>
-//#include <iostream>
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
-//#include <QHash>
 
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
@@ -21,7 +19,6 @@ WindowsController::WindowsController(QObject *parent):QObject(parent)
 
     onApplicationStart=true;
     client = new QTcpSocket(this);
-    //awaitConnectionTimer=new QTimer(this);
     hasConnection=false;
 }
 
@@ -53,7 +50,11 @@ void WindowsController::ReturnToMenuSlot()
 }
 void WindowsController::RegisterSlot()
 {
-
+    if(!menuWindow->getCredentialsState())
+    {
+        return;
+    }
+    StartAwaitTimer();//
     QHostAddress addr(menuWindow->addr);
     client->connectToHost(addr, 9485);
     QStringList list;
@@ -66,6 +67,7 @@ void WindowsController::RegisterSlot()
 
 void WindowsController::RegisterStartRead()
 {
+    ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
     client->disconnect();
@@ -73,12 +75,14 @@ void WindowsController::RegisterStartRead()
     if (id!=-1)
     {
         QMessageBox msg;
+        msg.setWindowTitle("Awesome Ships");
         msg.setText("Nickname exists.");
         msg.exec();
     }
     else
     {
         QMessageBox msg;
+        msg.setWindowTitle("Awesome Ships");
         msg.setText("User added.");
         msg.exec();
     }
@@ -174,7 +178,7 @@ void WindowsController::QuitGameSlot()
 
 void WindowsController::StartAwaitTimer()
 {
-    QTimer::singleShot(2000, this, SLOT(ConnectionTimeout()));
+    QTimer::singleShot(3000, this, SLOT(ConnectionTimeout()));
     menuWindow->setCursor(Qt::WaitCursor);
 }
 
