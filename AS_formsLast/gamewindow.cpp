@@ -125,7 +125,7 @@ void GameWindow::InitializeRandom()
 void GameWindow::SQLConnectionOpen()
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    db.setHostName("Spirit-PC");
+    db.setHostName("Vadim-PC");
     db.setDatabaseName("Words.s3db");
     db.setUserName("root");
     db.setPassword("");

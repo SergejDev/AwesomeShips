@@ -37,6 +37,7 @@ signals:
     void RegisterButtonPressed();
     void SettingsButtonPressed();
     void QuitButtonPressed();
+
 };
 
 #endif // MENUWINDOW_H
