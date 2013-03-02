@@ -98,7 +98,11 @@ void WindowsController::StartGameSlot()
     if (onApplicationStart)
     {
         QHostAddress addr(menuWindow->addr);
-        client->connectToHost(addr, 9485);
+
+        if (!client->isOpen())
+        {
+            client->connectToHost(addr, 9485);
+        }
 
         QStringList list;
         list.append(menuWindow->UserName);
