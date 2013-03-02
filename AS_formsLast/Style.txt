@@ -12,7 +12,7 @@ padding:8px;
 border-radius:solid 10px;
 font: 75 10pt "Segoe Print";
 color:#fff;
-width: 50px;
+width: 60px;
 }
 QPushButton:hover {
 padding:8px;
