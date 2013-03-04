@@ -57,8 +57,7 @@ void Server::startRead()
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
         while (query.next())
         {
-            if ((query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
-                &&(query.record().value(2).toString().toStdString() == listIn.at(2).toStdString()))//pass check
+            if (query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
             {
                 list.append(query.record().value(0).toString());
                 in << list;
