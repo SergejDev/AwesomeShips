@@ -147,7 +147,7 @@ QStringList WorkWithDB::GetWords()
 
     int cnt = strList_tmp.count();
     QTime time = QTime::currentTime();
-    qsrand((uint)pow(time.msec(),2));
+    qsrand((uint)pow(static_cast<double>(time.msec()),2));
 
     int i = 0;
     while( i < Cnt )
