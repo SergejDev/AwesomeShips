@@ -62,6 +62,7 @@ void WindowsController::RegisterSlot()
         client->connectToHost(addr, 9485);
     }
     QStringList list;
+    list.append("Register");
     list.append(menuWindow->UserName);    
     QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
     QByteArray string(menuWindow->PassWord.toAscii());
@@ -78,7 +79,7 @@ void WindowsController::RegisterStartRead()
     QDataStream in(client);
     in >> userData;
     int id = userData.value(0).toInt();
-    if (id!=-1)
+    if (id>-1)
     {
         QMessageBox msg;
         msg.setWindowTitle("Awesome Ships");
@@ -92,6 +93,7 @@ void WindowsController::RegisterStartRead()
         msg.setText("User added.");
         msg.exec();
     }
+    disconnect(client,SIGNAL(readyRead()), this ,SLOT(RegisterStartRead()));
 }
 
 void WindowsController::StartGameSlot()
@@ -110,6 +112,7 @@ void WindowsController::StartGameSlot()
         }
 
         QStringList list;
+        list.append("Login");
         list.append(menuWindow->UserName);
 
         QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
@@ -170,6 +173,7 @@ void WindowsController::StartRead()
         message.setText("Wrong nickname or password.");
         message.exec();
     }
+    disconnect(client,SIGNAL(readyRead()), this ,SLOT(StartRead()));
 }
 
 void WindowsController::ConnectionTimeout()
