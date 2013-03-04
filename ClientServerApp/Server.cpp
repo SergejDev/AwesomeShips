@@ -49,18 +49,39 @@ void Server::startRead()
 
     QSqlQuery query;
 
-    if (listIn.at(0).toStdString() != "INSERT DAMN DATA OF USER WHO ENDED THE GAME")
+    QStringList list;
+    QString id = "-2";
+    if (listIn.at(0).toStdString() == "Register")
     {
-        cout << "IT IS NOT INSERT CMD!!!" << endl << endl;
-        QStringList list;
-        QString id = "-1";
+        cout << "Registering." << endl << endl;
+        query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
+        while (query.next())
+        {
+            if ((query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
+                &&(query.record().value(2).toString().toStdString() == listIn.at(2).toStdString()))//pass check
+            {
+                list.append(query.record().value(0).toString());
+                in << list;
+                return;
+            }
+        }
+        QSqlQuery query2;
+        QString nam=listIn.at(1);
+        QString pas=listIn.at(2);
+        query2.exec("INSERT INTO Users(NikName,Password,Level,Scores) VALUES ('"+nam+"','"+pas +"',1,0)");
+        list.append(id);
+        in << list;
+    }
+    else if (listIn.at(0).toStdString() == "Login")
+    {
+        cout << "Asking for login." << endl << endl;
 
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
 
         while (query.next())
         {
-            if ((query.record().value(1).toString().toStdString() == listIn.at(0).toStdString())//username check
-                &&(query.record().value(2).toString().toStdString() == listIn.at(1).toStdString()))//pass check
+            if ((query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
+                &&(query.record().value(2).toString().toStdString() == listIn.at(2).toStdString()))//pass check
                 {
                     QSqlRecord record = query.record();
                     id = record.value(0).toString();
@@ -73,21 +94,14 @@ void Server::startRead()
                         list.append(record.value(i).toString());
                     }
                     in << list;
-                    break;
+                    return;
                 }
         }
-
-        if (id == "-1")//new user??
-        {
-            QSqlQuery query2;
-            QString nam=listIn.at(0);
-            QString pas=listIn.at(1);
-            query2.exec("INSERT INTO Users(NikName,Password,Level,Scores) VALUES ('"+nam+"','"+pas +"',1,0)");
-            list.append(id);
-            in << list;
-        }
+        id = "-1";
+        list.append(id);
+        in << list;
     }
-    else
+    else if (listIn.at(0).toStdString() == "Update")
     {
         cout << "Updating data " << endl;
         cout << "   UserID : " << listIn.at(1).toStdString() << endl;

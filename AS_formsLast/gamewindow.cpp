@@ -55,7 +55,7 @@ void GameWindow::EndGame()
         QHostAddress addr(address);
         client->connectToHost(addr, 9485);
         QStringList list;
-        list.append("INSERT DAMN DATA OF USER WHO ENDED THE GAME");
+        list.append("Update");
         list.append(QString::number(userID));
         list.append(QString::number(gameController->GetScore()));
         list.append(QString::number(gameController->GetLevel()));
