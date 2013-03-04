@@ -53,12 +53,11 @@ void Server::startRead()
     QString id = "-2";
     if (listIn.at(0).toStdString() == "Register")
     {
-        cout << "Registering." << endl << endl;
+        cout << "Registering." << endl;
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
         while (query.next())
         {
-            if ((query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
-                &&(query.record().value(2).toString().toStdString() == listIn.at(2).toStdString()))//pass check
+            if (query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
             {
                 list.append(query.record().value(0).toString());
                 in << list;
@@ -74,7 +73,7 @@ void Server::startRead()
     }
     else if (listIn.at(0).toStdString() == "Login")
     {
-        cout << "Asking for login." << endl << endl;
+        cout << "Asking for login." << endl;
 
         query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
 

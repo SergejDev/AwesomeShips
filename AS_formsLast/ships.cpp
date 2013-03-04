@@ -107,7 +107,7 @@ void Ships::OvercomeBorderSlot(int shipIndex)
 int Ships::RandInt(int low, int high)
 {
     QTime time = QTime::currentTime();
-    qsrand((uint)pow(time.msec(),2));
+    qsrand((uint)pow(static_cast<double>(time.msec()),2));
     return qrand() % ((high + 1) - low) + low;
 }
 
