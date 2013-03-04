@@ -92,25 +92,31 @@ void Baza::on_pushButton_3_clicked()
             QSqlQueryModel model;
 
             while(!out.atEnd())
-            { int j=0;
+            {
+                int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
                 int topicId=ui->comboBox->currentIndex()+1;
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
-                    {
+                {
                     QString eng = model.record(i).value("English").toString();
                     if(eng == worlds[1])
-                       {
+                    {
                         j++;
-                       }
                     }
+                }
                 if(j==0)
                 {
-                        QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
-                        query.exec(queryString);
+                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                    query.exec(queryString);
+
                 }
             }
+            QMessageBox message;
+            message.setWindowTitle("Awesomeships");
+            message.setText("words added.");
+            message.exec();
             file.close();
         }
         db.close();
