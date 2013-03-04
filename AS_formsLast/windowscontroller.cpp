@@ -63,7 +63,7 @@ void WindowsController::RegisterSlot()
     }
     QStringList list;
     list.append(menuWindow->UserName);    
-    QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Md4);
+    QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
     QByteArray string(menuWindow->PassWord.toAscii());
     hash->addData(string);
     list.append(hash->result());
@@ -112,7 +112,7 @@ void WindowsController::StartGameSlot()
         QStringList list;
         list.append(menuWindow->UserName);
 
-        QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Md4);
+        QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
         QByteArray string(menuWindow->PassWord.toAscii());
         hash->addData(string);
         list.append(hash->result());
