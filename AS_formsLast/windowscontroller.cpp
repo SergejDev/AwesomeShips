@@ -111,7 +111,12 @@ void WindowsController::StartGameSlot()
 
         QStringList list;
         list.append(menuWindow->UserName);
-        list.append(menuWindow->PassWord);
+
+        QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Md4);
+        QByteArray string(menuWindow->PassWord.toAscii());
+        hash->addData(string);
+        list.append(hash->result());
+
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
