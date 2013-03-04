@@ -86,7 +86,7 @@ private slots:
     void EndGame();
     void InputFieldTextChanged(QString word);
     void ShipDestroyedSlot(int shipIndex);
-    //void ShipOwercomeBorderSlot(int shipIndex);
+    void ShipOwercomeBorderSlot(int shipIndex);
 };
 
 #endif // GAMEWINDOW_H

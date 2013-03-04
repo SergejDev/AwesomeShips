@@ -53,7 +53,7 @@ void GameController::Draw(QPainter *painter)
     gun->DrawGun(painter);
 }
 
-void GameController::Shoot(QString word)
+void GameController::Shoot(QString word)//inits when key was pressed
 {
     if(IsSuccessfulShoot(word))
     {
@@ -146,7 +146,7 @@ QString GameController::GetWordForShip()//TO DO: Get words from DB (don't forget
 bool GameController::IsSuccessfulShoot(QString word)
 {
     QPoint aimPosition=allShips->ShipPositionFromWord(word);
-    if((aimPosition!=QPoint(-1,-1))&&(aimPosition!=QPoint(-2,-2))&&(previousWord.size()<word.size()))
+    if(((aimPosition!=QPoint(-1,-1))&&(aimPosition!=QPoint(-2,-2)))&&(previousWord.size()<word.size()))
     {
         previousWord=word;
         return true;
