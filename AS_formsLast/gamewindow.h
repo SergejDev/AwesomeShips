@@ -74,7 +74,7 @@ private:
     void MakeInterface();
     void SetWindowStyle();
     void SQLConnectionOpen();
-    void InitializeRandom();
+    //void InitializeRandom();
 
 signals:
     void MenuButtonPressed(bool isGameWindowActive=true);

@@ -146,13 +146,14 @@ QStringList WorkWithDB::GetWords()
     }
 
     int cnt = strList_tmp.count();
-    srand(cnt);
+    QTime time = QTime::currentTime();
+    qsrand((uint)pow(time.msec(),2));
 
     int i = 0;
     while( i < Cnt )
     {
 
-        int r = rand()%cnt;
+        int r = qrand()%cnt;
 
         if (!strList.contains(strList_tmp.at(r)))
         {
@@ -183,7 +184,9 @@ void WorkWithDB::InsertDataMultiLanTable()
 {
     int rCount = tableModel->rowCount();
     if (!tableModel->insertRow(rCount))
+    {
         qDebug()<<tableModel->lastError().text();
+    }
 }
 
 
@@ -191,5 +194,7 @@ void WorkWithDB::InsertDataTopicTable()
 {
     int rCount = tableModel->rowCount();
     if (!tableModel->insertRow(rCount))
+    {
         qDebug()<<tableModel->lastError().text();
+    }
 }

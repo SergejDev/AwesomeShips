@@ -12,7 +12,7 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     userID = userid;
     address = addr;
 
-    InitializeRandom();
+    //InitializeRandom();
     MakeInterface();
     gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
 
@@ -116,19 +116,18 @@ void GameWindow::ShipDestroyedSlot(int shipIndex)
     inputField->setText("");
 }
 
-void GameWindow::InitializeRandom()
-{
-    QTime time = QTime::currentTime();
-    qsrand((uint)time.msec());
-}
+//void GameWindow::InitializeRandom()
+//{
+//    QTime time = QTime::currentTime();
+//    qsrand((uint)time.msec());
+//    qDebug()<<time.msec()<<"sacxscacaswcacs";
+//}
 
 void GameWindow::SQLConnectionOpen()
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
     db.setHostName("Spirit-PC");
     db.setDatabaseName("Words.s3db");
-    db.setUserName("root");
-    db.setPassword("");
     bool ok=db.open();
     qDebug()<<ok;
 }

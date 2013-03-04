@@ -136,7 +136,7 @@ QString GameController::GetWordForShip()//TO DO: Get words from DB (don't forget
         words=wordGetter->GetWords();
         currentWordIndex=0;
     }
-    qDebug()<<currentWordIndex<<" word index";
+    //qDebug()<<currentWordIndex<<" word index";
     QString result=words[currentWordIndex];
     currentWordIndex++;
 

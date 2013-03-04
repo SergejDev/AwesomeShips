@@ -1,4 +1,6 @@
 #include "ships.h"
+#include <QTime>
+#include <math.h>
 #include <QDebug>
 
 Ships::Ships(int windowWidth,QObject *parent):QObject(parent)
@@ -102,9 +104,10 @@ void Ships::OvercomeBorderSlot(int shipIndex)
     allShips.removeAt(shipIndex);
 }
 
-
 int Ships::RandInt(int low, int high)
 {
+    QTime time = QTime::currentTime();
+    qsrand((uint)pow(time.msec(),2));
     return qrand() % ((high + 1) - low) + low;
 }
 

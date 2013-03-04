@@ -137,7 +137,7 @@ void WindowsController::SettingsSlot()
 
 void WindowsController::StartRead()
 {
-    qDebug()<<"start read data from server";
+    //qDebug()<<"start read data from server";
     ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
