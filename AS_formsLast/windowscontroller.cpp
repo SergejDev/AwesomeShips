@@ -9,7 +9,8 @@
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
-
+#include <QCryptographicHash>
+#include <QByteArray>
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
 {
@@ -55,11 +56,17 @@ void WindowsController::RegisterSlot()
         return;
     }
     StartAwaitTimer();//
-    QHostAddress addr(menuWindow->addr);
-    client->connectToHost(addr, 9485);
+    if (!client->isOpen())
+    {
+        QHostAddress addr(menuWindow->addr);
+        client->connectToHost(addr, 9485);
+    }
     QStringList list;
-    list.append(menuWindow->UserName);
-    list.append(menuWindow->PassWord);
+    list.append(menuWindow->UserName);    
+    QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
+    QByteArray string(menuWindow->PassWord.toAscii());
+    hash->addData(string);
+    list.append(hash->result());
     QDataStream out(client);
     out << list;
     connect(client, SIGNAL(readyRead()), this, SLOT(RegisterStartRead()));
@@ -70,7 +77,6 @@ void WindowsController::RegisterStartRead()
     ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
-    client->disconnect();
     int id = userData.value(0).toInt();
     if (id!=-1)
     {
@@ -97,12 +103,20 @@ void WindowsController::StartGameSlot()
     StartAwaitTimer();//ADD timer
     if (onApplicationStart)
     {
-        QHostAddress addr(menuWindow->addr);
-        client->connectToHost(addr, 9485);
+        if (!client->isOpen())
+        {
+            QHostAddress addr(menuWindow->addr);
+            client->connectToHost(addr, 9485);
+        }
 
         QStringList list;
         list.append(menuWindow->UserName);
-        list.append(menuWindow->PassWord);
+
+        QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
+        QByteArray string(menuWindow->PassWord.toAscii());
+        hash->addData(string);
+        list.append(hash->result());
+
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
@@ -127,7 +141,6 @@ void WindowsController::StartRead()
     ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
-    client->disconnect();
     int id = userData.value(0).toInt();
     if (id!=-1)//Wrong nickname or password
     {

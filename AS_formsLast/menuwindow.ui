@@ -173,7 +173,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="Password"/>
+      <widget class="QLineEdit" name="Password">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
