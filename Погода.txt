@@ -8,3 +8,5 @@
 лужа-puddles
 грязь-dirt
 снег-snow
+метель-blizzard
+отлига-otliga
