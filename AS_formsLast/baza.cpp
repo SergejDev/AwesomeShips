@@ -18,6 +18,7 @@
 #include <menuwindow.h>
 #include <QStringList>
 #include <QMessageBox>
+#include <QSqlQueryModel>
 
 using namespace std;
 Baza::Baza(QWidget *parent) :
@@ -88,13 +89,27 @@ void Baza::on_pushButton_3_clicked()
         else
         {
             QSqlQuery query;
+            QSqlQueryModel model;
+
             while(!out.atEnd())
-            {
+            { int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
                 int topicId=ui->comboBox->currentIndex()+1;
-                QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
-                query.exec(queryString);
+                model.setQuery("SELECT * FROM MultiLanguage");
+                for(int i=0; i<model.rowCount(); i++)
+                    {
+                    QString eng = model.record(i).value("English").toString();
+                    if(eng == worlds[1])
+                       {
+                        j++;
+                       }
+                    }
+                if(j==0)
+                {
+                        QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                        query.exec(queryString);
+                }
             }
             file.close();
         }
