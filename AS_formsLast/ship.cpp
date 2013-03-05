@@ -29,12 +29,23 @@ void Ship::DrawShip(QPainter* painter)
     QPoint shipPosition(position.x()-shipSize.width()/2,position.y()-shipSize.height()/2);
     painter->drawImage(shipPosition,*ShipImage1);
 
-    QPoint textPosition(position.x()-shipSize.width()/2,position.y()-shipSize.height()/2-30);
-    int textWhidth=shipSize.width();
+    QFont font("Calibri",13);
+    QFontMetrics fm(font);
+    //drawGreen
+    QPoint startPosition(position.x()-fm.width(word)/2,
+                         position.y()-shipSize.height()/2-30);
+    int textWidth=shipSize.width();
     int textHeight=30;
+    int firstPartLetterCount = word.size() - int((static_cast<double>(currentHP)/static_cast<double>(normalDamage))+0.5);
+
+    QString wordPart = word.mid(0,firstPartLetterCount);
+    painter->setPen(QColor(50,255,50));
+    painter->setFont(font);
+    painter->drawText(startPosition.x(),startPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordPart);
+    QString wordSecPart = word.mid(firstPartLetterCount,word.size()-firstPartLetterCount);
     painter->setPen(QColor(255,255,255));
-    painter->setFont(QFont("Calibri",13));
-    painter->drawText(textPosition.x(),textPosition.y(),textWhidth,textHeight,Qt::AlignCenter,word);
+    painter->setFont(font);
+    painter->drawText(startPosition.x()+fm.width(wordPart),startPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordSecPart);
 
     painter->drawRect(position.x()-51,position.y()-shipSize.height()/2-1,102,7);
     painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,currentHP,5,Qt::green);
@@ -43,7 +54,6 @@ void Ship::DrawShip(QPainter* painter)
 void Ship::SetPosition(QPoint newPosition)
 {
     position=newPosition;
-
 }
 
 QPoint Ship::GetPosition()
@@ -82,4 +92,3 @@ int Ship::GetCurrentHP()
 {
     return currentHP;
 }
-

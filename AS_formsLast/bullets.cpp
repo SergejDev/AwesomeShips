@@ -21,11 +21,13 @@ void Bullets::DrawBullets(QPainter* painter)
     }
 }
 
-void Bullets::AddBullet(Bullet* newBullet)
+int Bullets::AddBullet(Bullet* newBullet)
 {
     QPoint shootPosition(windowWidth/2,590);
     newBullet->SetPosition(shootPosition);
     allBullets.append(newBullet);
+    int newBulletIndex=allBullets.indexOf(newBullet);
+    return newBulletIndex;
 }
 
 void Bullets::PauseBullets()
@@ -92,13 +94,7 @@ bool Bullets::IsAimHited(Bullet *bullet)
     QPoint bulletPosition=bullet->GetPosition();
     int dx=abs(aimPosition.x()-bulletPosition.x());
     int dy=abs(aimPosition.y()-bulletPosition.y());
-    int threshold=20;
-    if((dx+dy)<threshold)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    double threshold=30;
+    double distance=sqrt(pow((double)dx,(double)2)+pow((double)dy,(double)2));
+    return distance<threshold;
 }
