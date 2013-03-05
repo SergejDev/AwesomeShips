@@ -141,7 +141,7 @@ void GameWindow::MakeInterface()
     {
         this->setObjectName(QString::fromUtf8("GameWindow"));
     }
-    this->resize(1000, 700);
+    this->setFixedSize(1000,700);
     this->setWindowTitle("Awesome ships");
     QFont font;
     font.setKerning(true);
