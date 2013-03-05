@@ -3,7 +3,7 @@
 
 Bullet::Bullet(QPoint aimPosition, int aimIndex)
 {
-    speed=200;
+    speed=30;
     this->aimPosition=aimPosition;
     this->aimIndex=aimIndex;
     bulletImage=new QImage("plasma_bullet_small.png");

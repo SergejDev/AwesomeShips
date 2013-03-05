@@ -165,7 +165,10 @@ QStringList WorkWithDB::GetWords()
         {
             for (int p = 0 ; p < strList.count(); p++)
             {
-                if (j == p) continue;
+                if (j == p)
+                {
+                    continue;
+                }
                 if (strList.at(j).mid(0,1) == strList.at(p).mid(0,1))
                 {
                     strList.removeAt(p);
@@ -175,7 +178,7 @@ QStringList WorkWithDB::GetWords()
         }
     }
 
-    strList.sort();
+    //strList.sort();
 
     return strList;
 }
