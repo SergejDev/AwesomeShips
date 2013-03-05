@@ -151,7 +151,8 @@ void WindowsController::StartRead()
         if(onApplicationStart)
         {
             int level=userData.value(3).toInt();
-            if (level == 5)
+            qDebug()<<level<<"-level";
+            if (level > 9)
             {
                 level = 0;
             }

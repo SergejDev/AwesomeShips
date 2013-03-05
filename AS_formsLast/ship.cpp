@@ -6,7 +6,7 @@
 
 Ship::Ship(QString word,int level)
 {
-    speedOnLevels[0]=1;speedOnLevels[1]=1;speedOnLevels[2]=1;speedOnLevels[3]=2;speedOnLevels[4]=2;
+    InitializeSpeedSettings();
     shipsPadding=50;
     speed=speedOnLevels[level];
     totalHP=100;
@@ -17,6 +17,20 @@ Ship::Ship(QString word,int level)
     ShipImage1 = new QImage("dk2_darker.png");
     shipSize.setWidth(ShipImage1->width());
     shipSize.setHeight(ShipImage1->height());
+}
+
+void Ship::InitializeSpeedSettings()
+{
+    speedOnLevels[0]=1;
+    speedOnLevels[1]=1;
+    speedOnLevels[2]=1;
+    speedOnLevels[3]=2;
+    speedOnLevels[4]=2;
+    speedOnLevels[5]=2;
+    speedOnLevels[6]=2;
+    speedOnLevels[7]=2;
+    speedOnLevels[8]=3;
+    speedOnLevels[9]=3;
 }
 
 int Ship::GetSpeed()

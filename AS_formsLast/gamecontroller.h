@@ -13,7 +13,7 @@ private:
     int currentLevel;
     int scoresPerLevel;
     int animationTimerFrequency;
-    int addShipTimerFrequencyOnLevels[5];
+    int addShipTimerFrequencyOnLevels[10];
     int addShipTimerFrequency;
     Ships *allShips;
     Bullets *allBullets;

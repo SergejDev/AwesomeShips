@@ -56,6 +56,7 @@ private:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *score;
+    QLabel *levelLabel;
     QSpacerItem *horizontalSpacer;
     QPushButton *menuPushButton;
     QSpacerItem *verticalSpacer;

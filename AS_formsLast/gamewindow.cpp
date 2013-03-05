@@ -12,11 +12,11 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     userID = userid;
     address = addr;
 
-    //InitializeRandom();
     MakeInterface();
     gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
 
     score->setText("Score: "+QString::number(gameController->GetScore()));
+    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
 
     connect(gameController,SIGNAL(GameAreaUpdate()),this, SLOT(update()));
     connect(this->menuPushButton,SIGNAL(clicked(bool)),this, SIGNAL(MenuButtonPressed(bool)));
@@ -101,7 +101,8 @@ void GameWindow::StartRead()
         }
     }
     model->removeRow(model->rowCount()-1);
-    model->sort(2,Qt::DescendingOrder);
+    model->removeColumn(model->columnCount()-2);
+    //model->sort(2,Qt::DescendingOrder);
     tableDialog->ui->tableView->setModel(model);
 
     tableDialog->setModal(true);
@@ -116,6 +117,7 @@ void GameWindow::InputFieldTextChanged(QString word)
 void GameWindow::ShipDestroyedSlot(int shipIndex)
 {
     score->setText("Score: "+QString::number(gameController->GetScore()));
+    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
     inputField->setText("");
 }
 
@@ -156,13 +158,18 @@ void GameWindow::MakeInterface()
     verticalLayout->setContentsMargins(11, 11, 11, 11);
     verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setSpacing(6);
+    horizontalLayout->setSpacing(50);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     score = new QLabel("Score: 0", centralWidget);
     score->setObjectName(QString::fromUtf8("score"));
     score->setStyleSheet(QString::fromUtf8(""));
 
+    levelLabel = new QLabel("Level: 1", centralWidget);
+    levelLabel->setObjectName(QString::fromUtf8("levelLabel"));
+    levelLabel->setStyleSheet(QString::fromUtf8(""));
+
     horizontalLayout->addWidget(score);
+    horizontalLayout->addWidget(levelLabel);
 
     horizontalSpacer = new QSpacerItem(598, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
 

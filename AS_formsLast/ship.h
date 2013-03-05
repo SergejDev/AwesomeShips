@@ -9,12 +9,13 @@ class Ship
 private:
     int shipsPadding;
     int speed;
-    int speedOnLevels[5];
+    int speedOnLevels[10];
     int totalHP;
     QPoint position;
     QSize shipSize;
     QImage *ShipImage1;
     QString word;
+    void InitializeSpeedSettings();
 
 public:
     int currentHP;

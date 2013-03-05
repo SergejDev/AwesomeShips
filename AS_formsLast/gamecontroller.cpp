@@ -1,5 +1,4 @@
 #include "gamecontroller.h"
-
 #include <QStringList>
 #include <QDebug>
 #include <QMessageBox>
@@ -11,6 +10,7 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     currentScore=score;
     scorePointsForDestroyingShip=10;
+    qDebug()<<level<<"---";
     currentLevel=level;
     scoresPerLevel=30;
 
@@ -39,6 +39,7 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     animationsTimer->start(animationTimerFrequency);
     addShipTimer->start(addShipTimerFrequency);
+    qDebug()<<addShipTimerFrequency<<"addShipTimerFrequency";
 }
 
 void GameController::AddShip()
@@ -117,12 +118,12 @@ void GameController::ShipDestroyedSlot(int shipIndex)
     currentScore+=scorePointsForDestroyingShip;
     if(currentScore>=(currentLevel+1)*scoresPerLevel)
     {
+        qDebug()<<"current level"<<currentLevel+1;
         NextLevel();
         addShipTimerFrequency=addShipTimerFrequencyOnLevels[currentLevel];
         addShipTimer->setInterval(addShipTimerFrequency);
     }
 }
-
 
 //int GameController::RandInt(int low, int high)//!!!!!!
 //{
@@ -170,5 +171,10 @@ void GameController::InitializeLevelSettings()
     addShipTimerFrequencyOnLevels[2]=4000;
     addShipTimerFrequencyOnLevels[3]=3000;
     addShipTimerFrequencyOnLevels[4]=2000;
+    addShipTimerFrequencyOnLevels[5]=1900;
+    addShipTimerFrequencyOnLevels[6]=1800;
+    addShipTimerFrequencyOnLevels[7]=1700;
+    addShipTimerFrequencyOnLevels[8]=1600;
+    addShipTimerFrequencyOnLevels[9]=1500;
     addShipTimerFrequency=addShipTimerFrequencyOnLevels[currentLevel];
 }

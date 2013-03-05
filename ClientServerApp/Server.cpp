@@ -67,7 +67,7 @@ void Server::startRead()
         QSqlQuery query2;
         QString nam=listIn.at(1);
         QString pas=listIn.at(2);
-        query2.exec("INSERT INTO Users(NikName,Password,Level,Scores) VALUES ('"+nam+"','"+pas +"',1,0)");
+        query2.exec("INSERT INTO Users(NikName,Password,Level,Scores) VALUES ('"+nam+"','"+pas +"',0,0)");
         list.append(id);
         in << list;
     }

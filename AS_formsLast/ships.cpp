@@ -158,6 +158,7 @@ void Ships::MooveShips()
     {
         QPoint oldPosition=allShips[i]->GetPosition();
         QPoint newPosition(oldPosition.x(),oldPosition.y()+allShips[i]->GetSpeed());
+        qDebug()<<"allShips[i]->GetSpeed()"<<allShips[i]->GetSpeed();
         allShips[i]->SetPosition(newPosition);
         if(newPosition.y()>border)
         {
