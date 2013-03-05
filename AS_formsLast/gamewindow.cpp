@@ -53,7 +53,10 @@ void GameWindow::EndGame()
     {
         client = new QTcpSocket(this);
         QHostAddress addr(address);
-        client->connectToHost(addr, 9485);
+        if (!client->isOpen())
+        {
+            client->connectToHost(addr, 9485);
+        }
         QStringList list;
         list.append("Update");
         list.append(QString::number(userID));

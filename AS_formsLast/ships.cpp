@@ -47,11 +47,27 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
-        //allShips[i]->GetCurrentHP()
-        if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
+        QString word = allShips[i]->GetWord();
+        int filledPartLength = word.size() - int((static_cast<double>(allShips[i]->currentHP)/static_cast<double>(allShips[i]->normalDamage))+0.5);
+        if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord.mid(typingWord.size()-1,1),Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
         {
             return allShips[i]->GetPosition();
         }
+        else if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord,Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
+        {
+            return allShips[i]->GetPosition();
+        }
+//        else if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
+//        {
+//            return allShips[i]->GetPosition();
+//        }
+        //
+        //if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
+        //{
+        //    return allShips[i]->GetPosition();
+        //}
     }
     return QPoint(-1,-1);//error position
 }
@@ -64,10 +80,23 @@ int Ships::ShipIndexFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
-        if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
+        QString word = allShips[i]->GetWord();
+        int filledPartLength = word.size() - int((static_cast<double>(allShips[i]->currentHP)/static_cast<double>(allShips[i]->normalDamage))+0.5);
+        if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord.mid(typingWord.size()-1,1),Qt::CaseInsensitive) &&
+           word.contains(typingWord,Qt::CaseInsensitive))
         {
             return i;
         }
+        else if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord,Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
+        {
+            return i;
+        }
+        //else
+        //    if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
+        //{
+        //    return i;
+        //}
     }
     return -1;//error position
 }

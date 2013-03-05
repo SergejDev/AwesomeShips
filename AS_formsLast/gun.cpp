@@ -25,10 +25,10 @@ void Gun::SetAim(QPoint aimPosition)
     double tan=dy/dx;
     if(dx<0)
     {
-        rotationAngle=atan(tan)*180/3.14+90;
+        rotationAngle=atan(tan)*180/3.1415+90;
     }
     else
     {
-        rotationAngle=atan(tan)*180/3.14-90;
+        rotationAngle=atan(tan)*180/3.1415-90;
     }
 }
