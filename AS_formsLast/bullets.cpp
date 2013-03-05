@@ -23,10 +23,12 @@ void Bullets::DrawBullets(QPainter* painter)
 
 int Bullets::AddBullet(Bullet* newBullet)
 {
+    int newBulletIndex=allBullets.indexOf(newBullet);
+    emit this->ShipHit(newBulletIndex,newBullet->GetAimIndex());
     QPoint shootPosition(windowWidth/2,590);
     newBullet->SetPosition(shootPosition);
     allBullets.append(newBullet);
-    int newBulletIndex=allBullets.indexOf(newBullet);
+
     return newBulletIndex;
 }
 

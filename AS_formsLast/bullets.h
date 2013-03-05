@@ -29,6 +29,7 @@ public:
 signals:
     void BulletsPositionUpdate();
     void AimHit(int bulletIndex,int shipIndex);
+    void ShipHit(int bulletIndex,int shipIndex);
 
 private slots:
     void MooveBulletsAnimationsTimerSlot();

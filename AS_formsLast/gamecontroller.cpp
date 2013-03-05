@@ -30,7 +30,7 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
     addShipTimer=new QTimer();
     QObject::connect(addShipTimer,SIGNAL(timeout()),this,SLOT(AddShipTimerSlot()));
 
-    QObject::connect(allBullets,SIGNAL(AimHit(int,int)),this,SLOT(ShipHitedSlot(int,int)));
+    QObject::connect(allBullets,SIGNAL(ShipHit(int,int)),this,SLOT(ShipHitedSlot(int,int)));
 
     QObject::connect(allShips,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     QObject::connect(allShips,SIGNAL(ShipDestroyed(int)),this,SIGNAL(ShipDestroyed(int)));
