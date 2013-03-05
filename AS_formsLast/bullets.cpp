@@ -92,7 +92,7 @@ bool Bullets::IsAimHited(Bullet *bullet)
     QPoint bulletPosition=bullet->GetPosition();
     int dx=abs(aimPosition.x()-bulletPosition.x());
     int dy=abs(aimPosition.y()-bulletPosition.y());
-    int threshold=20;
+    int threshold=300;
     if((dx+dy)<threshold)
     {
         return true;

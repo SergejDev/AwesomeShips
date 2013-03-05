@@ -47,7 +47,6 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
-        //
         QString word = allShips[i]->GetWord();
         int filledPartLength = word.size() - int((static_cast<double>(allShips[i]->currentHP)/static_cast<double>(allShips[i]->normalDamage))+0.5);
         if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord.mid(typingWord.size()-1,1),Qt::CaseInsensitive))
@@ -58,10 +57,10 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
         {
             return allShips[i]->GetPosition();
         }
-        else if(word.contains(typingWord,Qt::CaseInsensitive))//тестировать этот if.
-        {
-            return allShips[i]->GetPosition();
-        }
+//        else if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
+//        {
+//            return allShips[i]->GetPosition();
+//        }
         //
         //if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
         //{
@@ -89,10 +88,11 @@ int Ships::ShipIndexFromWord(QString typingWord)
         {
             return i;
         }
-        else if(word.contains(typingWord,Qt::CaseInsensitive))//тестировать этот if.
-        {
-            return i;
-        }
+        //else
+        //    if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
+        //{
+        //    return i;
+        //}
     }
     return -1;//error position
 }
