@@ -11,14 +11,14 @@ private:
     int speed;
     int speedOnLevels[5];
     int totalHP;
-    int currentHP;
-    int normalDamage;
     QPoint position;
     QSize shipSize;
     QImage *ShipImage1;
     QString word;
 
 public:
+    int currentHP;
+    int normalDamage;
     Ship(QString word, int level);
     int GetSpeed();
     void DrawShip(QPainter* Painter);
