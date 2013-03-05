@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <login.h>
 
 MenuWindow::MenuWindow(QWidget *parent) :
     QDialog(parent),
@@ -12,11 +13,11 @@ MenuWindow::MenuWindow(QWidget *parent) :
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     //setModal(true);
     SetWindowStyle();
-    connect(this->ui->startPushButton,SIGNAL(clicked()),this,SLOT(GetUserData()));
+    //connect(this->ui->startPushButton,SIGNAL(clicked()),this,SLOT(GetUserData()));
     connect(this->ui->startPushButton,SIGNAL(clicked()),this,SIGNAL(StartButtonPressed()));
 
-    connect(this->ui->RegisterButton,SIGNAL(clicked()),this,SLOT(GetUserData()));
-    connect(this->ui->RegisterButton,SIGNAL(clicked()),this,SIGNAL(RegisterButtonPressed()));
+    connect(this->ui->LoginB,SIGNAL(clicked()),this,SLOT(OpenLoginWindow()));
+
 
     connect(this->ui->settingsPushButton,SIGNAL(clicked()),this,SIGNAL(SettingsButtonPressed()));
     connect(this->ui->quitPushButton,SIGNAL(clicked()),this,SIGNAL(QuitButtonPressed()));
@@ -27,15 +28,15 @@ MenuWindow::~MenuWindow()
     delete ui;
 }
 
-void MenuWindow::GetUserData()
+void MenuWindow::OpenLoginWindow()
 {
+    loginWindow = new LoginDialog();
+        loginWindow->show();
+}
 
-    if(Validate())
-    {
-        UserName=ui->Username->text();
-        PassWord=ui->Password->text();
-        addr=ui->serverAddressEdit->text();
-    }
+bool MenuWindow::getCredentialsState()
+{
+    return credentialsValid;
 }
 
 void MenuWindow::DisableSettingsButton()
@@ -63,34 +64,4 @@ void MenuWindow::SetWindowStyle()
     this->setStyleSheet(str);
 }
 
-bool MenuWindow::Validate()
-{
-    if(ui->Username->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter nickname, please.");
-        message.exec();
-        return false;
-    }
-    else if(ui->Password->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter password, please.");
-        message.exec();
-        return false;
-    }
-    else if(ui->serverAddressEdit->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter server address, please.");
-        message.exec();
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
+

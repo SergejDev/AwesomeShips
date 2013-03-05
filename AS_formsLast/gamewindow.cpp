@@ -63,7 +63,6 @@ void GameWindow::EndGame()
         stream << list;
     }
     ////////GETTING WHOLE STATISTIC TABLE AND SHOW IT
-
     connect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
 }
 
@@ -75,7 +74,6 @@ void GameWindow::StartRead()
 
     QString string(source);
     QStringList list1 = string.split(':');
-
 
     QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this); //2 Rows and 3 Columns
     model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nickname")));
@@ -90,14 +88,20 @@ void GameWindow::StartRead()
             if (k==1 || k==3 || k==4)
             {
                 if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
+                {
                     model->removeRow(i);
+                }
                 QStandardItem *item = new QStandardItem(QString(list2.value(k)));
                 model->setItem(i,j,item);
                 j++;
             }
         }
     }
+    model->removeRow(model->rowCount()-1);
+    model->sort(2);
+    //tableDialog->ui->tableView->sortByColumn(2);
     tableDialog->ui->tableView->setModel(model);
+
     tableDialog->setModal(true);
     tableDialog->show();
 }
@@ -122,7 +126,7 @@ void GameWindow::InitializeRandom()
 void GameWindow::SQLConnectionOpen()
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    db.setHostName("Spirit-PC");
+    db.setHostName("Vadim-PC");
     db.setDatabaseName("Words.s3db");
     db.setUserName("root");
     db.setPassword("");

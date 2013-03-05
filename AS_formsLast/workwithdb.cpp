@@ -101,9 +101,12 @@ int WorkWithDB::GetUserID(QString name, QString pass)
 {
     ReadTable("Users");
     for (int i = 0 ; i < tableModel->rowCount(); i++)
-        if (tableModel->record(i).value("NikName")==name)
-            if (tableModel->record(i).value("Password")==pass)
-                return i + 1;
+    {
+        if ((tableModel->record(i).value("NikName")==name)&&(tableModel->record(i).value("Password")==pass))
+        {
+            return i + 1;
+        }
+    }
     return -1;
 }
 
@@ -112,7 +115,7 @@ int WorkWithDB::GetScore(int ID)
     ReadTable("Statistic");
     for (int i = 0 ; i < tableModel->rowCount(); i++)
         if (tableModel->record(i).value("ID")==ID)
-           return tableModel->record(i).value("Scores").toInt();
+            return tableModel->record(i).value("Scores").toInt();
     return 0;
 }
 
@@ -121,7 +124,7 @@ int WorkWithDB::GetLevel(int ID)
     ReadTable("Users");
     for (int i = 0 ; i < tableModel->rowCount(); i++)
         if (tableModel->record(i).value("ID")==ID)
-           return tableModel->record(i).value("Level").toInt();
+            return tableModel->record(i).value("Level").toInt();
     return 1;
 }
 

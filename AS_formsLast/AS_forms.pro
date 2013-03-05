@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     menuwindow.cpp \
     workwithdb.cpp \
     WINDOW.cpp \
-    user.cpp
+    user.cpp \
+    baza.cpp \
+    login.cpp
 
 HEADERS  += gamewindow.h \
     usernamedialog.h \
@@ -41,12 +43,16 @@ HEADERS  += gamewindow.h \
     menuwindow.h \
     workwithdb.h \
     WINDOW.h \
-    user.h
+    user.h \
+    baza.h \
+    login.h
 
 FORMS    += \
     usernamedialog.ui \
     tabledialog.ui \
-    menuwindow.ui
+    menuwindow.ui \
+    baza.ui \
+    login.ui
 
 RESOURCES += \
     resourses.qrc

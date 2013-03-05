@@ -6,31 +6,35 @@
 #include <QTcpSocket>
 #include "user.h"
 #include <QHostAddress>
-
-#include <iostream>
 #include <QMessageBox>
 #include <QString>
-#include <QHash>
+#include <QTimer>
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
 {
     settingsWindow=new ToolsWindow();
     connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ReturnToMenuSlot()));
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
+
     onApplicationStart=true;
+    client = new QTcpSocket(this);
+    hasConnection=false;
 }
 
 WindowsController::~WindowsController()
 {
     delete menuWindow;
+    //delete loginWindow;
     delete settingsWindow;
 }
 
 void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 {
     menuWindow=new MenuWindow();
-    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartRead()));
-    connect(menuWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
+    loginWindow = new LoginDialog();
+    connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
+    connect(loginWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
+    connect(loginWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
     connect(menuWindow,SIGNAL(SettingsButtonPressed()),this,SLOT(SettingsSlot()));
     connect(menuWindow,SIGNAL(QuitButtonPressed()),this,SLOT(QuitGameSlot()));
     menuWindow->show();
@@ -43,18 +47,18 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 
 void WindowsController::ReturnToMenuSlot()
 {
-    qDebug()<<"return from settings";
+    //qDebug()<<"return from settings";
     menuWindow->show();
 }
 void WindowsController::RegisterSlot()
 {
-    client = new QTcpSocket(this);
+    if(!menuWindow->getCredentialsState())
+    {
+        return;
+    }
+    StartAwaitTimer();//
     QHostAddress addr(menuWindow->addr);
-    //QMessageBox msg;
     client->connectToHost(addr, 9485);
-    //msg.setText("Connecting to " + menuWindow->addr);
-    //msg.exec();
-    //User s(menuWindow->UserName, menuWindow->PassWord);
     QStringList list;
     list.append(menuWindow->UserName);
     list.append(menuWindow->PassWord);
@@ -65,20 +69,22 @@ void WindowsController::RegisterSlot()
 
 void WindowsController::RegisterStartRead()
 {
+    ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    in.~QDataStream();
     int id = userData.value(0).toInt();
     if (id!=-1)
     {
         QMessageBox msg;
+        msg.setWindowTitle("Awesome Ships");
         msg.setText("Nickname exists.");
         msg.exec();
     }
     else
     {
         QMessageBox msg;
+        msg.setWindowTitle("Awesome Ships");
         msg.setText("User added.");
         msg.exec();
     }
@@ -86,10 +92,18 @@ void WindowsController::RegisterStartRead()
 
 void WindowsController::StartGameSlot()
 {
-    menuWindow->hide();
+    QMessageBox message;
+    message.setWindowTitle("error");
+    message.setText(menuWindow->PassWord);
+    message.exec();
+
+    if(!menuWindow->getCredentialsState())
+    {
+        return;
+    }
+    StartAwaitTimer();//ADD timer
     if (onApplicationStart)
     {
-        client = new QTcpSocket(this);
         QHostAddress addr(menuWindow->addr);
         client->connectToHost(addr, 9485);
 
@@ -99,37 +113,16 @@ void WindowsController::StartGameSlot()
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
-//////////////
-//        gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());///////
-//        connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
-//        gameWindow->show();
-        onApplicationStart=false;
     }
     else
     {
-        //        QMessageBox msg;
-        //        msg.setText("App is already running, fool.");
-        //        msg.exec();
         gameWindow->ResumeGame();
     }
-
-    //    menuWindow->hide();
-    //        if(onApplicationStart)
-    //        {
-    //            gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID());
-    //            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
-    //            gameWindow->show();
-    //            onApplicationStart=false;
-    //        }
-    //        else
-    //        {
-    //
-    //        }
 }
 
 void WindowsController::SettingsSlot()
 {
-    qDebug()<<"settings";
+    //qDebug()<<"settings";
     menuWindow->hide();
     //settingsWindow=new ToolsWindow();
     settingsWindow->show();
@@ -137,10 +130,11 @@ void WindowsController::SettingsSlot()
 
 void WindowsController::StartRead()
 {
+    qDebug()<<"start read data from server";
+    ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
     client->disconnect();
-    in.~QDataStream();
     int id = userData.value(0).toInt();
     if (id!=-1)//Wrong nickname or password
     {
@@ -172,7 +166,31 @@ void WindowsController::StartRead()
     }
 }
 
+void WindowsController::ConnectionTimeout()
+{
+    if(!hasConnection)
+    {
+        menuWindow->setCursor(Qt::ArrowCursor);
+        QMessageBox message;
+        message.setWindowTitle("Connection error");
+        message.setText("Sorry. Server unawailible.");
+        message.exec();
+    }
+}
+
 void WindowsController::QuitGameSlot()
 {
     QApplication::quit();
+}
+
+void WindowsController::StartAwaitTimer()
+{
+    QTimer::singleShot(3000, this, SLOT(ConnectionTimeout()));
+    menuWindow->setCursor(Qt::WaitCursor);
+}
+
+void WindowsController::ConnectionEstablished()
+{
+    hasConnection=true;
+    menuWindow->setCursor(Qt::ArrowCursor);
 }

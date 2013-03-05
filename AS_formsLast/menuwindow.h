@@ -2,6 +2,7 @@
 #define MENUWINDOW_H
 
 #include <QDialog>
+#include <login.h>
 
 namespace Ui {
 class MenuWindow;
@@ -16,24 +17,28 @@ public:
     ~MenuWindow();
     void DisableSettingsButton();
     void EnableSettingsButton();
-    QString UserName;
+    QString UserName;///перенести в привате и дописать геттеры
     QString PassWord;
     QString addr;
+    bool credentialsValid;
+    bool getCredentialsState();
+    LoginDialog *loginWindow;
 
 private:
+
     Ui::MenuWindow *ui;
     void SetWindowStyle();
-    bool Validate();
-    QPushButton *RegisterButton;
+    QPushButton *LoginB;
+
 
 public slots:
-    void GetUserData();
+    void OpenLoginWindow();
 
 signals:
     void StartButtonPressed();
-    void RegisterButtonPressed();
     void SettingsButtonPressed();
     void QuitButtonPressed();
+
 };
 
 #endif // MENUWINDOW_H
