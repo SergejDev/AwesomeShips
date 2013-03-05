@@ -114,8 +114,8 @@ void Baza::on_pushButton_3_clicked()
                 }
             }
             QMessageBox message;
-            message.setWindowTitle("Awesomeships");
-            message.setText("words added.");
+            message.setWindowTitle("Awesome ships");
+            message.setText("New words added.");
             message.exec();
             file.close();
         }
