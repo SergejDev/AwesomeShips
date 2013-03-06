@@ -10,9 +10,9 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     currentScore=score;
     scorePointsForDestroyingShip=10;
-    qDebug()<<level<<"---";
+    //qDebug()<<level<<"---";
     currentLevel=level;
-    scoresPerLevel=30;
+    scoresPerLevel=100;
 
     allShips=new Ships(windowWidth,parrent);
     allBullets=new Bullets(windowWidth,parrent);

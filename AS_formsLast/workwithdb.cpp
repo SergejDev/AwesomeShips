@@ -6,15 +6,7 @@
 
 WorkWithDB::WorkWithDB(QString DBName)//when you create object you need to define the DB name to work with
 {
-    bool create_open = CreateOpenDB(DBName);
-    if (!create_open)
-    {
-        qDebug()<< myDB.lastError().text() + "DB didn't created";
-    }
-    else
-    {
-        qDebug()<< "DB created";
-    }
+    CreateOpenDB(DBName);
 }
 
 WorkWithDB::~WorkWithDB()
@@ -46,7 +38,7 @@ int WorkWithDB::GetLang()
 
 bool WorkWithDB::CreateOpenDB(QString DBName)
 {
-    bool opened = false;
+    bool opened = true;
     myDB = QSqlDatabase::addDatabase("QSQLITE");
     myDB.setDatabaseName(DBName);
 
@@ -55,26 +47,16 @@ bool WorkWithDB::CreateOpenDB(QString DBName)
         qDebug()<<myDB.lastError().text() + " in CreateNewDB";
         opened = false;
     }
-    else
-    {
-        //        if ()//check for existing tables
-        //        {
-
-        //            try{
-        QString qStr = "CREATE TABLE Topics (TopicID integer PRIMARY KEY, topicName text)";
-        query.exec(qStr);
-        qStr = "CREATE TABLE MultiLanguage (wordID integer PRIMARY KEY, TopicID integer, russian text, english text)";
-        query.exec(qStr);
-        qStr = "CREATE TABLE Statistic (statID integer PRIMARY KEY, userName text, score integer, levels integer)";
-        query.exec(qStr);
-        //            }
-        //            catch ()
-        //            {
-        //            qDebug()<<myDB.lastError().text() + "Can't create tables";
-        //    }
-    }
-    opened = true;
-    //    }
+//    else
+//    {
+//        QString qStr = "CREATE TABLE Topics (TopicID integer PRIMARY KEY, topicName text)";
+//        query.exec(qStr);
+//        qStr = "CREATE TABLE MultiLanguage (wordID integer PRIMARY KEY, TopicID integer, russian text, english text)";
+//        query.exec(qStr);
+//        qStr = "CREATE TABLE Statistic (statID integer PRIMARY KEY, userName text, score integer, levels integer)";
+//        query.exec(qStr);
+//        opened = true;
+//    }
 
     return opened;
 }
