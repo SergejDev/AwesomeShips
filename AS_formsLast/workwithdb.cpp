@@ -47,17 +47,6 @@ bool WorkWithDB::CreateOpenDB(QString DBName)
         qDebug()<<myDB.lastError().text() + " in CreateNewDB";
         opened = false;
     }
-//    else
-//    {
-//        QString qStr = "CREATE TABLE Topics (TopicID integer PRIMARY KEY, topicName text)";
-//        query.exec(qStr);
-//        qStr = "CREATE TABLE MultiLanguage (wordID integer PRIMARY KEY, TopicID integer, russian text, english text)";
-//        query.exec(qStr);
-//        qStr = "CREATE TABLE Statistic (statID integer PRIMARY KEY, userName text, score integer, levels integer)";
-//        query.exec(qStr);
-//        opened = true;
-//    }
-
     return opened;
 }
 
@@ -67,7 +56,6 @@ void WorkWithDB::ReadTable(QString TableName)
     tableModel->setTable(TableName);
     tableModel->select();
     tableModel->setEditStrategy(QSqlTableModel::OnRowChange);
-
     //return model;
 }
 
