@@ -56,7 +56,6 @@ void WorkWithDB::ReadTable(QString TableName)
     tableModel->setTable(TableName);
     tableModel->select();
     tableModel->setEditStrategy(QSqlTableModel::OnRowChange);
-    //return model;
 }
 
 QSqlQueryModel* WorkWithDB::ReadConnectedTables(QStringList TablesNames)//1st table - multilan, 2nd - topics
@@ -147,8 +146,6 @@ QStringList WorkWithDB::GetWords()
             }
         }
     }
-
-    //strList.sort();
 
     return strList;
 }
