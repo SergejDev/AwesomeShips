@@ -11,7 +11,7 @@ Ship::Ship(QString word,int level)
     speed=speedOnLevels[level];
     totalHP=100;
     currentHP=totalHP;
-    normalDamage=ceil((double)totalHP/(double)word.size());
+    normalDamage=ceil((double)totalHP/(double)word.size())+1;
     qDebug()<<(double)totalHP/(double)word.size()<<"  "<<normalDamage;
     this->word=word;
     ShipImage1 = new QImage("dk2_darker.png");
