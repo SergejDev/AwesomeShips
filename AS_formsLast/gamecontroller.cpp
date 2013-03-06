@@ -118,7 +118,7 @@ void GameController::ShipDestroyedSlot(int shipIndex)
     currentScore+=scorePointsForDestroyingShip;
     if(currentScore>=(currentLevel+1)*scoresPerLevel)
     {
-        qDebug()<<"current level"<<currentLevel+1;
+        //qDebug()<<"current level"<<currentLevel+1;
         NextLevel();
         addShipTimerFrequency=addShipTimerFrequencyOnLevels[currentLevel];
         addShipTimer->setInterval(addShipTimerFrequency);

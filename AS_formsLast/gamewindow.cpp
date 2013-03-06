@@ -45,7 +45,7 @@ void GameWindow::paintEvent(QPaintEvent */*arg*/)
 
 void GameWindow::EndGame()
 {
-////////////////////////////////// WRITING TO SERVER
+    ////////////////////////////////// WRITING TO SERVER
     gameController->PauseGame();
     userNameDialog=new UserNameDialog(this);
     userNameDialog->setModal(true);
@@ -78,35 +78,29 @@ void GameWindow::StartRead()
     QString string(source);
     QStringList list1 = string.split(':');
 
-    QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this); //2 Rows and 3 Columns
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nickname")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Level")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(QString("Score")));
+    QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this);
+    QStringList headers;
+    headers<<"Nickname"<<"Level"<<"Score";
+    model->setHorizontalHeaderLabels(headers);
     for (int i = 0 ; i < list1.count() ; i++)
     {
-        int j = 0;
         QStringList list2 = list1.value(i).split(',');
-        for (int k = 0 ; k < list2.count() ; k++)
-        {
-            if (k==1 || k==3 || k==4)
-            {
-                if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
-                {
-                    model->removeRow(i);
-                }
-                QStandardItem *item = new QStandardItem(QString(list2.value(k)));
-                model->setItem(i,j,item);
-                j++;
-            }
-        }
+        //            if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
+        //            {
+        //                model->removeRow(i);
+        //            }
+        int c=0;
+        QStandardItem *item = new QStandardItem(QString(list2.value(0)));
+        model->setItem(i,c++,item);
+        item = new QStandardItem(QString::number((list2.value(1)).toInt()+1));
+        model->setItem(i,c++,item);
+        item = new QStandardItem(QString(list2.value(2)));
+        model->setItem(i,c++,item);
     }
-    model->removeRow(model->rowCount()-1);
-    model->removeColumn(model->columnCount()-2);
-    //model->sort(2,Qt::DescendingOrder);
     tableDialog->ui->tableView->setModel(model);
-
     tableDialog->setModal(true);
     tableDialog->show();
+    disconnect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
 }
 
 void GameWindow::InputFieldTextChanged(QString word)
@@ -121,17 +115,10 @@ void GameWindow::ShipDestroyedSlot(int shipIndex)
     inputField->setText("");
 }
 
-//void GameWindow::InitializeRandom()
-//{
-//    QTime time = QTime::currentTime();
-//    qsrand((uint)time.msec());
-//    qDebug()<<time.msec()<<"sacxscacaswcacs";
-//}
-
-void GameWindow::SQLConnectionOpen()
+void GameWindow::SQLConnectionOpen()//don't used
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    db.setHostName("Spirit-PC");
+    //db.setHostName("Spirit-PC");
     db.setDatabaseName("Words.s3db");
     bool ok=db.open();
     qDebug()<<ok;

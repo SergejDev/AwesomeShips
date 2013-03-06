@@ -108,23 +108,21 @@ void Server::startRead()
         cout << "   Scores : " << listIn.at(2).toStdString() << endl;
         query.exec("Update Users Set Level="+listIn.at(3)+", Scores="+listIn.at(2)+" Where ID="+listIn.at(1));
 
-        query.exec("Select ID,NikName,Password,Level,Scores From Users");
+        query.exec("Select NikName,Level,Scores From Users");
 
         /*QStringList list;*/
         QByteArray source;
 
-        //for (int i = 0 ; i < query.record().count(); i++)
         while(query.next())
         {
-            //query.next();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < query.record().count(); i++)
             {
                 source.append(query.record().value(i).toByteArray());
                 source.append(',');
             }
             source.append(':');
-
         }
+        source.remove(source.size()-1,1);
         in << source;
     }
 }
