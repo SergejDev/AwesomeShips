@@ -59,15 +59,6 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
         {
             return allShips[i]->GetPosition();
         }
-//        else if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
-//        {
-//            return allShips[i]->GetPosition();
-//        }
-        //
-        //if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
-        //{
-        //    return allShips[i]->GetPosition();
-        //}
     }
     return QPoint(-1,-1);//error position
 }
@@ -92,11 +83,6 @@ int Ships::ShipIndexFromWord(QString typingWord)
         {
             return i;
         }
-        //else
-        //    if(word.startsWith(typingWord,Qt::CaseInsensitive))//тестировать этот if.
-        //{
-        //    return i;
-        //}
     }
     return -1;//error position
 }

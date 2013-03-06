@@ -3,7 +3,6 @@
 #include <math.h>
 #include <QDebug>
 
-
 Ship::Ship(QString word,int level)
 {
     InitializeSpeedSettings();
@@ -45,8 +44,8 @@ void Ship::DrawShip(QPainter* painter)
     QFont font("Calibri",13);
     QFontMetrics fm(font);
     //drawGreen
-    QPoint startPosition(position.x()-fm.width(word)/2,
-                         position.y()-shipSize.height()/2-30);
+    QPoint startTextPosition(position.x()-fm.width(word)/2,
+                             position.y()-shipSize.height()/2-30);
     int textWidth=shipSize.width();
     int textHeight=30;
     int firstPartLetterCount = word.size() - int((static_cast<double>(currentHP)/static_cast<double>(normalDamage))+0.5);
@@ -54,11 +53,11 @@ void Ship::DrawShip(QPainter* painter)
     QString wordPart = word.mid(0,firstPartLetterCount);
     painter->setPen(QColor(50,255,50));
     painter->setFont(font);
-    painter->drawText(startPosition.x(),startPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordPart);
+    painter->drawText(startTextPosition.x(),startTextPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordPart);
     QString wordSecPart = word.mid(firstPartLetterCount,word.size()-firstPartLetterCount);
     painter->setPen(QColor(255,255,255));
     painter->setFont(font);
-    painter->drawText(startPosition.x()+fm.width(wordPart),startPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordSecPart);
+    painter->drawText(startTextPosition.x()+fm.width(wordPart),startTextPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordSecPart);
 
     painter->drawRect(position.x()-51,position.y()-shipSize.height()/2-1,102,7);
     painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,((double)currentHP/(double)totalHP)*100,5,Qt::green);
@@ -90,10 +89,7 @@ bool Ship::IsShipOwerlap(QPoint newShipPosition)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 void Ship::SetCurrentHP(int currentHP)
