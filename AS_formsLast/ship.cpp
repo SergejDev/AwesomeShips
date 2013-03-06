@@ -9,10 +9,9 @@ Ship::Ship(QString word,int level)
     InitializeSpeedSettings();
     shipsPadding=50;
     speed=speedOnLevels[level];
-    totalHP=100;
+    totalHP=word.size();
     currentHP=totalHP;
-    normalDamage=ceil((double)totalHP/(double)word.size())+1;
-    qDebug()<<(double)totalHP/(double)word.size()<<"  "<<normalDamage;
+    normalDamage=1;
     this->word=word;
     ShipImage1 = new QImage("dk2_darker.png");
     shipSize.setWidth(ShipImage1->width());
@@ -62,7 +61,7 @@ void Ship::DrawShip(QPainter* painter)
     painter->drawText(startPosition.x()+fm.width(wordPart),startPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordSecPart);
 
     painter->drawRect(position.x()-51,position.y()-shipSize.height()/2-1,102,7);
-    painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,currentHP,5,Qt::green);
+    painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,((double)currentHP/(double)totalHP)*100,5,Qt::green);
 }
 
 void Ship::SetPosition(QPoint newPosition)
