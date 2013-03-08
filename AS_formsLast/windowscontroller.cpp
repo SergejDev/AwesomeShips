@@ -205,21 +205,45 @@ void WindowsController::ConnectionEstablished()
 
 bool WindowsController::ArePassAndLoginGood()
 {
-    if (menuWindow->UserName.length() < 3 || menuWindow->UserName.length() > 8)
+    int minUsernameLength=4;
+    int maxUsernameLength=16;
+    int minPasswordLength=4;
+    int maxPasswordLength=16;
+
+    if (menuWindow->UserName.length() < minUsernameLength)
     {
         QMessageBox msg;
         msg.setWindowTitle("Error");
-        msg.setText("Login length should be >= 3 & <= 8");
+        msg.setText("Login length should be greater than "+QString::number(minUsernameLength));
         msg.exec();
         return false;
     }
-    else if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
+    else if(menuWindow->UserName.length() > maxUsernameLength)
     {
         QMessageBox msg;
         msg.setWindowTitle("Error");
-        msg.setText("Password length should be >= 3 & <= 8");
+        msg.setText("Login length should be less than "+QString::number(maxUsernameLength));
         msg.exec();
         return false;
     }
-    return true;
+    else if (menuWindow->PassWord.length() < minPasswordLength )
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password length should be greater than "+QString::number(minPasswordLength));
+        msg.exec();
+        return false;
+    }
+    else if(menuWindow->PassWord.length() > maxPasswordLength)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password length should be less than "+QString::number(maxPasswordLength));
+        msg.exec();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
