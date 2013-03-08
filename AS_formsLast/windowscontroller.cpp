@@ -51,6 +51,14 @@ void WindowsController::ReturnToMenuSlot()
 }
 void WindowsController::RegisterSlot()
 {
+    if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password: length >= 3 & <= 8");
+        msg.exec();
+        return;
+    }
     if(!menuWindow->getCredentialsState())
     {
         return;
@@ -63,7 +71,7 @@ void WindowsController::RegisterSlot()
     }
     QStringList list;
     list.append("Register");
-    list.append(menuWindow->UserName);    
+    list.append(menuWindow->UserName);
     QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
     QByteArray string(menuWindow->PassWord.toAscii());
     hash->addData(string);
@@ -98,6 +106,14 @@ void WindowsController::RegisterStartRead()
 
 void WindowsController::StartGameSlot()
 {
+    if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password: length >= 3 & <= 8");
+        msg.exec();
+        return;
+    }
     if(!menuWindow->getCredentialsState())
     {
         return;
@@ -114,12 +130,10 @@ void WindowsController::StartGameSlot()
         QStringList list;
         list.append("Login");
         list.append(menuWindow->UserName);
-
         QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
         QByteArray string(menuWindow->PassWord.toAscii());
         hash->addData(string);
         list.append(hash->result());
-
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
