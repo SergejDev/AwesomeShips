@@ -21,6 +21,7 @@ private:
     //QTimer *awaitConnectionTimer;
     void StartAwaitTimer();
     void ConnectionEstablished();
+    bool ArePassAndLoginGood();
 public:
     WindowsController(QObject *parent=0);
     ~WindowsController();

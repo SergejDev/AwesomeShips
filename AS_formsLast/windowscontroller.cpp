@@ -51,15 +51,7 @@ void WindowsController::ReturnToMenuSlot()
 }
 void WindowsController::RegisterSlot()
 {
-    if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
-    {
-        QMessageBox msg;
-        msg.setWindowTitle("Error");
-        msg.setText("Password: length >= 3 & <= 8");
-        msg.exec();
-        return;
-    }
-    if(!menuWindow->getCredentialsState())
+    if (!ArePassAndLoginGood() || !menuWindow->getCredentialsState())
     {
         return;
     }
@@ -106,15 +98,7 @@ void WindowsController::RegisterStartRead()
 
 void WindowsController::StartGameSlot()
 {
-    if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
-    {
-        QMessageBox msg;
-        msg.setWindowTitle("Error");
-        msg.setText("Password: length >= 3 & <= 8");
-        msg.exec();
-        return;
-    }
-    if(!menuWindow->getCredentialsState())
+    if (!ArePassAndLoginGood() || !menuWindow->getCredentialsState())
     {
         return;
     }
@@ -126,7 +110,6 @@ void WindowsController::StartGameSlot()
             QHostAddress addr(menuWindow->addr);
             client->connectToHost(addr, 9485);
         }
-
         QStringList list;
         list.append("Login");
         list.append(menuWindow->UserName);
@@ -218,4 +201,25 @@ void WindowsController::ConnectionEstablished()
 {
     hasConnection=true;
     menuWindow->setCursor(Qt::ArrowCursor);
+}
+
+bool WindowsController::ArePassAndLoginGood()
+{
+    if (menuWindow->UserName.length() < 3 || menuWindow->UserName.length() > 8)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Login length should be >= 3 & <= 8");
+        msg.exec();
+        return false;
+    }
+    else if (menuWindow->PassWord.length() < 3 || menuWindow->PassWord.length() > 8)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password length should be >= 3 & <= 8");
+        msg.exec();
+        return false;
+    }
+    return true;
 }
