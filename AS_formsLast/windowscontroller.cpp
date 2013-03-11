@@ -27,6 +27,7 @@ WindowsController::~WindowsController()
 {
     delete menuWindow;
     delete settingsWindow;
+    delete gameMenu;
 }
 
 void WindowsController::ShowMenuWindow(bool isGameWindowActive)
@@ -43,7 +44,35 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
         gameWindow->PauseGame();
     }
 }
+void WindowsController::ShowGameMenu(bool isGameWindowActive)
+{
+    gameMenu=new gamemenu();
+    qDebug()<<"gamemenu";
+    connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
+    connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
+    connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
+    connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
 
+    gameMenu->show();
+    if (isGameWindowActive)
+    {
+        gameWindow->PauseGame();
+    }
+}
+void WindowsController::ReturnToGame()
+{
+    gameMenu->close();
+}
+
+void WindowsController::GoToMainMenuSlot()
+{
+    client = new QTcpSocket(this);
+    gameMenu->close();
+    gameWindow->close();
+    onApplicationStart = true;
+    menuWindow->show();
+    hasConnection = false;
+}
 void WindowsController::ReturnToMenuSlot()
 {
     //qDebug()<<"return from settings";
@@ -154,7 +183,8 @@ void WindowsController::StartRead()
                 level = 0;
             }
             gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
-            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+            //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+            connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
             gameWindow->show();
             onApplicationStart=false;
             gameStarted=true;

@@ -52,9 +52,10 @@ void GameWindow::EndGame()
     if(userNameDialog->exec() == QDialog::Accepted)
     {
         client = new QTcpSocket(this);
-        QHostAddress addr(address);
+
         if (!client->isOpen())
         {
+            QHostAddress addr(address);
             client->connectToHost(addr, 9485);
         }
         QStringList list;
