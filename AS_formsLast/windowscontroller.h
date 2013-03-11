@@ -6,6 +6,7 @@
 #include "WINDOW.h"
 #include "gamecontroller.h"
 #include <QTcpSocket>
+#include "gamemenu.h"
 
 class WindowsController: public QObject
 {
@@ -13,6 +14,7 @@ class WindowsController: public QObject
 private:
     MenuWindow *menuWindow;
     GameWindow *gameWindow;
+    gamemenu *gameMenu;
     ToolsWindow *settingsWindow;
     bool onApplicationStart;
     bool gameStarted;
@@ -30,7 +32,10 @@ public:
 
 public slots:
     void ShowMenuWindow(bool isGameWindowActive=false);
+    void ShowGameMenu(bool isGameWindowActive=false);
 private slots:
+    void ReturnToGame();
+    void GoToMainMenuSlot();
     void RegisterSlot();
     void RegisterStartRead();
     void StartGameSlot();

@@ -15,5 +15,5 @@ TableDialog::~TableDialog()
 
 void TableDialog::closeEvent(QCloseEvent *)
 {
-    QApplication::quit();
+    //QApplication::quit();
 }
