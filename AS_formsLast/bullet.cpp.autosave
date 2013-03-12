@@ -31,12 +31,12 @@ void Bullet::drawLaser(QPainter *painter, QPoint &shootPosition, QPoint &aimPosi
 {
     painter->setRenderHint(QPainter::Antialiasing,true);
 
-    QBrush outerLineBrush(QColor(200,50,50));
+    QBrush outerLineBrush(QColor(0,90,200));
     QPen outerLinePen(outerLineBrush,4,Qt::SolidLine,Qt::RoundCap);
     painter->setPen(outerLinePen);
     painter->drawLine(shootPosition,aimPosition);
 
-    QBrush innerLineBush(Qt::red);
+    QBrush innerLineBush(Qt::blue);
     QPen innerLinePen(innerLineBush,1,Qt::SolidLine,Qt::RoundCap);
     painter->setPen(innerLinePen);
     painter->drawLine(shootPosition,aimPosition);
