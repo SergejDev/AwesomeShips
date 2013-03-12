@@ -6,6 +6,7 @@ TableDialog::TableDialog(QWidget *parent) :
     ui(new Ui::TableDialog)
 {
     ui->setupUi(this);
+
 }
 
 TableDialog::~TableDialog()
