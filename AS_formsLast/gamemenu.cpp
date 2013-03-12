@@ -8,6 +8,7 @@ gamemenu::gamemenu(QWidget *parent) :
     ui(new Ui::gamemenu)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     connect(ui->ResumeGame_pushButton,SIGNAL(clicked()),this,SIGNAL(ResumeGameButton_Pressed()));
     connect(ui->BackToMenu_pushButton,SIGNAL(clicked()),this,SIGNAL(BackToMenuButton_Pressed()));
 

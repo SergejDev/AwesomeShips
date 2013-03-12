@@ -47,12 +47,12 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 void WindowsController::ShowGameMenu(bool isGameWindowActive)
 {
     gameMenu=new gamemenu();
-    //qDebug()<<"gamemenu";
+    gameMenu->setModal(true);
+
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
     connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
     connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
-
 
     gameMenu->show();
     if (isGameWindowActive)
