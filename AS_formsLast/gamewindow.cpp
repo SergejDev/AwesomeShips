@@ -81,7 +81,7 @@ void GameWindow::StartRead()
     stream >> source;
 
     QString string(source);
-    QStringList list1 = string.split(':');
+    QStringList list1 = string.split(':');  
 
     QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this);
     QStringList headers;
@@ -90,10 +90,6 @@ void GameWindow::StartRead()
     for (int i = 0 ; i < list1.count() ; i++)
     {
         QStringList list2 = list1.value(i).split(',');
-        //            if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
-        //            {
-        //                model->removeRow(i);
-        //            }
         int c=0;
         QStandardItem *item = new QStandardItem(QString(list2.value(0)));
         model->setItem(i,c++,item);
