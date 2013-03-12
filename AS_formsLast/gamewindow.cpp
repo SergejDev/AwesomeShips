@@ -26,7 +26,6 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     connect(gameController,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     connect(gameController,SIGNAL(ShipOwercomeBorder(int)),this,SLOT(EndGame()));
     connect(gameController, SIGNAL(ShipOwercomeBorder(int)), this, SIGNAL(EndGameFlag()));
-
 }
 
 void GameWindow::PauseGame()

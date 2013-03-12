@@ -14,6 +14,7 @@
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
 {
+    gameMenu=new gamemenu();
     settingsWindow=new ToolsWindow();
     connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ReturnToMenuSlot()));
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
@@ -46,7 +47,6 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 }
 void WindowsController::ShowGameMenu(bool isGameWindowActive)
 {
-    gameMenu=new gamemenu();
     gameMenu->setModal(true);
 
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));

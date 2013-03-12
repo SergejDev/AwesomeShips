@@ -50,7 +50,7 @@ void Bullets::MooveBulletsAnimationsTimerSlot()
 void Bullets::AimHitSlot(int bulletIndex, int shipIndex)
 {
     allBullets.removeAt(bulletIndex);
-    qDebug()<<shipIndex<<" shipIndex";
+    //qDebug()<<shipIndex<<" shipIndex";
 }
 
 void Bullets::MooveBullets()
@@ -96,7 +96,7 @@ bool Bullets::IsAimHited(Bullet *bullet)
     QPoint bulletPosition=bullet->GetPosition();
     int dx=abs(aimPosition.x()-bulletPosition.x());
     int dy=abs(aimPosition.y()-bulletPosition.y());
-    double threshold=30;
+    double threshold=40;
     double distance=sqrt(pow((double)dx,(double)2)+pow((double)dy,(double)2));
     return distance<threshold;
 }
