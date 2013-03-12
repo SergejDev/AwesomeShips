@@ -53,6 +53,7 @@ void WindowsController::ShowGameMenu(bool isGameWindowActive)
     connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
     connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
 
+
     gameMenu->show();
     if (isGameWindowActive)
     {
@@ -67,7 +68,10 @@ void WindowsController::ReturnToGame()
 void WindowsController::GoToMainMenuSlot()
 {
     client = new QTcpSocket(this);
-    gameMenu->close();
+    if (gameMenu != 0)
+    {
+        gameMenu->close();
+    }
     gameWindow->close();
     onApplicationStart = true;
     menuWindow->show();
@@ -185,6 +189,8 @@ void WindowsController::StartRead()
             gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
             //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
             connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
+            connect(gameWindow, SIGNAL(EndGameFlag()), this, SLOT(GoToMainMenuSlot()));
+
             gameWindow->show();
             onApplicationStart=false;
             gameStarted=true;

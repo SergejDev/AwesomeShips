@@ -19,7 +19,6 @@ public:
     void ResumeGameButton_Pressed();
     void BackToMenuButton_Pressed();
 
-
 public:
     Ui::gamemenu *ui;
 };

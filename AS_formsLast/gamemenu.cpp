@@ -11,6 +11,7 @@ gamemenu::gamemenu(QWidget *parent) :
     connect(ui->ResumeGame_pushButton,SIGNAL(clicked()),this,SIGNAL(ResumeGameButton_Pressed()));
     connect(ui->BackToMenu_pushButton,SIGNAL(clicked()),this,SIGNAL(BackToMenuButton_Pressed()));
 
+
     QString str;
     QString fileName=":/Style.txt";
     QFile inputFile(fileName);
@@ -29,4 +30,5 @@ gamemenu::~gamemenu()
 {
     delete ui;
 }
+
 

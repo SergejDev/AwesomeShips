@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include "menuwindow.h"
+#include "windowscontroller.h"
 
 GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int scores, QString addr, QWidget *parent) :
     QMainWindow(parent)
@@ -24,6 +25,8 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     connect(this->inputField,SIGNAL(textChanged(QString)),this, SLOT(InputFieldTextChanged(QString)));
     connect(gameController,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     connect(gameController,SIGNAL(ShipOwercomeBorder(int)),this,SLOT(EndGame()));
+    connect(gameController, SIGNAL(ShipOwercomeBorder(int)), this, SIGNAL(EndGameFlag()));
+
 }
 
 void GameWindow::PauseGame()
@@ -68,6 +71,7 @@ void GameWindow::EndGame()
     }
     ////////GETTING WHOLE STATISTIC TABLE AND SHOW IT
     connect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
+    //this->close();
 }
 
 void GameWindow::StartRead()
@@ -102,6 +106,7 @@ void GameWindow::StartRead()
     tableDialog->setModal(true);
     tableDialog->show();
     disconnect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
+
 }
 
 void GameWindow::InputFieldTextChanged(QString word)
