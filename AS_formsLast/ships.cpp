@@ -87,6 +87,11 @@ int Ships::ShipIndexFromWord(QString typingWord)
     return -1;//error position
 }
 
+int Ships::PointsFromShipIndex(int shipIndex)
+{
+    return allShips[shipIndex]->GetPointsAmount();
+}
+
 void Ships::ShipHited(int bulletIndex, int shipIndex)
 {
     int damage=20;
@@ -94,8 +99,9 @@ void Ships::ShipHited(int bulletIndex, int shipIndex)
     allShips[shipIndex]->SetCurrentHP(allShips[shipIndex]->GetCurrentHP()-damage);
     if(allShips[shipIndex]->GetCurrentHP()<=0)
     {
+        int points = allShips[shipIndex]->pointsForKill;
         allShips.removeAt(shipIndex);
-        emit ShipDestroyed(shipIndex);
+        emit ShipDestroyed(points);
     }
 }
 

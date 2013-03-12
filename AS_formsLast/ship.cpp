@@ -7,6 +7,7 @@ Ship::Ship(QString word,int level)
 {
     InitializeSpeedSettings();
     shipsPadding=50;
+    pointsForKill=10;
     speed=speedOnLevels[level];
     totalHP=word.size();
     currentHP=totalHP;
@@ -76,6 +77,11 @@ QPoint Ship::GetPosition()
 QString Ship::GetWord()
 {
     return word;
+}
+
+int Ship::GetPointsAmount()
+{
+    return pointsForKill;
 }
 
 bool Ship::IsShipOwerlap(QPoint newShipPosition)
