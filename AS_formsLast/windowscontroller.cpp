@@ -63,6 +63,10 @@ void WindowsController::ShowGameMenu(bool isGameWindowActive)
 void WindowsController::ReturnToGame()
 {
     gameMenu->close();
+    disconnect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
+    disconnect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
+    disconnect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
+    disconnect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
 }
 
 void WindowsController::GoToMainMenuSlot()
