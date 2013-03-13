@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     WINDOW.cpp \
     user.cpp \
     baza.cpp \
-    gamemenu.cpp
+    gamemenu.cpp \
+    shipExt.cpp
 
 HEADERS  += gamewindow.h \
     usernamedialog.h \
@@ -45,7 +46,8 @@ HEADERS  += gamewindow.h \
     WINDOW.h \
     user.h \
     baza.h \
-    gamemenu.h
+    gamemenu.h \
+    shipExt.h
 
 FORMS    += \
     usernamedialog.ui \

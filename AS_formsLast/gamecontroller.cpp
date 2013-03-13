@@ -44,7 +44,14 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
 void GameController::AddShip()
 {
-    allShips->AddShip(new Ship(GetWordForShip(),currentLevel));
+    if (GetScore()%50==0)
+    {
+        allShips->AddShip(new ShipExtended(GetWordForShip(),currentLevel));
+    }
+    else
+    {
+        allShips->AddShip(new Ship(GetWordForShip(),currentLevel));
+    }
 }
 
 void GameController::Draw(QPainter *painter)
@@ -113,9 +120,9 @@ void GameController::ShipHitedSlot(int bulletIndex, int shipIndex)
     allShips->ShipHited(bulletIndex,shipIndex);
 }
 
-void GameController::ShipDestroyedSlot(int shipIndex)
+void GameController::ShipDestroyedSlot(int points)
 {
-    currentScore+=scorePointsForDestroyingShip;
+    currentScore+=points;
     if(currentScore>=(currentLevel+1)*scoresPerLevel)
     {
         //qDebug()<<"current level"<<currentLevel+1;
