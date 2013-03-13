@@ -1,7 +1,6 @@
 #include "bullet.h"
 #include <QPainter>
 #include <QDebug>
-#include <QTimer>
 
 Bullet::Bullet(QPoint aimPosition, int aimIndex)
 {
@@ -25,20 +24,20 @@ void Bullet::DrawBullet(QPainter* painter)
 
     int windowWidth=1000;
     QPoint shootPosition(windowWidth/2,590);
-    drawLaser(painter,shootPosition,aimPosition, 200, 70, 70);
+    drawLaser(painter,shootPosition,aimPosition);
 }
 
-void Bullet::drawLaser(QPainter *painter, QPoint &shootPosition, QPoint &aimPosition, int r, int g, int b)
+void Bullet::drawLaser(QPainter *painter, QPoint &shootPosition, QPoint &aimPosition)
 {
     painter->setRenderHint(QPainter::Antialiasing,true);
 
-    QBrush outerLineBrush(QColor(r,g,b));
-    QPen outerLinePen(outerLineBrush,10,Qt::SolidLine,Qt::RoundCap);
+    QBrush outerLineBrush(QColor(0,90,200));
+    QPen outerLinePen(outerLineBrush,4,Qt::SolidLine,Qt::RoundCap);
     painter->setPen(outerLinePen);
     painter->drawLine(shootPosition,aimPosition);
 
-    QBrush innerLineBush(Qt::red);
-    QPen innerLinePen(innerLineBush,4,Qt::SolidLine,Qt::RoundCap);
+    QBrush innerLineBush(Qt::blue);
+    QPen innerLinePen(innerLineBush,1,Qt::SolidLine,Qt::RoundCap);
     painter->setPen(innerLinePen);
     painter->drawLine(shootPosition,aimPosition);
 }
