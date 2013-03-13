@@ -9,7 +9,7 @@
 *.so
 *.dll
 *.dylib
-
+*.autosave
 # Qt-es
 
 *.pro.user
@@ -246,3 +246,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+

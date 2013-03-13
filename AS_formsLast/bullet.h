@@ -15,7 +15,7 @@ private:
     int aimIndex;
     QSize bulletSize;
     QImage *bulletImage;
-    void drawLaser(QPainter *painter, QPoint &shootPoint,QPoint &aimPosition, int r, int g, int b);
+    void drawLaser(QPainter *painter, QPoint &shootPoint,QPoint &aimPosition);
 
 public:
     Bullet(QPoint aimPosition, int aimIndex);
