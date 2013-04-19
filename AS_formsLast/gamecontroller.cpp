@@ -1,5 +1,4 @@
 #include "gamecontroller.h"
-
 #include <QStringList>
 #include <QDebug>
 #include <QMessageBox>
@@ -11,8 +10,9 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     currentScore=score;
     scorePointsForDestroyingShip=10;
+    //qDebug()<<level<<"---";
     currentLevel=level;
-    scoresPerLevel=30;
+    scoresPerLevel=100;
 
     allShips=new Ships(windowWidth,parrent);
     allBullets=new Bullets(windowWidth,parrent);
@@ -30,7 +30,7 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
     addShipTimer=new QTimer();
     QObject::connect(addShipTimer,SIGNAL(timeout()),this,SLOT(AddShipTimerSlot()));
 
-    QObject::connect(allBullets,SIGNAL(AimHit(int,int)),this,SLOT(ShipHitedSlot(int,int)));
+    QObject::connect(allBullets,SIGNAL(ShipHit(int,int)),this,SLOT(ShipHitedSlot(int,int)));
 
     QObject::connect(allShips,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     QObject::connect(allShips,SIGNAL(ShipDestroyed(int)),this,SIGNAL(ShipDestroyed(int)));
@@ -39,11 +39,19 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     animationsTimer->start(animationTimerFrequency);
     addShipTimer->start(addShipTimerFrequency);
+    qDebug()<<addShipTimerFrequency<<"addShipTimerFrequency";
 }
 
 void GameController::AddShip()
 {
-    allShips->AddShip(new Ship(GetWordForShip(),currentLevel));
+    if (GetScore()%50==0)
+    {
+        allShips->AddShip(new ShipExtended(GetWordForShip(),currentLevel));
+    }
+    else
+    {
+        allShips->AddShip(new Ship(GetWordForShip(),currentLevel));
+    }
 }
 
 void GameController::Draw(QPainter *painter)
@@ -53,7 +61,7 @@ void GameController::Draw(QPainter *painter)
     gun->DrawGun(painter);
 }
 
-void GameController::Shoot(QString word)
+void GameController::Shoot(QString word)//inits when key was pressed
 {
     if(IsSuccessfulShoot(word))
     {
@@ -112,17 +120,17 @@ void GameController::ShipHitedSlot(int bulletIndex, int shipIndex)
     allShips->ShipHited(bulletIndex,shipIndex);
 }
 
-void GameController::ShipDestroyedSlot(int shipIndex)
+void GameController::ShipDestroyedSlot(int points)
 {
-    currentScore+=scorePointsForDestroyingShip;
+    currentScore+=points;
     if(currentScore>=(currentLevel+1)*scoresPerLevel)
     {
+        //qDebug()<<"current level"<<currentLevel+1;
         NextLevel();
         addShipTimerFrequency=addShipTimerFrequencyOnLevels[currentLevel];
         addShipTimer->setInterval(addShipTimerFrequency);
     }
 }
-
 
 //int GameController::RandInt(int low, int high)//!!!!!!
 //{
@@ -136,7 +144,7 @@ QString GameController::GetWordForShip()//TO DO: Get words from DB (don't forget
         words=wordGetter->GetWords();
         currentWordIndex=0;
     }
-    qDebug()<<currentWordIndex<<" word index";
+    //qDebug()<<currentWordIndex<<" word index";
     QString result=words[currentWordIndex];
     currentWordIndex++;
 
@@ -146,7 +154,7 @@ QString GameController::GetWordForShip()//TO DO: Get words from DB (don't forget
 bool GameController::IsSuccessfulShoot(QString word)
 {
     QPoint aimPosition=allShips->ShipPositionFromWord(word);
-    if((aimPosition!=QPoint(-1,-1))&&(aimPosition!=QPoint(-2,-2))&&(previousWord.size()<word.size()))
+    if(((aimPosition!=QPoint(-1,-1))&&(aimPosition!=QPoint(-2,-2)))&&(previousWord.size()<word.size()))
     {
         previousWord=word;
         return true;
@@ -170,5 +178,10 @@ void GameController::InitializeLevelSettings()
     addShipTimerFrequencyOnLevels[2]=4000;
     addShipTimerFrequencyOnLevels[3]=3000;
     addShipTimerFrequencyOnLevels[4]=2000;
+    addShipTimerFrequencyOnLevels[5]=1900;
+    addShipTimerFrequencyOnLevels[6]=1800;
+    addShipTimerFrequencyOnLevels[7]=1700;
+    addShipTimerFrequencyOnLevels[8]=1600;
+    addShipTimerFrequencyOnLevels[9]=1500;
     addShipTimerFrequency=addShipTimerFrequencyOnLevels[currentLevel];
 }

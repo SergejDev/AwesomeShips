@@ -1,6 +1,7 @@
 #ifndef SHIPS_H
 #define SHIPS_H
 #include "ship.h"
+#include "shipExt.h"
 #include <QTimer>
 #include <QObject>
 
@@ -30,11 +31,12 @@ public:
     void ShipHited(int bulletIndex, int shipIndex);
     void PauseShips();
     void ResumeShips();
+    int PointsFromShipIndex(int shipIndex);
 
 signals:
     void ShipsPositionUpdate();
     void ShipOwercomeBorder(int shipIndex);
-    void ShipDestroyed(int shipIndex);
+    void ShipDestroyed(int points);
 
 private slots:
     void MooveShipsAnimationsTimerSlot();

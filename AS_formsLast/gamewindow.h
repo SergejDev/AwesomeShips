@@ -56,6 +56,7 @@ private:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *score;
+    QLabel *levelLabel;
     QSpacerItem *horizontalSpacer;
     QPushButton *menuPushButton;
     QSpacerItem *verticalSpacer;
@@ -74,16 +75,17 @@ private:
     void MakeInterface();
     void SetWindowStyle();
     void SQLConnectionOpen();
-    void InitializeRandom();
 
 signals:
     void MenuButtonPressed(bool isGameWindowActive=true);
+    void EndGameFlag();
 public slots:
     void PauseGame();
     void ResumeGame();
 private slots:
     void StartRead();
     void EndGame();
+
     void InputFieldTextChanged(QString word);
     void ShipDestroyedSlot(int shipIndex);
     //void ShipOwercomeBorderSlot(int shipIndex);

@@ -9,9 +9,12 @@
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
+#include <QCryptographicHash>
+#include <QByteArray>
 
 WindowsController::WindowsController(QObject *parent):QObject(parent)
 {
+    gameMenu=new gamemenu();
     settingsWindow=new ToolsWindow();
     connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ReturnToMenuSlot()));
     connect(settingsWindow,SIGNAL(ButtonSaveClicked()),this,SLOT(ReturnToMenuSlot()));
@@ -24,17 +27,15 @@ WindowsController::WindowsController(QObject *parent):QObject(parent)
 WindowsController::~WindowsController()
 {
     delete menuWindow;
-    //delete loginWindow;
     delete settingsWindow;
+    delete gameMenu;
 }
 
 void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 {
     menuWindow=new MenuWindow();
-    loginWindow = new LoginDialog();
     connect(menuWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
-    connect(loginWindow,SIGNAL(StartButtonPressed()),this,SLOT(StartGameSlot()));
-    connect(loginWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
+    connect(menuWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
     connect(menuWindow,SIGNAL(SettingsButtonPressed()),this,SLOT(SettingsSlot()));
     connect(menuWindow,SIGNAL(QuitButtonPressed()),this,SLOT(QuitGameSlot()));
     menuWindow->show();
@@ -44,7 +45,42 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
         gameWindow->PauseGame();
     }
 }
+void WindowsController::ShowGameMenu(bool isGameWindowActive)
+{
+    gameMenu->setModal(true);
 
+    connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
+    connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
+    connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
+    connect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
+
+    gameMenu->show();
+    if (isGameWindowActive)
+    {
+        gameWindow->PauseGame();
+    }
+}
+void WindowsController::ReturnToGame()
+{
+    gameMenu->close();
+    disconnect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
+    disconnect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
+    disconnect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), this, SLOT(GoToMainMenuSlot()));
+    disconnect(gameMenu, SIGNAL(BackToMenuButton_Pressed()), gameWindow, SLOT(EndGame()));
+}
+
+void WindowsController::GoToMainMenuSlot()
+{
+    client = new QTcpSocket(this);
+    if (gameMenu != 0)
+    {
+        gameMenu->close();
+    }
+    gameWindow->close();
+    onApplicationStart = true;
+    menuWindow->show();
+    hasConnection = false;
+}
 void WindowsController::ReturnToMenuSlot()
 {
     //qDebug()<<"return from settings";
@@ -52,16 +88,23 @@ void WindowsController::ReturnToMenuSlot()
 }
 void WindowsController::RegisterSlot()
 {
-    if(!menuWindow->getCredentialsState())
+    if (!ArePassAndLoginGood() || !menuWindow->getCredentialsState())
     {
         return;
     }
     StartAwaitTimer();//
-    QHostAddress addr(menuWindow->addr);
-    client->connectToHost(addr, 9485);
+    if (!client->isOpen())
+    {
+        QHostAddress addr(menuWindow->addr);
+        client->connectToHost(addr, 9485);
+    }
     QStringList list;
+    list.append("Register");
     list.append(menuWindow->UserName);
-    list.append(menuWindow->PassWord);
+    QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
+    QByteArray string(menuWindow->PassWord.toAscii());
+    hash->addData(string);
+    list.append(hash->result());
     QDataStream out(client);
     out << list;
     connect(client, SIGNAL(readyRead()), this, SLOT(RegisterStartRead()));
@@ -72,9 +115,8 @@ void WindowsController::RegisterStartRead()
     ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
-    client->disconnect();
     int id = userData.value(0).toInt();
-    if (id!=-1)
+    if (id>-1)
     {
         QMessageBox msg;
         msg.setWindowTitle("Awesome Ships");
@@ -88,28 +130,30 @@ void WindowsController::RegisterStartRead()
         msg.setText("User added.");
         msg.exec();
     }
+    disconnect(client,SIGNAL(readyRead()), this ,SLOT(RegisterStartRead()));
 }
 
 void WindowsController::StartGameSlot()
 {
-    QMessageBox message;
-    message.setWindowTitle("error");
-    message.setText(menuWindow->PassWord);
-    message.exec();
-
-    if(!menuWindow->getCredentialsState())
+    if (!ArePassAndLoginGood() || !menuWindow->getCredentialsState())
     {
         return;
     }
     StartAwaitTimer();//ADD timer
     if (onApplicationStart)
     {
-        QHostAddress addr(menuWindow->addr);
-        client->connectToHost(addr, 9485);
-
+        if (!client->isOpen())
+        {
+            QHostAddress addr(menuWindow->addr);
+            client->connectToHost(addr, 9485);
+        }
         QStringList list;
+        list.append("Login");
         list.append(menuWindow->UserName);
-        list.append(menuWindow->PassWord);
+        QCryptographicHash *hash = new QCryptographicHash(QCryptographicHash::Sha1);
+        QByteArray string(menuWindow->PassWord.toAscii());
+        hash->addData(string);
+        list.append(hash->result());
         QDataStream out(client);
         out << list;
         connect(client, SIGNAL(readyRead()), this, SLOT(StartRead()));
@@ -130,11 +174,10 @@ void WindowsController::SettingsSlot()
 
 void WindowsController::StartRead()
 {
-    qDebug()<<"start read data from server";
+    //qDebug()<<"start read data from server";
     ConnectionEstablished();
     QDataStream in(client);
     in >> userData;
-    client->disconnect();
     int id = userData.value(0).toInt();
     if (id!=-1)//Wrong nickname or password
     {
@@ -142,12 +185,16 @@ void WindowsController::StartRead()
         if(onApplicationStart)
         {
             int level=userData.value(3).toInt();
-            if (level == 5)
+            qDebug()<<level<<"-level";
+            if (level > 9)
             {
                 level = 0;
             }
             gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
-            connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+            //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
+            connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
+            connect(gameWindow, SIGNAL(EndGameFlag()), this, SLOT(GoToMainMenuSlot()));
+
             gameWindow->show();
             onApplicationStart=false;
             gameStarted=true;
@@ -164,6 +211,7 @@ void WindowsController::StartRead()
         message.setText("Wrong nickname or password.");
         message.exec();
     }
+    disconnect(client,SIGNAL(readyRead()), this ,SLOT(StartRead()));
 }
 
 void WindowsController::ConnectionTimeout()
@@ -193,4 +241,49 @@ void WindowsController::ConnectionEstablished()
 {
     hasConnection=true;
     menuWindow->setCursor(Qt::ArrowCursor);
+}
+
+bool WindowsController::ArePassAndLoginGood()
+{
+    int minUsernameLength=4;
+    int maxUsernameLength=16;
+    int minPasswordLength=4;
+    int maxPasswordLength=16;
+
+    if (menuWindow->UserName.length() < minUsernameLength)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Login length should be greater than "+QString::number(minUsernameLength));
+        msg.exec();
+        return false;
+    }
+    else if(menuWindow->UserName.length() > maxUsernameLength)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Login length should be less than "+QString::number(maxUsernameLength));
+        msg.exec();
+        return false;
+    }
+    else if (menuWindow->PassWord.length() < minPasswordLength )
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password length should be greater than "+QString::number(minPasswordLength));
+        msg.exec();
+        return false;
+    }
+    else if(menuWindow->PassWord.length() > maxPasswordLength)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Password length should be less than "+QString::number(maxPasswordLength));
+        msg.exec();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }

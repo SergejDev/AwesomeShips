@@ -6,15 +6,7 @@
 
 WorkWithDB::WorkWithDB(QString DBName)//when you create object you need to define the DB name to work with
 {
-    bool create_open = CreateOpenDB(DBName);
-    if (!create_open)
-    {
-        qDebug()<< myDB.lastError().text() + "DB didn't created";
-    }
-    else
-    {
-        qDebug()<< "DB created";
-    }
+    CreateOpenDB(DBName);
 }
 
 WorkWithDB::~WorkWithDB()
@@ -46,7 +38,7 @@ int WorkWithDB::GetLang()
 
 bool WorkWithDB::CreateOpenDB(QString DBName)
 {
-    bool opened = false;
+    bool opened = true;
     myDB = QSqlDatabase::addDatabase("QSQLITE");
     myDB.setDatabaseName(DBName);
 
@@ -55,27 +47,6 @@ bool WorkWithDB::CreateOpenDB(QString DBName)
         qDebug()<<myDB.lastError().text() + " in CreateNewDB";
         opened = false;
     }
-    else
-    {
-        //        if ()//check for existing tables
-        //        {
-
-        //            try{
-        QString qStr = "CREATE TABLE Topics (TopicID integer PRIMARY KEY, topicName text)";
-        query.exec(qStr);
-        qStr = "CREATE TABLE MultiLanguage (wordID integer PRIMARY KEY, TopicID integer, russian text, english text)";
-        query.exec(qStr);
-        qStr = "CREATE TABLE Statistic (statID integer PRIMARY KEY, userName text, score integer, levels integer)";
-        query.exec(qStr);
-        //            }
-        //            catch ()
-        //            {
-        //            qDebug()<<myDB.lastError().text() + "Can't create tables";
-        //    }
-    }
-    opened = true;
-    //    }
-
     return opened;
 }
 
@@ -85,8 +56,6 @@ void WorkWithDB::ReadTable(QString TableName)
     tableModel->setTable(TableName);
     tableModel->select();
     tableModel->setEditStrategy(QSqlTableModel::OnRowChange);
-
-    //return model;
 }
 
 QSqlQueryModel* WorkWithDB::ReadConnectedTables(QStringList TablesNames)//1st table - multilan, 2nd - topics
@@ -146,13 +115,14 @@ QStringList WorkWithDB::GetWords()
     }
 
     int cnt = strList_tmp.count();
-    srand(cnt);
+    QTime time = QTime::currentTime();
+    qsrand((uint)pow(static_cast<double>(time.msec()),2));
 
     int i = 0;
     while( i < Cnt )
     {
 
-        int r = rand()%cnt;
+        int r = qrand()%cnt;
 
         if (!strList.contains(strList_tmp.at(r)))
         {
@@ -164,7 +134,10 @@ QStringList WorkWithDB::GetWords()
         {
             for (int p = 0 ; p < strList.count(); p++)
             {
-                if (j == p) continue;
+                if (j == p)
+                {
+                    continue;
+                }
                 if (strList.at(j).mid(0,1) == strList.at(p).mid(0,1))
                 {
                     strList.removeAt(p);
@@ -174,8 +147,6 @@ QStringList WorkWithDB::GetWords()
         }
     }
 
-    strList.sort();
-
     return strList;
 }
 
@@ -183,7 +154,9 @@ void WorkWithDB::InsertDataMultiLanTable()
 {
     int rCount = tableModel->rowCount();
     if (!tableModel->insertRow(rCount))
+    {
         qDebug()<<tableModel->lastError().text();
+    }
 }
 
 
@@ -191,5 +164,7 @@ void WorkWithDB::InsertDataTopicTable()
 {
     int rCount = tableModel->rowCount();
     if (!tableModel->insertRow(rCount))
+    {
         qDebug()<<tableModel->lastError().text();
+    }
 }

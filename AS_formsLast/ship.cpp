@@ -3,20 +3,33 @@
 #include <math.h>
 #include <QDebug>
 
-
 Ship::Ship(QString word,int level)
 {
-    speedOnLevels[0]=1;speedOnLevels[1]=1;speedOnLevels[2]=1;speedOnLevels[3]=2;speedOnLevels[4]=2;
+    InitializeSpeedSettings();
     shipsPadding=50;
+    pointsForKill=10;
     speed=speedOnLevels[level];
-    totalHP=100;
+    totalHP=word.size();
     currentHP=totalHP;
-    normalDamage=ceil((double)totalHP/(double)word.size());
-    qDebug()<<(double)totalHP/(double)word.size()<<"  "<<normalDamage;
+    normalDamage=1;
     this->word=word;
     ShipImage1 = new QImage("dk2_darker.png");
     shipSize.setWidth(ShipImage1->width());
     shipSize.setHeight(ShipImage1->height());
+}
+
+void Ship::InitializeSpeedSettings()
+{
+    speedOnLevels[0]=1;
+    speedOnLevels[1]=1;
+    speedOnLevels[2]=1;
+    speedOnLevels[3]=2;
+    speedOnLevels[4]=2;
+    speedOnLevels[5]=2;
+    speedOnLevels[6]=2;
+    speedOnLevels[7]=2;
+    speedOnLevels[8]=3;
+    speedOnLevels[9]=3;
 }
 
 int Ship::GetSpeed()
@@ -29,21 +42,31 @@ void Ship::DrawShip(QPainter* painter)
     QPoint shipPosition(position.x()-shipSize.width()/2,position.y()-shipSize.height()/2);
     painter->drawImage(shipPosition,*ShipImage1);
 
-    QPoint textPosition(position.x()-shipSize.width()/2,position.y()-shipSize.height()/2-30);
-    int textWhidth=shipSize.width();
+    QFont font("Calibri",13);
+    QFontMetrics fm(font);
+    //drawGreen
+    QPoint startTextPosition(position.x()-fm.width(word)/2,
+                             position.y()-shipSize.height()/2-30);
+    int textWidth=shipSize.width();
     int textHeight=30;
+    int firstPartLetterCount = word.size() - int((static_cast<double>(currentHP)/static_cast<double>(normalDamage))+0.5);
+
+    QString wordPart = word.mid(0,firstPartLetterCount);
+    painter->setPen(QColor(50,255,50));
+    painter->setFont(font);
+    painter->drawText(startTextPosition.x(),startTextPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordPart);
+    QString wordSecPart = word.mid(firstPartLetterCount,word.size()-firstPartLetterCount);
     painter->setPen(QColor(255,255,255));
-    painter->setFont(QFont("Calibri",13));
-    painter->drawText(textPosition.x(),textPosition.y(),textWhidth,textHeight,Qt::AlignCenter,word);
+    painter->setFont(font);
+    painter->drawText(startTextPosition.x()+fm.width(wordPart),startTextPosition.y(),textWidth,textHeight,Qt::AlignLeft,wordSecPart);
 
     painter->drawRect(position.x()-51,position.y()-shipSize.height()/2-1,102,7);
-    painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,currentHP,5,Qt::green);
+    painter->fillRect(position.x()-50,position.y()-shipSize.height()/2,((double)currentHP/(double)totalHP)*100,5,Qt::green);
 }
 
 void Ship::SetPosition(QPoint newPosition)
 {
     position=newPosition;
-
 }
 
 QPoint Ship::GetPosition()
@@ -54,6 +77,11 @@ QPoint Ship::GetPosition()
 QString Ship::GetWord()
 {
     return word;
+}
+
+int Ship::GetPointsAmount()
+{
+    return pointsForKill;
 }
 
 bool Ship::IsShipOwerlap(QPoint newShipPosition)
@@ -67,10 +95,7 @@ bool Ship::IsShipOwerlap(QPoint newShipPosition)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 void Ship::SetCurrentHP(int currentHP)
@@ -82,4 +107,3 @@ int Ship::GetCurrentHP()
 {
     return currentHP;
 }
-

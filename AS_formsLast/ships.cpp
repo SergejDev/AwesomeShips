@@ -1,4 +1,6 @@
 #include "ships.h"
+#include <QTime>
+#include <math.h>
 #include <QDebug>
 
 Ships::Ships(int windowWidth,QObject *parent):QObject(parent)
@@ -45,8 +47,15 @@ QPoint Ships::ShipPositionFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
-        //allShips[i]->GetCurrentHP()
-        if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
+        QString word = allShips[i]->GetWord();
+        int filledPartLength = word.size() - int((static_cast<double>(allShips[i]->currentHP)/static_cast<double>(allShips[i]->normalDamage))+0.5);
+        if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord.mid(typingWord.size()-1,1),Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
+        {
+            return allShips[i]->GetPosition();
+        }
+        else if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord,Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
         {
             return allShips[i]->GetPosition();
         }
@@ -62,12 +71,25 @@ int Ships::ShipIndexFromWord(QString typingWord)
     }
     for(int i = 0; i < allShips.size(); i++)
     {
-        if(allShips[i]->GetWord().startsWith(typingWord,Qt::CaseInsensitive))
+        QString word = allShips[i]->GetWord();
+        int filledPartLength = word.size() - int((static_cast<double>(allShips[i]->currentHP)/static_cast<double>(allShips[i]->normalDamage))+0.5);
+        if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord.mid(typingWord.size()-1,1),Qt::CaseInsensitive) &&
+           word.contains(typingWord,Qt::CaseInsensitive))
+        {
+            return i;
+        }
+        else if(word.mid(filledPartLength,word.size()-filledPartLength).startsWith(typingWord,Qt::CaseInsensitive) &&
+                word.contains(typingWord,Qt::CaseInsensitive))
         {
             return i;
         }
     }
     return -1;//error position
+}
+
+int Ships::PointsFromShipIndex(int shipIndex)
+{
+    return allShips[shipIndex]->GetPointsAmount();
 }
 
 void Ships::ShipHited(int bulletIndex, int shipIndex)
@@ -77,8 +99,9 @@ void Ships::ShipHited(int bulletIndex, int shipIndex)
     allShips[shipIndex]->SetCurrentHP(allShips[shipIndex]->GetCurrentHP()-damage);
     if(allShips[shipIndex]->GetCurrentHP()<=0)
     {
+        int points = allShips[shipIndex]->pointsForKill;
         allShips.removeAt(shipIndex);
-        emit ShipDestroyed(shipIndex);
+        emit ShipDestroyed(points);
     }
 }
 
@@ -102,9 +125,10 @@ void Ships::OvercomeBorderSlot(int shipIndex)
     allShips.removeAt(shipIndex);
 }
 
-
 int Ships::RandInt(int low, int high)
 {
+    QTime time = QTime::currentTime();
+    qsrand((uint)pow(static_cast<double>(time.msec()),2));
     return qrand() % ((high + 1) - low) + low;
 }
 
@@ -126,6 +150,7 @@ void Ships::MooveShips()
     {
         QPoint oldPosition=allShips[i]->GetPosition();
         QPoint newPosition(oldPosition.x(),oldPosition.y()+allShips[i]->GetSpeed());
+        //qDebug()<<"allShips[i]->GetSpeed()"<<allShips[i]->GetSpeed();
         allShips[i]->SetPosition(newPosition);
         if(newPosition.y()>border)
         {

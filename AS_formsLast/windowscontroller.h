@@ -6,15 +6,15 @@
 #include "WINDOW.h"
 #include "gamecontroller.h"
 #include <QTcpSocket>
-#include "login.h"
+#include "gamemenu.h"
 
 class WindowsController: public QObject
 {
     Q_OBJECT
 private:
     MenuWindow *menuWindow;
-    LoginDialog *loginWindow;
     GameWindow *gameWindow;
+    gamemenu *gameMenu;
     ToolsWindow *settingsWindow;
     bool onApplicationStart;
     bool gameStarted;
@@ -23,6 +23,7 @@ private:
     //QTimer *awaitConnectionTimer;
     void StartAwaitTimer();
     void ConnectionEstablished();
+    bool ArePassAndLoginGood();
 public:
     WindowsController(QObject *parent=0);
     ~WindowsController();
@@ -31,7 +32,10 @@ public:
 
 public slots:
     void ShowMenuWindow(bool isGameWindowActive=false);
+    void ShowGameMenu(bool isGameWindowActive=false);
 private slots:
+    void ReturnToGame();
+    void GoToMainMenuSlot();
     void RegisterSlot();
     void RegisterStartRead();
     void StartGameSlot();

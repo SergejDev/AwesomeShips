@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include "menuwindow.h"
+#include "windowscontroller.h"
 
 GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int scores, QString addr, QWidget *parent) :
     QMainWindow(parent)
@@ -12,11 +13,11 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     userID = userid;
     address = addr;
 
-    InitializeRandom();
     MakeInterface();
     gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
 
     score->setText("Score: "+QString::number(gameController->GetScore()));
+    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
 
     connect(gameController,SIGNAL(GameAreaUpdate()),this, SLOT(update()));
     connect(this->menuPushButton,SIGNAL(clicked(bool)),this, SIGNAL(MenuButtonPressed(bool)));
@@ -24,6 +25,7 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     connect(this->inputField,SIGNAL(textChanged(QString)),this, SLOT(InputFieldTextChanged(QString)));
     connect(gameController,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     connect(gameController,SIGNAL(ShipOwercomeBorder(int)),this,SLOT(EndGame()));
+    connect(gameController, SIGNAL(ShipOwercomeBorder(int)), this, SIGNAL(EndGameFlag()));
 }
 
 void GameWindow::PauseGame()
@@ -45,17 +47,21 @@ void GameWindow::paintEvent(QPaintEvent */*arg*/)
 
 void GameWindow::EndGame()
 {
-////////////////////////////////// WRITING TO SERVER
+    ////////////////////////////////// WRITING TO SERVER
     gameController->PauseGame();
     userNameDialog=new UserNameDialog(this);
     userNameDialog->setModal(true);
     if(userNameDialog->exec() == QDialog::Accepted)
     {
         client = new QTcpSocket(this);
-        QHostAddress addr(address);
-        client->connectToHost(addr, 9485);
+
+        if (!client->isOpen())
+        {
+            QHostAddress addr(address);
+            client->connectToHost(addr, 9485);
+        }
         QStringList list;
-        list.append("INSERT DAMN DATA OF USER WHO ENDED THE GAME");
+        list.append("Update");
         list.append(QString::number(userID));
         list.append(QString::number(gameController->GetScore()));
         list.append(QString::number(gameController->GetLevel()));
@@ -64,6 +70,7 @@ void GameWindow::EndGame()
     }
     ////////GETTING WHOLE STATISTIC TABLE AND SHOW IT
     connect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
+    //this->close();
 }
 
 void GameWindow::StartRead()
@@ -73,37 +80,28 @@ void GameWindow::StartRead()
     stream >> source;
 
     QString string(source);
-    QStringList list1 = string.split(':');
+    QStringList list1 = string.split(':');  
 
-    QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this); //2 Rows and 3 Columns
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nickname")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Level")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(QString("Score")));
+    QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this);
+    QStringList headers;
+    headers<<"Nickname"<<"Level"<<"Score";
+    model->setHorizontalHeaderLabels(headers);
     for (int i = 0 ; i < list1.count() ; i++)
     {
-        int j = 0;
         QStringList list2 = list1.value(i).split(',');
-        for (int k = 0 ; k < list2.count() ; k++)
-        {
-            if (k==1 || k==3 || k==4)
-            {
-                if (QString(list2.value(k))=="" || QString(list2.value(k))==" ")
-                {
-                    model->removeRow(i);
-                }
-                QStandardItem *item = new QStandardItem(QString(list2.value(k)));
-                model->setItem(i,j,item);
-                j++;
-            }
-        }
+        int c=0;
+        QStandardItem *item = new QStandardItem(QString(list2.value(0)));
+        model->setItem(i,c++,item);
+        item = new QStandardItem(QString::number((list2.value(1)).toInt()+1));
+        model->setItem(i,c++,item);
+        item = new QStandardItem(QString(list2.value(2)));
+        model->setItem(i,c++,item);
     }
-    model->removeRow(model->rowCount()-1);
-    model->sort(2);
-    //tableDialog->ui->tableView->sortByColumn(2);
     tableDialog->ui->tableView->setModel(model);
-
     tableDialog->setModal(true);
     tableDialog->show();
+    disconnect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
+
 }
 
 void GameWindow::InputFieldTextChanged(QString word)
@@ -114,22 +112,15 @@ void GameWindow::InputFieldTextChanged(QString word)
 void GameWindow::ShipDestroyedSlot(int shipIndex)
 {
     score->setText("Score: "+QString::number(gameController->GetScore()));
+    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
     inputField->setText("");
 }
 
-void GameWindow::InitializeRandom()
-{
-    QTime time = QTime::currentTime();
-    qsrand((uint)time.msec());
-}
-
-void GameWindow::SQLConnectionOpen()
+void GameWindow::SQLConnectionOpen()//don't used
 {
     db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    db.setHostName("Vadim-PC");
+    //db.setHostName("Spirit-PC");
     db.setDatabaseName("Words.s3db");
-    db.setUserName("root");
-    db.setPassword("");
     bool ok=db.open();
     qDebug()<<ok;
 }
@@ -140,7 +131,7 @@ void GameWindow::MakeInterface()
     {
         this->setObjectName(QString::fromUtf8("GameWindow"));
     }
-    this->resize(1000, 700);
+    this->setFixedSize(1000,700);
     this->setWindowTitle("Awesome ships");
     QFont font;
     font.setKerning(true);
@@ -155,13 +146,18 @@ void GameWindow::MakeInterface()
     verticalLayout->setContentsMargins(11, 11, 11, 11);
     verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setSpacing(6);
+    horizontalLayout->setSpacing(50);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     score = new QLabel("Score: 0", centralWidget);
     score->setObjectName(QString::fromUtf8("score"));
     score->setStyleSheet(QString::fromUtf8(""));
 
+    levelLabel = new QLabel("Level: 1", centralWidget);
+    levelLabel->setObjectName(QString::fromUtf8("levelLabel"));
+    levelLabel->setStyleSheet(QString::fromUtf8(""));
+
     horizontalLayout->addWidget(score);
+    horizontalLayout->addWidget(levelLabel);
 
     horizontalSpacer = new QSpacerItem(598, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
 

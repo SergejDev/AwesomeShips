@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     WINDOW.cpp \
     user.cpp \
     baza.cpp \
-    login.cpp
+    gamemenu.cpp \
+    shipExt.cpp
 
 HEADERS  += gamewindow.h \
     usernamedialog.h \
@@ -45,14 +46,15 @@ HEADERS  += gamewindow.h \
     WINDOW.h \
     user.h \
     baza.h \
-    login.h
+    gamemenu.h \
+    shipExt.h
 
 FORMS    += \
     usernamedialog.ui \
     tabledialog.ui \
     menuwindow.ui \
     baza.ui \
-    login.ui
+    gamemenu.ui
 
 RESOURCES += \
     resourses.qrc

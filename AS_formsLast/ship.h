@@ -6,19 +6,23 @@
 
 class Ship
 {
+protected:
+    QImage *ShipImage1;
+    int speed;
+
 private:
     int shipsPadding;
-    int speed;
-    int speedOnLevels[5];
+    int speedOnLevels[10];
     int totalHP;
-    int currentHP;
-    int normalDamage;
     QPoint position;
     QSize shipSize;
-    QImage *ShipImage1;
     QString word;
+    void InitializeSpeedSettings();
 
 public:
+    int currentHP;
+    int normalDamage;
+    int pointsForKill;
     Ship(QString word, int level);
     int GetSpeed();
     void DrawShip(QPainter* Painter);
@@ -28,7 +32,7 @@ public:
     bool IsShipOwerlap(QPoint newShipPosition);
     void SetCurrentHP(int damage);
     int GetCurrentHP();
-
+    int GetPointsAmount();
 //signals:
 //    void ShipOwercomeBorder();
 };

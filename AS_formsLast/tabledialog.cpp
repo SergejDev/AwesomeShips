@@ -6,6 +6,7 @@ TableDialog::TableDialog(QWidget *parent) :
     ui(new Ui::TableDialog)
 {
     ui->setupUi(this);
+
 }
 
 TableDialog::~TableDialog()
@@ -15,5 +16,5 @@ TableDialog::~TableDialog()
 
 void TableDialog::closeEvent(QCloseEvent *)
 {
-    QApplication::quit();
+    //QApplication::quit();
 }
