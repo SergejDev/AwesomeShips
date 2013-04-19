@@ -38,6 +38,7 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
     connect(menuWindow,SIGNAL(RegisterButtonPressed()),this,SLOT(RegisterSlot()));
     connect(menuWindow,SIGNAL(SettingsButtonPressed()),this,SLOT(SettingsSlot()));
     connect(menuWindow,SIGNAL(QuitButtonPressed()),this,SLOT(QuitGameSlot()));
+
     menuWindow->show();
     if(isGameWindowActive)
     {

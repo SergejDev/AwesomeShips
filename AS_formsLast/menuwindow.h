@@ -1,13 +1,17 @@
 #ifndef MENUWINDOW_H
 #define MENUWINDOW_H
 
-#include <QDialog>
+#include <QMainWindow>
+#include <QtDeclarative/QDeclarativeView>
+#include <QGraphicsObject>
+#include <QtGui>
+#include <QDeclarativeContext>
 
 namespace Ui {
-class MenuWindow;
+    class MenuWindow;
 }
 
-class MenuWindow : public QDialog
+class MenuWindow : public QMainWindow
 {
     Q_OBJECT
     
@@ -20,23 +24,25 @@ public:
     QString PassWord;
     QString addr;
     bool getCredentialsState();
+    Q_INVOKABLE void GetUserData();
 
 private:
 
-    Ui::MenuWindow *ui;
+    QDeclarativeView *ui;
     void SetWindowStyle();
     bool Validate();
     QPushButton *RegisterButton;
     bool credentialsValid;
+    QObject *Root;//корневой элемент QML модели
 
-public slots:
-    void GetUserData();
+//public slots:
+    //Q_INVOKABLE void GetUserData();
 
 signals:
-    void StartButtonPressed();
-    void RegisterButtonPressed();
-    void SettingsButtonPressed();
-    void QuitButtonPressed();
+    Q_INVOKABLE void StartButtonPressed();
+    Q_INVOKABLE void RegisterButtonPressed();
+    Q_INVOKABLE void SettingsButtonPressed();
+    Q_INVOKABLE void QuitButtonPressed();
 
 };
 

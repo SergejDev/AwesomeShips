@@ -44,6 +44,7 @@ private slots:
     void ReturnToMenuSlot();
     void StartRead();
     void ConnectionTimeout();
+
 };
 
 #endif // WINDOWSCONTROLLER_H
