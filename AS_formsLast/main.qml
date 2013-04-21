@@ -81,6 +81,7 @@ Rectangle {
 
                 TextInput {
                     id: ip
+                    objectName: "ip"
                     x: 10
                     y: 5
                     width: 60
@@ -117,6 +118,7 @@ Rectangle {
 
                 TextInput {
                     id: username
+                    objectName: "username"
                     x: 10
                     y: 5
                     width: 50
@@ -153,6 +155,7 @@ Rectangle {
 
             TextInput {
                 id: password
+                objectName: "password"
                 x: 10
                 y: 5
                 width: 50
