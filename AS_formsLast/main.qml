@@ -92,6 +92,19 @@ Rectangle {
                     cursorVisible: false
                     font.pixelSize: 12
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    id: mouseAreaIP
+                    hoverEnabled: true
+                    onEntered: {
+                        parent.border.width = 2
+                        ip.cursorVisible = true
+                        ip.forceActiveFocus()
+                    }
+                    onExited:  {
+                        parent.border.width = 1
+                    }
+                }
             }
 
         //UserName
@@ -126,8 +139,21 @@ Rectangle {
                     color: "#fdfdfd"
                     text: ""
                     font.family: "Segoe Print"
-                    cursorVisible: true
+                    cursorVisible: false
                     font.pixelSize: 12
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    id: mouseAreaUserName
+                    hoverEnabled: true
+                    onEntered: {
+                        parent.border.width = 2
+                        username.cursorVisible = true
+                        username.forceActiveFocus()
+                    }
+                    onExited:  {
+                        parent.border.width = 1
+                    }
                 }
             }
 
@@ -166,6 +192,19 @@ Rectangle {
                 cursorVisible: false
                 font.pixelSize: 12
             }
+            MouseArea {
+                anchors.fill: parent
+                id: mouseAreaPassword
+                hoverEnabled: true
+                onEntered: {
+                    parent.border.width = 2
+                    password.cursorVisible = true
+                    password.forceActiveFocus()
+                }
+                onExited:  {
+                    parent.border.width = 1
+                }
+            }
         }
 
         //Кнопка Register
@@ -199,6 +238,15 @@ Rectangle {
                     id: mouseAreaReg
                     onReleased: window.RegisterButtonPressed();
                     onPressed: window.GetUserData();
+                    hoverEnabled: true
+                    onEntered: {
+                        parent.border.width = 2
+                        parent.color = "#333"
+                    }
+                    onExited:  {
+                        parent.border.width = 1
+                        parent.color = "#111"
+                    }
                 }
             }
 
@@ -229,6 +277,15 @@ Rectangle {
                     id: mouseAreaStart
                     onReleased: window.StartButtonPressed();
                     onPressed: window.GetUserData();
+                    hoverEnabled: true
+                    onEntered: {
+                        parent.border.width = 2
+                        parent.color = "#333"
+                    }
+                    onExited:  {
+                        parent.border.width = 1
+                        parent.color = "#111"
+                    }
                 }
             }
 
@@ -258,6 +315,15 @@ Rectangle {
                     anchors.fill: parent
                     id: mouseAreaSetting
                     onClicked: window.SettingsButtonPressed();
+                    hoverEnabled: true
+                    onEntered: {
+                        parent.border.width = 2
+                        parent.color = "#333"
+                    }
+                    onExited:  {
+                        parent.border.width = 1
+                        parent.color = "#111"
+                    }
                 }
             }
 
@@ -287,8 +353,17 @@ Rectangle {
                             anchors.fill: parent
                             id: mouseAreaExit
                             onClicked: window.QuitButtonPressed();
-
+                            hoverEnabled: true
+                            onEntered: {
+                                parent.border.width = 2
+                                parent.color = "#333"
+                            }
+                            onExited:  {
+                                parent.border.width = 1
+                                parent.color = "#111"
+                            }
                         }
+
                     }
 }
 
