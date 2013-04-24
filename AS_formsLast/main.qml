@@ -191,7 +191,9 @@ Rectangle {
                 font.family: "Segoe Print"
                 cursorVisible: false
                 font.pixelSize: 12
+                echoMode: TextInput.Password
             }
+
             MouseArea {
                 anchors.fill: parent
                 id: mouseAreaPassword
