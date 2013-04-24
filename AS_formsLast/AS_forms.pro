@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui\
+QT       += core gui declarative\
  sql
 QT += network
 
@@ -52,9 +52,11 @@ HEADERS  += gamewindow.h \
 FORMS    += \
     usernamedialog.ui \
     tabledialog.ui \
-    menuwindow.ui \
     baza.ui \
     gamemenu.ui
 
 RESOURCES += \
     resourses.qrc
+
+OTHER_FILES += \
+    main.qml
