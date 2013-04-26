@@ -88,8 +88,8 @@ void WorkWithDBTest::GetTopicID()
     QFETCH (int, topicID);
     QFETCH (int, res);
 
-    wdb.SetParams(topicID);
-    QCOMPARE(wdb.GetTopicID(0, topicID), res);
+    wdb.SetParams(0, topicID);
+    QCOMPARE(wdb.GetTopicID(), res);
 }
 
 void WorkWithDBTest::GetTopicID_Default()
@@ -141,13 +141,40 @@ void WorkWithDBTest::GetLang_data()
 void WorkWithDBTest::GetLevel()
 {
     WorkWithDB wdb("Users.s3db");
-    QCOMPARE(wdb.GetLevel(63), 5);
+
+    QFETCH(int, userID);
+    QFETCH(int, res);
+    QCOMPARE(wdb.GetLevel(userID), res);
+}
+
+void WorkWithDBTest::GetLevel_data()
+{
+    QTest::addColumn<int>("userID");
+    QTest::addColumn<int>("res");
+
+    QTest::newRow("GetLevel_test1") << 61 << 0;
+    QTest::newRow("GetLevel_test2") << 63 << 5;
+    QTest::newRow("GetLevel_test1") << 66 << 1;
 }
 
 void WorkWithDBTest::GetScore()
 {
     WorkWithDB wdb("Users.s3db");
-    QCOMPARE(wdb.GetScore(63), 1290);
+
+    QFETCH(int, userID);
+    QFETCH(int, res);
+
+    QCOMPARE(wdb.GetScore(userID), res);
+}
+
+void WorkWithDBTest::GetScore_data()
+{
+    QTest::addColumn<int>("userID");
+    QTest::addColumn<int>("res");
+
+    QTest::newRow("GetScore_test1") << 61 << 40;
+    QTest::newRow("GetScore_test2") << 63 << 1290;
+    QTest::newRow("GetScore_test1") << 66 << 110;
 }
 
 void WorkWithDBTest::CreateOpenDB()
