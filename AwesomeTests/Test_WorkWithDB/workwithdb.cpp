@@ -81,20 +81,28 @@ int WorkWithDB::GetUserID(QString name, QString pass)
 
 int WorkWithDB::GetScore(int ID)
 {
-    ReadTable("Statistic");
-    for (int i = 0 ; i < tableModel->rowCount(); i++)
-        if (tableModel->record(i).value("ID")==ID)
+    //ReadTable("Statistic");
+     ReadTable("Users");
+    for (int i = 0 ; i < tableModel->rowCount(); i++){
+        if (tableModel->record(i).value("ID")==ID){
             return tableModel->record(i).value("Scores").toInt();
+        }
+    }
     return 0;
 }
 
 int WorkWithDB::GetLevel(int ID)
 {
+   // int answ = -1;
     ReadTable("Users");
-    for (int i = 0 ; i < tableModel->rowCount(); i++)
+    for (int i = 0 ; i < tableModel->rowCount(); i++){
         if (tableModel->record(i).value("ID")==ID)
-            return tableModel->record(i).value("Level").toInt();
-    return 1;
+     //       answ = tableModel->record(i).value("Level").toInt();
+        {return tableModel->record(i).value("Level").toInt();}
+            //else answ = 1;
+    }
+
+    return -1;
 }
 
 QStringList WorkWithDB::GetWords()

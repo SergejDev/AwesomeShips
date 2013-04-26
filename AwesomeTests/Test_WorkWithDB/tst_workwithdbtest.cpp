@@ -21,6 +21,9 @@ private Q_SLOTS:
         void GetTopicID();
         void GetLang();
 
+//        void GetUserID();
+        void GetLevel();
+        void GetScore();
 };
 
 WorkWithDBTest::WorkWithDBTest()
@@ -69,6 +72,22 @@ void WorkWithDBTest::GetLang()
 
     wdb.SetParams(1,1,5);
     QCOMPARE(wdb.GetLang(), 5);
+}
+
+//void WorkWithDBTest::GetUserID()
+//{
+//}
+
+void WorkWithDBTest::GetLevel()
+{
+    WorkWithDB wdb("Users.s3db");
+    QCOMPARE(wdb.GetLevel(63), 5);
+}
+
+void WorkWithDBTest::GetScore()
+{
+    WorkWithDB wdb("Users.s3db");
+    QCOMPARE(wdb.GetScore(63), 1290);
 }
 
 void WorkWithDBTest::GetCount_data()
