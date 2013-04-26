@@ -1,7 +1,7 @@
 #include "workwithdb.h"
 //#include "WINDOW.h"
 #include "stdlib.h"
-
+//#include <QFile>
 //#include <QMessageBox>
 
 WorkWithDB::WorkWithDB(QString DBName)//when you create object you need to define the DB name to work with
@@ -39,14 +39,20 @@ int WorkWithDB::GetLang()
 bool WorkWithDB::CreateOpenDB(QString DBName)
 {
     bool opened = true;
-    myDB = QSqlDatabase::addDatabase("QSQLITE");
-    myDB.setDatabaseName(DBName);
 
-    if (!myDB.open())
+
+    myDB = QSqlDatabase::addDatabase("QSQLITE");
+    if (QFile::exists(DBName))
     {
-        qDebug()<<myDB.lastError().text() + " in CreateNewDB";
-        opened = false;
+        myDB.setDatabaseName(DBName);
+
+        if (!myDB.open())
+        {
+            qDebug()<<myDB.lastError().text() + " in CreateNewDB";
+            opened = false;
+        }
     }
+    else { opened = false; }
     return opened;
 }
 
