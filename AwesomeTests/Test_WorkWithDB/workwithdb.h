@@ -10,7 +10,7 @@
 #include <QtSql>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
-#include <QTableView>
+//#include <QTableView>
 #include <QSqlTableModel>
 #include <QSqlQueryModel>
 #include <QtGui/QApplication>

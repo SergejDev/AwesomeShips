@@ -6,8 +6,8 @@
 
 QT       += sql testlib
 
-TARGET += tst_bullettest \
-          tst_workwithdbtest
+TARGET += tst_bullettest
+
 CONFIG   -= app_bundle
 CONFIG   += console
 
@@ -15,9 +15,12 @@ CONFIG   += console
 TEMPLATE = app
 
 
-SOURCES += tst_bullettest.cpp \
+SOURCES += \
     tst_workwithdbtest.cpp \
-    workwithdb.cpp
-#DEFINES += SRCDIR=\\\"$$PWD\\\"
+    workwithdb.cpp \
+    tst_bullettest.cpp \
+    main.cpp
+DEFINES += SRCDIR=\\\"$$PWD\\\"
 
-HEADERS += workwithdb.h
+HEADERS += workwithdb.h \
+    tst_workwithdbtest.h

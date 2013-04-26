@@ -1,8 +1,8 @@
 #include "workwithdb.h"
-#include "WINDOW.h"
+//#include "WINDOW.h"
 #include "stdlib.h"
-#include "menuwindow.h"
-#include <QMessageBox>
+
+//#include <QMessageBox>
 
 WorkWithDB::WorkWithDB(QString DBName)//when you create object you need to define the DB name to work with
 {
