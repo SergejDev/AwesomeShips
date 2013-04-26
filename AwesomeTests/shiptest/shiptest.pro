@@ -6,7 +6,7 @@
 
 QT       += testlib
 
-QT       -= gui
+QT       += gui
 
 TARGET = tst_shiptesttest
 CONFIG   += console
@@ -14,6 +14,11 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-
-SOURCES += tst_shiptesttest.cpp
+HEADERS  += ship.h
+SOURCES += tst_shiptesttest.cpp \
+ship.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+RESOURCES += \
+    resourses.qrc
+
