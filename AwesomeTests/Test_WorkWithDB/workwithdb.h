@@ -25,6 +25,7 @@ private:
     int LngID;//0 1
 
 public:
+    WorkWithDB();//only for testing CreateOpenDB()
     WorkWithDB(QString DBName);
     ~WorkWithDB();
 

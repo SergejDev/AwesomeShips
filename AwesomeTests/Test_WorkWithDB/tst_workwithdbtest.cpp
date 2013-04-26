@@ -1,5 +1,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
+#include <QString>
+
 #include "workwithdb.h"
 
 
@@ -24,6 +26,9 @@ private Q_SLOTS:
 //        void GetUserID();
         void GetLevel();
         void GetScore();
+
+        void CreateOpenDB();
+        void CreateOpenDB_data();
 };
 
 WorkWithDBTest::WorkWithDBTest()
@@ -90,6 +95,15 @@ void WorkWithDBTest::GetScore()
     QCOMPARE(wdb.GetScore(63), 1290);
 }
 
+void WorkWithDBTest::CreateOpenDB()
+{
+    WorkWithDB wdb;
+    QFETCH(QString, dbName);
+    QFETCH(bool, result);
+
+    QCOMPARE(wdb.CreateOpenDB(dbName), result);
+}
+
 void WorkWithDBTest::GetCount_data()
 {
     QTest::addColumn<int> ("count");
@@ -98,6 +112,16 @@ void WorkWithDBTest::GetCount_data()
     QTest::newRow("count_test1") << NULL << 10;
     QTest::newRow("count_test2") << 5 << 5;
 
+}
+
+void WorkWithDBTest::CreateOpenDB_data()
+{
+    QTest::addColumn<QString>("dbName");
+    QTest::addColumn<bool>("result");
+
+    QTest::newRow("CreateOpenDB_test1") << "Words.s3db" << true;
+    QTest::newRow("CreateOpenDB_test2") << "Users.s3db" << true;
+    QTest::newRow("CreateOpenDB_test3") << "W.s3db" << false;
 }
 
 

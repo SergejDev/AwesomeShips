@@ -93,13 +93,13 @@ int WorkWithDB::GetScore(int ID)
 
 int WorkWithDB::GetLevel(int ID)
 {
-   // int answ = -1;
     ReadTable("Users");
     for (int i = 0 ; i < tableModel->rowCount(); i++){
         if (tableModel->record(i).value("ID")==ID)
-     //       answ = tableModel->record(i).value("Level").toInt();
-        {return tableModel->record(i).value("Level").toInt();}
-            //else answ = 1;
+        {
+            return tableModel->record(i).value("Level").toInt();
+        }
+
     }
 
     return -1;
@@ -175,4 +175,8 @@ void WorkWithDB::InsertDataTopicTable()
     {
         qDebug()<<tableModel->lastError().text();
     }
+}
+
+WorkWithDB::WorkWithDB()
+{
 }
