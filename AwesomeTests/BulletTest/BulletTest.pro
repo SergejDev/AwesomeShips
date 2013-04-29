@@ -6,12 +6,17 @@
 
 QT       += testlib
 
-TARGET = tst_bullettesttest
+TARGET = tst_bullettest
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += tst_bullettesttest.cpp
+SOURCES += \
+    bullet.cpp \
+    tst_bullettest.cpp
 #DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+HEADERS += \
+    bullet.h
