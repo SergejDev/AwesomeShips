@@ -17,7 +17,7 @@ TEMPLATE = app
 
 SOURCES += tst_workwithdbtest.cpp \
             workwithdb.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+#DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS +=\
  menuwindow.h \
