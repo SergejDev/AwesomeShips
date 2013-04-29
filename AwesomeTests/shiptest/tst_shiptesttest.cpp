@@ -1,6 +1,6 @@
 #include <QString>
 #include <QtTest>
-#include <ship.h>
+#include "ship.h"
 #include <QString>
 #include <QTextStream>
 

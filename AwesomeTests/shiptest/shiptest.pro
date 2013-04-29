@@ -17,7 +17,7 @@ TEMPLATE = app
 HEADERS  += ship.h
 SOURCES += tst_shiptesttest.cpp \
 ship.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+#DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 RESOURCES += \
     resourses.qrc

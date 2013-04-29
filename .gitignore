@@ -27,8 +27,6 @@ Release/
 
 *.Debug
 *.Release
-*.jpg
-*.png
 *.s3db
 
 #################
