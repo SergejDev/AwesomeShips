@@ -1,25 +1,32 @@
 #include "menuwindow.h"
-#include "ui_menuwindow.h"
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
 
+QObject* _Username;
+QObject* _Password;
+QObject* _IP;
+
 MenuWindow::MenuWindow(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::MenuWindow)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
-    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    //setModal(true);
-    SetWindowStyle();
-    connect(this->ui->startPushButton,SIGNAL(clicked()),this,SLOT(GetUserData()));
-    connect(this->ui->startPushButton,SIGNAL(clicked()),this,SIGNAL(StartButtonPressed()));
+    //Включаем QML
+        ui = new QDeclarativeView;
+        ui->setSource(QUrl("qrc:/main.qml"));
+        setCentralWidget(ui);
+        ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 
-    connect(this->ui->RegisterButton,SIGNAL(clicked()),this,SLOT(GetUserData()));
-    connect(this->ui->RegisterButton,SIGNAL(clicked()),this,SIGNAL(RegisterButtonPressed()));
+        //Находим корневой элемент
+        Root = ui->rootObject();
+        //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+        ui->rootContext()->setContextProperty("window", this);
+        setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
-    connect(this->ui->settingsPushButton,SIGNAL(clicked()),this,SIGNAL(SettingsButtonPressed()));
-    connect(this->ui->quitPushButton,SIGNAL(clicked()),this,SIGNAL(QuitButtonPressed()));
+        _Username = Root->findChild<QObject*>("username");
+        _Password = Root->findChild<QObject*>("password");
+        _IP = Root->findChild<QObject*>("ip");
+
+        //ui->setupUi(this);//не знаю что это: закомментирую
 }
 
 MenuWindow::~MenuWindow()
@@ -30,26 +37,26 @@ MenuWindow::~MenuWindow()
 void MenuWindow::GetUserData()
 {
     if(Validate())
-    {
-        credentialsValid=true;
-        UserName=ui->Username->text();
-        PassWord=ui->Password->text();
-        addr=ui->serverAddressEdit->text();
-    }
-    else
-    {
-        credentialsValid=false;
-    }
+        {
+            credentialsValid=true;
+            UserName=(_Username->property("text")).toString();
+            PassWord=(_Password->property("text")).toString();
+            addr=(_IP->property("text")).toString();
+        }
+        else
+        {
+            credentialsValid=false;
+        }
 }
 
 void MenuWindow::DisableSettingsButton()
 {
-    ui->settingsPushButton->setDisabled(true);
+    //ui->settingsPushButton->setDisabled(true);
 }
 
 void MenuWindow::EnableSettingsButton()
 {
-    ui->settingsPushButton->setDisabled(false);
+    //ui->settingsPushButton->setDisabled(false);
 }
 
 bool MenuWindow::getCredentialsState()
@@ -75,30 +82,30 @@ void MenuWindow::SetWindowStyle()
 bool MenuWindow::Validate()
 {
     bool isValid=true;
-    if(ui->Username->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter nickname, please.");
-        message.exec();
-        isValid=false;
-    }
-    else if(ui->Password->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter password, please.");
-        message.exec();
-        isValid=false;
-    }
-    else if(ui->serverAddressEdit->text()=="")
-    {
-        QMessageBox message;
-        message.setWindowTitle("Validation error");
-        message.setText("Enter server address, please.");
-        message.exec();
-        isValid=false;
-    }
+    if((_Username->property("text")).toString()=="")
+        {
+            QMessageBox message;
+            message.setWindowTitle("Validation error");
+            message.setText("Enter nickname, please.");
+            message.exec();
+            isValid=false;
+        }
+        else if((_Password->property("text")).toString()=="")
+        {
+            QMessageBox message;
+            message.setWindowTitle("Validation error");
+            message.setText("Enter password, please.");
+            message.exec();
+            isValid=false;
+        }
+        else if((_IP->property("text")).toString()=="")
+        {
+            QMessageBox message;
+            message.setWindowTitle("Validation error");
+            message.setText("Enter server address, please.");
+            message.exec();
+            isValid=false;
+        }
     return isValid;
 }
 
