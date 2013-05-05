@@ -59,4 +59,5 @@ RESOURCES += \
     resourses.qrc
 
 OTHER_FILES += \
-    main.qml
+    main.qml \
+    qml_WINDOW.qml
