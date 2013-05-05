@@ -1,6 +1,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include <QTimer>
 #include <QMainWindow>
 #include <QString>
 #include <QTextStream>
@@ -32,6 +33,10 @@
 #include "ui_tabledialog.h"
 #include "gamecontroller.h"
 #include <QTcpSocket>
+#include <QtDeclarative/QDeclarativeView>
+#include <QGraphicsObject>
+#include <QDeclarativeContext>
+
 
 namespace Ui {
 class GameWindow;
@@ -44,51 +49,47 @@ class GameWindow : public QMainWindow
 public:
     explicit GameWindow(int languageID, int topicID, int userID, int level, int score, QString addr, QWidget *parent = 0);
 
+    Q_INVOKABLE void PauseGame();
+    Q_INVOKABLE void InputFieldTextChanged(QString word);
+
     ~GameWindow();
 
 private:
-
     UserNameDialog* userNameDialog;
     TableDialog* tableDialog;
 
-    QSqlDatabase db;
-    QWidget *centralWidget;
-    QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *score;
-    QLabel *levelLabel;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *menuPushButton;
-    QSpacerItem *verticalSpacer;
-    QHBoxLayout *horizontalLayout_2;
-    QSpacerItem *horizontalSpacer_2;
-    QLineEdit *inputField;
-    QSpacerItem *horizontalSpacer_3;
-    /////////
     GameController *gameController;
     int userID;
     QTcpSocket *client;
     QString address;
 
-    void paintEvent(QPaintEvent *arg);
+    QObject *root;
+    QDeclarativeView *ui;
+    QTimer *renderTimer;
+    int renderFrequency;
+    void setScore(QString score);
+    void setLevel(QString level);
+    void clearInputField();
 
+    bool eventFilter(QObject *, QEvent *);
+
+    void initializeFields();
+    void initializeRenderTimer();
+    void initializeQmlEngine();
     void MakeInterface();
-    void SetWindowStyle();
-    void SQLConnectionOpen();
 
 signals:
-    void MenuButtonPressed(bool isGameWindowActive=true);
-    void EndGameFlag();
+    Q_INVOKABLE void MenuButtonPressed(bool isGameWindowActive=true);
+    Q_INVOKABLE void EndGameFlag();
+
 public slots:
-    void PauseGame();
     void ResumeGame();
+
 private slots:
     void StartRead();
     void EndGame();
-
-    void InputFieldTextChanged(QString word);
+    void render();
     void ShipDestroyedSlot(int shipIndex);
-    //void ShipOwercomeBorderSlot(int shipIndex);
 };
 
 #endif // GAMEWINDOW_H

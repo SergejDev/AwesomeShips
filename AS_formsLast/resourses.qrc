@@ -8,5 +8,6 @@
         <file>gun.png</file>
         <file>plasma_bullet_small.png</file>
         <file>main.qml</file>
+        <file>gameWindow.qml</file>
     </qresource>
 </RCC>

@@ -24,6 +24,7 @@ public:
     QString PassWord;
     QString addr;
     bool getCredentialsState();
+
     Q_INVOKABLE void GetUserData();
 
 private:
@@ -34,9 +35,6 @@ private:
     QPushButton *RegisterButton;
     bool credentialsValid;
     QObject *Root;//корневой элемент QML модели
-
-//public slots:
-    //void GetUserData();
 
 signals:
     Q_INVOKABLE void StartButtonPressed();

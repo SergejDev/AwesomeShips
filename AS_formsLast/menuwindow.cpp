@@ -11,22 +11,22 @@ MenuWindow::MenuWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     //Включаем QML
-        ui = new QDeclarativeView;
-        ui->setSource(QUrl("qrc:/main.qml"));
-        setCentralWidget(ui);
-        ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    ui = new QDeclarativeView(this);
+    ui->setSource(QUrl("qrc:/main.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    setCentralWidget(ui);
 
-        //Находим корневой элемент
-        Root = ui->rootObject();
-        //Соединяем C++ и QML, делая видимым функции С++ через элемент window
-        ui->rootContext()->setContextProperty("window", this);
-        setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    //Находим корневой элемент
+    Root = ui->rootObject();
+    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    ui->rootContext()->setContextProperty("window", this);
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    setWindowTitle("Awesome ships");
+    setFixedSize(220,360);
 
-        _Username = Root->findChild<QObject*>("username");
-        _Password = Root->findChild<QObject*>("password");
-        _IP = Root->findChild<QObject*>("ip");
-
-        //ui->setupUi(this);//не знаю что это: закомментирую
+    _Username = Root->findChild<QObject*>("username");
+    _Password = Root->findChild<QObject*>("password");
+    _IP = Root->findChild<QObject*>("ip");
 }
 
 MenuWindow::~MenuWindow()
@@ -37,16 +37,16 @@ MenuWindow::~MenuWindow()
 void MenuWindow::GetUserData()
 {
     if(Validate())
-        {
-            credentialsValid=true;
-            UserName=(_Username->property("text")).toString();
-            PassWord=(_Password->property("text")).toString();
-            addr=(_IP->property("text")).toString();
-        }
-        else
-        {
-            credentialsValid=false;
-        }
+    {
+        credentialsValid=true;
+        UserName=(_Username->property("text")).toString();
+        PassWord=(_Password->property("text")).toString();
+        addr=(_IP->property("text")).toString();
+    }
+    else
+    {
+        credentialsValid=false;
+    }
 }
 
 void MenuWindow::DisableSettingsButton()
@@ -83,29 +83,29 @@ bool MenuWindow::Validate()
 {
     bool isValid=true;
     if((_Username->property("text")).toString()=="")
-        {
-            QMessageBox message;
-            message.setWindowTitle("Validation error");
-            message.setText("Enter nickname, please.");
-            message.exec();
-            isValid=false;
-        }
-        else if((_Password->property("text")).toString()=="")
-        {
-            QMessageBox message;
-            message.setWindowTitle("Validation error");
-            message.setText("Enter password, please.");
-            message.exec();
-            isValid=false;
-        }
-        else if((_IP->property("text")).toString()=="")
-        {
-            QMessageBox message;
-            message.setWindowTitle("Validation error");
-            message.setText("Enter server address, please.");
-            message.exec();
-            isValid=false;
-        }
+    {
+        QMessageBox message;
+        message.setWindowTitle("Validation error");
+        message.setText("Enter nickname, please.");
+        message.exec();
+        isValid=false;
+    }
+    else if((_Password->property("text")).toString()=="")
+    {
+        QMessageBox message;
+        message.setWindowTitle("Validation error");
+        message.setText("Enter password, please.");
+        message.exec();
+        isValid=false;
+    }
+    else if((_IP->property("text")).toString()=="")
+    {
+        QMessageBox message;
+        message.setWindowTitle("Validation error");
+        message.setText("Enter server address, please.");
+        message.exec();
+        isValid=false;
+    }
     return isValid;
 }
 

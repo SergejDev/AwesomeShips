@@ -90,12 +90,8 @@ bool Ship::IsShipOwerlap(QPoint newShipPosition)
 //    int newShipY=newShipPosition.y()-shipSize.width()/2;
     int newShipX=newShipPosition.x();
     int newShipY=newShipPosition.y();
-    if((abs(newShipX-position.x())<shipSize.width()/2+shipsPadding) &&
-            (abs(newShipY-position.y())<shipSize.height()/2+shipsPadding))
-    {
-        return true;
-    }
-    return false;
+    return ((abs(newShipX-position.x())<shipSize.width()/2+shipsPadding) &&
+            (abs(newShipY-position.y())<shipSize.height()/2+shipsPadding));
 }
 
 void Ship::SetCurrentHP(int currentHP)

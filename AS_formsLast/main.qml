@@ -1,8 +1,8 @@
 import QtQuick 1.1
 
 Rectangle {
-    width: 187
-    height: 358
+    width: 190
+    height: 360
     smooth: true
     Image {
         x: 0

@@ -1,4 +1,7 @@
+#include <QDeclarativeComponent>
+#include <QDeclarativeEngine>
 #include "gamewindow.h"
+#include <QObject>
 #include "bullet.h"
 #include <QTcpSocket>
 #include <QHostAddress>
@@ -6,6 +9,7 @@
 #include <QStandardItemModel>
 #include "menuwindow.h"
 #include "windowscontroller.h"
+#include <QDebug>
 
 GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int scores, QString addr, QWidget *parent) :
     QMainWindow(parent)
@@ -13,16 +17,13 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     userID = userid;
     address = addr;
 
+    initializeQmlEngine();
     MakeInterface();
     gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
-
-    score->setText("Score: "+QString::number(gameController->GetScore()));
-    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
+    initializeFields();
+    initializeRenderTimer();
 
     connect(gameController,SIGNAL(GameAreaUpdate()),this, SLOT(update()));
-    connect(this->menuPushButton,SIGNAL(clicked(bool)),this, SIGNAL(MenuButtonPressed(bool)));
-    connect(this->menuPushButton,SIGNAL(clicked()),this, SLOT(PauseGame()));
-    connect(this->inputField,SIGNAL(textChanged(QString)),this, SLOT(InputFieldTextChanged(QString)));
     connect(gameController,SIGNAL(ShipDestroyed(int)),this,SLOT(ShipDestroyedSlot(int)));
     connect(gameController,SIGNAL(ShipOwercomeBorder(int)),this,SLOT(EndGame()));
     connect(gameController, SIGNAL(ShipOwercomeBorder(int)), this, SIGNAL(EndGameFlag()));
@@ -36,13 +37,6 @@ void GameWindow::PauseGame()
 void GameWindow::ResumeGame()
 {
     gameController->ResumeGame();
-    inputField->setFocus();
-}
-
-void GameWindow::paintEvent(QPaintEvent */*arg*/)
-{
-    QPainter painter(this);
-    gameController->Draw(&painter);
 }
 
 void GameWindow::EndGame()
@@ -73,6 +67,11 @@ void GameWindow::EndGame()
     //this->close();
 }
 
+void GameWindow::render()
+{
+    ui->viewport()->update();
+}
+
 void GameWindow::StartRead()
 {
     QDataStream stream(client);
@@ -80,7 +79,7 @@ void GameWindow::StartRead()
     stream >> source;
 
     QString string(source);
-    QStringList list1 = string.split(':');  
+    QStringList list1 = string.split(':');
 
     QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this);
     QStringList headers;
@@ -101,7 +100,6 @@ void GameWindow::StartRead()
     tableDialog->setModal(true);
     tableDialog->show();
     disconnect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
-
 }
 
 void GameWindow::InputFieldTextChanged(QString word)
@@ -111,124 +109,75 @@ void GameWindow::InputFieldTextChanged(QString word)
 
 void GameWindow::ShipDestroyedSlot(int shipIndex)
 {
-    score->setText("Score: "+QString::number(gameController->GetScore()));
-    levelLabel->setText("Level: "+QString::number(gameController->GetLevel()+1));
-    inputField->setText("");
-}
-
-void GameWindow::SQLConnectionOpen()//don't used
-{
-    db=QSqlDatabase::addDatabase("QSQLITE","Words.s3db");
-    //db.setHostName("Spirit-PC");
-    db.setDatabaseName("Words.s3db");
-    bool ok=db.open();
-    qDebug()<<ok;
+    setScore("Score: "+QString::number(gameController->GetScore()));
+    setLevel("Level: "+QString::number(gameController->GetLevel()+1));
+    clearInputField();
 }
 
 void GameWindow::MakeInterface()
 {
-    if (this->objectName().isEmpty())
-    {
-        this->setObjectName(QString::fromUtf8("GameWindow"));
-    }
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    setCentralWidget(ui);
     this->setFixedSize(1000,700);
     this->setWindowTitle("Awesome ships");
-    QFont font;
-    font.setKerning(true);
-    this->setFont(font);
-
-    SetWindowStyle();
-
-    centralWidget = new QWidget(this);
-    centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-    verticalLayout = new QVBoxLayout(centralWidget);
-    verticalLayout->setSpacing(6);
-    verticalLayout->setContentsMargins(11, 11, 11, 11);
-    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-    horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setSpacing(50);
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-    score = new QLabel("Score: 0", centralWidget);
-    score->setObjectName(QString::fromUtf8("score"));
-    score->setStyleSheet(QString::fromUtf8(""));
-
-    levelLabel = new QLabel("Level: 1", centralWidget);
-    levelLabel->setObjectName(QString::fromUtf8("levelLabel"));
-    levelLabel->setStyleSheet(QString::fromUtf8(""));
-
-    horizontalLayout->addWidget(score);
-    horizontalLayout->addWidget(levelLabel);
-
-    horizontalSpacer = new QSpacerItem(598, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    horizontalLayout->addItem(horizontalSpacer);
-
-    menuPushButton = new QPushButton("Menu",centralWidget);
-    menuPushButton->setObjectName(QString::fromUtf8("menuPushButton"));
-    menuPushButton->setMinimumSize(QSize(68, 0));
-    menuPushButton->setMaximumSize(QSize(16777215, 32));
-    QFont font1;
-    font1.setFamily(QString::fromUtf8("Arial"));
-    font1.setBold(true);
-    font1.setItalic(false);
-    font1.setWeight(75);
-    menuPushButton->setFont(font1);
-    menuPushButton->setStyleSheet(QString::fromUtf8(""));
-
-    horizontalLayout->addWidget(menuPushButton);
-
-    verticalLayout->addLayout(horizontalLayout);
-
-    verticalSpacer = new QSpacerItem(20, 560, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-    verticalLayout->addItem(verticalSpacer);
-
-    horizontalLayout_2 = new QHBoxLayout();
-    horizontalLayout_2->setSpacing(6);
-    horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-    horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    horizontalLayout_2->addItem(horizontalSpacer_2);
-
-    inputField = new QLineEdit(centralWidget);
-    inputField->setObjectName(QString::fromUtf8("inputField"));
-    inputField->setMinimumSize(QSize(450, 34));
-
-    horizontalLayout_2->addWidget(inputField);
-
-    horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    horizontalLayout_2->addItem(horizontalSpacer_3);
-
-
-    verticalLayout->addLayout(horizontalLayout_2);
-
-    this->setCentralWidget(centralWidget);
-
-    tableDialog=new TableDialog(this);
-
-    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-
-    inputField->setFocus();
-}
-
-void GameWindow::SetWindowStyle()
-{
-    QString str;
-    QString fileName=":/Style.txt";
-    QFile inputFile(fileName);
-    QTextStream ts(&inputFile);
-    if(!inputFile.open(QFile::ReadOnly | QFile::Text))
-    {
-        return;
-    }
-    str=ts.readAll();
-    inputFile.close();
-
-    this->setStyleSheet(str);
 }
 
 GameWindow::~GameWindow()
 {
 
+}
+
+void GameWindow::setScore(QString score)
+{
+    QObject* scoreLabel = root->findChild<QObject*>("scoreLabel");
+    scoreLabel->setProperty("text",score);
+}
+
+void GameWindow::setLevel(QString level)
+{
+    QObject* levelLabel = root->findChild<QObject*>("levelLabel");
+    levelLabel->setProperty("text",level);
+}
+
+void GameWindow::clearInputField()
+{
+    QObject* inputField = root->findChild<QObject*>("inputField");
+    inputField->setProperty("text","");
+}
+
+bool GameWindow::eventFilter(QObject *target, QEvent *event)
+{
+    if((target==ui->viewport()) && (event->type()==QEvent::Paint))
+    {
+        QPainter painter(ui->viewport());
+        gameController->Draw(&painter);
+    }
+
+    return QMainWindow::eventFilter(target,event);
+}
+
+void GameWindow::initializeFields()
+{
+    tableDialog=new TableDialog(this);
+    renderFrequency=20;
+    setScore("Score: "+QString::number(gameController->GetScore()));
+    setLevel("Level: "+QString::number(gameController->GetLevel()+1));
+}
+
+void GameWindow::initializeRenderTimer()
+{
+    renderTimer=new QTimer(this);
+    connect(renderTimer, SIGNAL(timeout()),this,SLOT(render()));
+    renderTimer->start(renderFrequency);
+}
+
+void GameWindow::initializeQmlEngine()
+{
+    ui = new QDeclarativeView(this);
+    ui->setSource(QUrl("qrc:/gameWindow.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+
+    root = ui->rootObject();
+    ui->rootContext()->setContextProperty("window", this);
+    ui->viewport()->installEventFilter(this);
 }
