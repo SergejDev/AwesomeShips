@@ -52,7 +52,6 @@ HEADERS  += gamewindow.h \
 FORMS    += \
     usernamedialog.ui \
     tabledialog.ui \
-    baza.ui \
     gamemenu.ui
 
 RESOURCES += \

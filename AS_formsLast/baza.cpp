@@ -22,13 +22,26 @@
 
 using namespace std;
 Baza::Baza(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Baza)
+    QDialog(parent)
+   // ui(new Ui::Baza)
 {
-    ui->setupUi(this);
+   // ui->setupUi(this);
+    //Включаем QML
+    ui = new QDeclarativeView(this);
+    ui->setSource(QUrl("qrc:/baza.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    //setCentralWidget(ui);
+
+    //Находим корневой элемент
+    Root = ui->rootObject();
+    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    ui->rootContext()->setContextProperty("window", this);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    setWindowTitle("Awesome ships");
+    setFixedSize(220,360);
+   // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     //setModal(true);
-    SetWindowStyle();
+//    SetWindowStyle();
 }
 
 Baza::~Baza()
@@ -60,7 +73,7 @@ void Baza::on_pushButton_2_clicked()
 {
 
     s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
-    ui->textEdit->setText(s);
+   // ui->textEdit->setText(s);
 
 }
 void Baza::on_pushButton_3_clicked()
@@ -96,22 +109,22 @@ void Baza::on_pushButton_3_clicked()
                 int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
-                int topicId=ui->comboBox->currentIndex()+1;
+                //int topicId=ui->comboBox->currentIndex()+1;
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
-                    QString eng = model.record(i).value("English").toString();
-                    if(eng == worlds[1])
-                    {
-                        j++;
-                    }
+                  //  QString eng = model.record(i).value("English").toString();
+                    //if(eng == worlds[1])
+                  //  {
+                  //      j++;
+                  //  }
                 }
-                if(j==0)
-                {
-                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
-                    query.exec(queryString);
+                //if(j==0)
+            //   {
+                  //  QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                  //  query.exec(queryString);
 
-                }
+               // }
             }
             QMessageBox message;
             message.setWindowTitle("Awesome ships");
