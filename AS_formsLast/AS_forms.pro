@@ -60,4 +60,5 @@ RESOURCES += \
 
 OTHER_FILES += \
     main.qml \
-    gameWindow.qml
+    gameWindow.qml \
+    baza.qml
