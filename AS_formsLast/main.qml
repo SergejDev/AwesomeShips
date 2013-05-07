@@ -277,8 +277,8 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             id: mouseAreaStart
-            onReleased: window.StartButtonPressed();
-            onPressed: window.GetUserData();
+            onReleased: window.StartButtonPressed()
+            onPressed: window.GetUserData()
             hoverEnabled: true
             onEntered: {
                 parent.border.width = 2

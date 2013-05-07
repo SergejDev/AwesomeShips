@@ -6,22 +6,42 @@
 #include "workwithdb.h"
 #include "baza.h"
 
-ToolsWindow::ToolsWindow(QWidget *parent):
-    QWidget (parent)
+QObject *_topicID;
+QObject *_langID;
+
+ToolsWindow::ToolsWindow(QMainWindow *parent):
+    QMainWindow (parent)
 {
-    topicID=1;
-    languageID=0;
-    setupToolsWindow(this);
-    connect(button_Save,SIGNAL(clicked()), this, SLOT(on_button_Save_clicked()));
-    //connect(button_Save,SIGNAL(clicked()), this, SIGNAL(ButtonSaveClicked()));
-    //connect(button_toMainMenu,SIGNAL(clicked()), this, SIGNAL(ButtonBackClicked()));
-    connect(button_toMainMenu,SIGNAL(clicked()), this, SLOT(ButtonBackClickedSlot()));
-    connect(button_baza, SIGNAL(clicked()),this,SLOT(button_baza_clicked()) );
+//    topicID=1;
+//    languageID=0;
+//    setupToolsWindow(this);
+//    connect(button_Save,SIGNAL(clicked()), this, SLOT(on_button_Save_clicked()));
+//    //connect(button_Save,SIGNAL(clicked()), this, SIGNAL(ButtonSaveClicked()));
+//    //connect(button_toMainMenu,SIGNAL(clicked()), this, SIGNAL(ButtonBackClicked()));
+//    connect(button_toMainMenu,SIGNAL(clicked()), this, SLOT(ButtonBackClickedSlot()));
+//    connect(button_baza, SIGNAL(clicked()),this,SLOT(button_baza_clicked()) );
+
+
+
+    ui = new QDeclarativeView();
+    ui->setSource(QUrl("qrc:/qml_WINDOW.qml"));
+    setCentralWidget(ui);
+
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+
+    Root = ui->rootObject();
+    ui->rootContext()->setContextProperty("window", this);
+
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint|Qt::FramelessWindowHint);
+
+    _topicID = Root->findChild<QObject*>("combo_topic");
+    _langID = Root->findChild<QObject*>("combo_lang");
 }
 
 ToolsWindow::~ToolsWindow()
 {
-    this->close();
+    //this->close();
+    delete ui;
 }
 
 int ToolsWindow::GetTopicID()
@@ -111,14 +131,17 @@ void ToolsWindow::setupToolsWindow(QWidget *ToolsWindowForm)
 
 void ToolsWindow::on_button_Save_clicked()
 {
-    topicID = Combo_Topic->currentIndex()+1;
-    languageID = Combo_Lang->currentIndex();
+//    topicID = Combo_Topic->currentIndex()+1;
+//    languageID = Combo_Lang->currentIndex();
+    topicID = (_topicID->property("selectedindex")).toInt();
+    languageID = (_langID->property("selectedindex")).toInt();
     this->hide();
     emit ButtonSaveClicked();
 }
 
 void ToolsWindow::ButtonBackClickedSlot()
 {
+    //_topicID->setProperty("")
     this->hide();
     emit ButtonBackClicked();
 }

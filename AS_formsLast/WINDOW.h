@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <QtGui>
 #include <QtGui/QApplication>
 #include <QtGui/QPushButton>
 #include <QtGui/QComboBox>
@@ -8,19 +9,24 @@
 #include <QtGui/QListView>
 #include <QtGui/QWidget>
 #include <QtGui/QLabel>
-//#include "workwithdb.h"
+#include <QtDeclarative/QDeclarativeView>
+#include <QtDeclarative/QDeclarativeContext>
+#include <QMainWindow>
+#include <QDebug>
 
-class ToolsWindow:public QWidget
+class ToolsWindow:public QMainWindow//QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ToolsWindow(QWidget *parent = 0);
+    explicit ToolsWindow(QMainWindow *parent = 0);
     ~ToolsWindow();
     int GetTopicID();
     int GetLanguageID();
 
 private:
+    QDeclarativeView *ui;
+    QObject *Root;//корневой элемент QML модели
 
     int topicID;
     int languageID;
@@ -42,10 +48,10 @@ private:
     // void GetWordsFromDB();
 
     void setupToolsWindow(QWidget *ToolsWindow);
-private slots:
-    void on_button_Save_clicked();
-    void ButtonBackClickedSlot();
-    void button_baza_clicked();
+public slots:
+    Q_INVOKABLE void on_button_Save_clicked();
+    Q_INVOKABLE void ButtonBackClickedSlot();
+    Q_INVOKABLE void button_baza_clicked();
 signals:
     void ButtonSaveClicked();
     void ButtonBackClicked();

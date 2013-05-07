@@ -8,5 +8,9 @@
         <file>gun.png</file>
         <file>plasma_bullet_small.png</file>
         <file>main.qml</file>
+        <file>MyLabel.qml</file>
+        <file>qml_WINDOW.qml</file>
+        <file>MyComboBox.qml</file>
+        <file>MyButton.qml</file>
     </qresource>
 </RCC>
