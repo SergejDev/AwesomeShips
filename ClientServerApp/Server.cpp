@@ -1,7 +1,6 @@
 #include "server.h"
 #include "user.h"
 #include <iostream>
-#include <QMessageBox>
 #include <QString>
 #include <QHash>
 #include <QTcpServer>
@@ -13,34 +12,42 @@ using namespace std;
 Server::Server(QObject* parent): QObject(parent)
 {
     db=QSqlDatabase::addDatabase("QSQLITE");
-    db.setUserName("user");
     db.setDatabaseName("Users.s3db");
-    //db.setHostName("server");
-    db.setPassword("");
     if (!db.open())
     {
         cout << "Failed to open db. Check it. You wouldn't be able to play!" << endl;
     }
-    connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
-    server.listen(QHostAddress::Any, 9485);
+    server = new QTcpServer(this);
+    connect(server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
+    server->listen(QHostAddress::Any, 9485);
+    readyForConnectings = true;
+    userConnected = false;
+    dataReceived = false;
+    dataSended = false;
+    //qDebug() << "~~~ Server constructor ~~~";
 }
 
 Server::~Server()
 {
-    server.close();
+    //qDebug() << "~~~ Server destructor ~~~";
+    db.close();
+    server->close();
 }
 
 void Server::acceptConnection()
 {
-    client = server.nextPendingConnection();
-    cout << "Connection is open" << endl;
-    cout << client->peerAddress().toString().toStdString() << endl;
+    userConnected = true;
+    client = server->nextPendingConnection();
+    cout << "New connection:" << client->peerAddress().toString().toStdString() << endl;
     connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
-    connect(client, SIGNAL(disconnected()), this, SLOT(stopConnection()));
+    //qDebug() << "~~~ Server acceptConnection ~~~";
 }
 
 void Server::startRead()
 {
+    dataReceived = true;
+    //qDebug() << "~~~ Server startRead ~~~";
+
     QDataStream in(client);
     in.setVersion(QDataStream::Qt_4_0);
 
@@ -59,8 +66,10 @@ void Server::startRead()
         {
             if (query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
             {
-                list.append(query.record().value(0).toString());
+                list.append("User exists");
+                //list.append(query.record().value(0).toString());
                 in << list;
+                dataSended = true;
                 return;
             }
         }
@@ -68,8 +77,10 @@ void Server::startRead()
         QString nam=listIn.at(1);
         QString pas=listIn.at(2);
         query2.exec("INSERT INTO Users(NikName,Password,Level,Scores) VALUES ('"+nam+"','"+pas +"',0,0)");
-        list.append(id);
+        list.append("Registered");
         in << list;
+        dataSended = true;
+        return;
     }
     else if (listIn.at(0).toStdString() == "Login")
     {
@@ -93,12 +104,15 @@ void Server::startRead()
                         list.append(record.value(i).toString());
                     }
                     in << list;
+                    dataSended = true;
                     return;
                 }
         }
         id = "-1";
         list.append(id);
         in << list;
+        dataSended = true;
+        return;
     }
     else if (listIn.at(0).toStdString() == "Update")
     {
@@ -125,10 +139,28 @@ void Server::startRead()
         }
         source.remove(source.size()-1,1);
         in << source;
+        dataSended = true;
+        return;
     }
-}
-
-void Server::stopConnection()//Nikita fix this!!!!!!!!!!
-{
-    cout << "Connection is close" << endl;
+    else if (listIn.at(0).toStdString() == "RemoveUser")
+    {
+        cout << "Removing User." << endl;
+        query.exec("SELECT ID,NikName,Password,Level,Scores FROM Users");
+        while (query.next())
+        {
+            if (query.record().value(1).toString().toStdString() == listIn.at(1).toStdString())//username check
+            {
+                QString nam=listIn.at(1);
+                query.exec("DELETE FROM Users WHERE NikName='"+nam+"'");
+                list.append("Removed");
+                in << list;
+                dataSended = true;
+                return;
+            }
+        }
+        list.append("Not Removed");
+        in << list;
+        dataSended = true;
+        return;
+    }
 }

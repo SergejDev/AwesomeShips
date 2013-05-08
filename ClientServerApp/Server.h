@@ -15,14 +15,17 @@ public:
   Server(QObject * parent = 0);
   ~Server();
   QSqlDatabase db;
+  QTcpServer *server;
+  bool readyForConnectings;
+  bool userConnected;
+  bool dataReceived;
+  bool dataSended;
 
 public slots:
   void acceptConnection();
-  void stopConnection();
   void startRead();
 
 private:
-  QTcpServer server;
   QTcpSocket *client;
 };
 #endif // SERVER_H
