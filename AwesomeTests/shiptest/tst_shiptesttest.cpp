@@ -1,8 +1,9 @@
 #include <QString>
 #include <QtTest>
-#include "ship.h"
+#include <ship.h>
 #include <QString>
-#include <QTextStream>
+#include <QImage>
+#include <QPainter>
 
 class ShiptestTest : public QObject
 {
@@ -12,31 +13,30 @@ public:
     ShiptestTest();
     
 private Q_SLOTS:
-    void testCase1();
-    void testCase2();
-    void testCase3();
-    void testCase4();
-    void testCase5();
+    void testCase1Init();
+    void testCase2SetPositionGetPosition();
+    void testCase3SetCurrentHPGetCurrentHP();
+    void testCase4Owerlap();
+    void testCase5Draw();
+    void testCase6Clear();
+    void testCase7GetPointsAmount();
+    void testCase8GetWordSpeed();
 };
 
 ShiptestTest::ShiptestTest()
 {
 }
 
-void ShiptestTest::testCase1() //проверка инициализации
+void ShiptestTest::testCase1Init() //проверка инициализации
 {
-    bool result=true;
-    Ship* sh = new Ship("rwrewr",4); //уровень не соответсвует скорости. Не ошибка. Так и задумано
-    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=2))
-        result = false;
-    QCOMPARE(result, true);
+    Ship* sh = new Ship("rwrewr",4);
 
     //QString str=QString::number(ii);
     //QTextStream cout(stdout);
     //cout<<"Speed="<<sh->GetSpeed()<<"\n";
 }
 
-void ShiptestTest::testCase2() //проверка методов SetPosition() GetPosition()
+void ShiptestTest::testCase2SetPositionGetPosition() //проверка методов SetPosition() GetPosition()
 {
     bool result=true;
     Ship* sh = new Ship("new_word",1);
@@ -47,7 +47,7 @@ void ShiptestTest::testCase2() //проверка методов SetPosition() G
     QCOMPARE(result, true);
 }
 
-void ShiptestTest::testCase3() //проверка методов SetCurrentHP() GetCurrentHP()
+void ShiptestTest::testCase3SetCurrentHPGetCurrentHP() //проверка методов SetCurrentHP() GetCurrentHP()
 {
     bool result=true;
     QString str = "new_word";
@@ -58,7 +58,7 @@ void ShiptestTest::testCase3() //проверка методов SetCurrentHP() 
     QCOMPARE(result, true);
 }
 
-void ShiptestTest::testCase4() //проверка метода IsShipOwerlap()
+void ShiptestTest::testCase4Owerlap() //проверка метода IsShipOwerlap()
 {
     bool result;
     Ship* sh = new Ship("new_word",1);
@@ -74,9 +74,35 @@ void ShiptestTest::testCase4() //проверка метода IsShipOwerlap()
     QCOMPARE(result, false);
 }
 
-void ShiptestTest::testCase5() //проверка методов
+void ShiptestTest::testCase5Draw() //проверка метода DrawShip
 {
+    Ship* sh = new Ship("new_word",1);
 
+    QImage* canvas=new QImage(1000,1000,QImage::Format_ARGB32);
+    QPainter painter(canvas);
+   // sh->DrawShip(&painter);
+
+}
+
+void ShiptestTest::testCase6Clear() //проверка удаления объекта
+{
+    Ship* sh = new Ship("new_word",1);
+    delete sh;
+}
+
+void ShiptestTest::testCase7GetPointsAmount() //проверка метода GetPointsAmount
+{
+    Ship* sh = new Ship("new_word",1);
+    QCOMPARE(sh->GetPointsAmount(),10);
+}
+
+void ShiptestTest::testCase8GetWordSpeed() //проверка методов GetWord GetSpeed
+{
+    bool result=true;
+    Ship* sh = new Ship("rwrewr",4); //уровень не соответсвует скорости. Не ошибка. Так и задумано
+    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=2))
+        result = false;
+    QCOMPARE(result, true);
 }
 
 QTEST_APPLESS_MAIN(ShiptestTest)
