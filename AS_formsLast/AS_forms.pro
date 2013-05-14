@@ -52,11 +52,17 @@ HEADERS  += gamewindow.h \
 FORMS    += \
     usernamedialog.ui \
     tabledialog.ui \
-    baza.ui \
     gamemenu.ui
 
 RESOURCES += \
     resourses.qrc
 
 OTHER_FILES += \
-    main.qml
+    main.qml \
+    gameWindow.qml \
+    baza.qml \
+    gamemenu.qml \
+    AButton.qml \
+    AComboBox.qml \
+    ALabel.qml \
+    ATextBox.qml

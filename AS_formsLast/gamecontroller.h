@@ -23,6 +23,7 @@ private:
     QTimer *animationsTimer;
     QTimer *addShipTimer;
     QString previousWord;
+    QImage *background;
 
     int currentScore;
     int scorePointsForDestroyingShip;

@@ -8,6 +8,7 @@ Gun::Gun(int windowWidth)
     gunImage=new QImage("gun.png");
     gunSize.setWidth(gunImage->width());
     gunSize.setHeight(gunImage->height());
+    qDebug()<<windowWidth;
     position=QPoint(windowWidth/2,590);
 }
 

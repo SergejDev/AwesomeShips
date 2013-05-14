@@ -20,6 +20,7 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
     wordGetter->SetParams(3,topicID,languageID);
     words=wordGetter->GetWords();
     currentWordIndex=0;
+    background=new QImage(":/deepness_1600.jpg");
 
     animationTimerFrequency=25;
     animationsTimer=new QTimer();
@@ -56,6 +57,7 @@ void GameController::AddShip()
 
 void GameController::Draw(QPainter *painter)
 {
+    painter->drawImage(0,0,*background);
     allShips->DrawShips(painter);
     allBullets->DrawBullets(painter);
     gun->DrawGun(painter);
