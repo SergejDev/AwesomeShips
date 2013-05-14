@@ -61,3 +61,7 @@ RESOURCES += \
 OTHER_FILES += \
     main.qml \
     gameWindow.qml
+    qml_WINDOW.qml \
+    MyButton.qml \
+    MyLabel.qml \
+    MyComboBox.qml

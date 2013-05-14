@@ -277,8 +277,8 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             id: mouseAreaStart
-            onReleased: window.StartButtonPressed();
-            onPressed: window.GetUserData();
+            onReleased: window.StartButtonPressed()
+            onPressed: window.GetUserData()
             hoverEnabled: true
             onEntered: {
                 parent.border.width = 2
@@ -316,7 +316,7 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             id: mouseAreaSetting
-            onClicked: window.SettingsButtonPressed();
+            onClicked: window.SettingsButtonPressed()
             hoverEnabled: true
             onEntered: {
                 parent.border.width = 2
@@ -354,7 +354,7 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             id: mouseAreaExit
-            onClicked: window.QuitButtonPressed();
+            onClicked: window.QuitButtonPressed()
             hoverEnabled: true
             onEntered: {
                 parent.border.width = 2
