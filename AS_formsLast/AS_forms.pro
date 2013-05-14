@@ -59,9 +59,11 @@ RESOURCES += \
     resourses.qrc
 
 OTHER_FILES += \
+    qml_WINDOW.qml \
+    MyLabel.qml \
+    MyComboBox.qml \
+    MyButton.qml \
     main.qml \
     gameWindow.qml
-    qml_WINDOW.qml \
-    MyButton.qml \
-    MyLabel.qml \
-    MyComboBox.qml
+
+
