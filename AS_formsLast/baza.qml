@@ -24,8 +24,8 @@ Rectangle {
                y: parent.height / 4 + 30
 
                //Размеры поле вывода
-               width: 250
-               height: 35
+               width: 200
+               height: 25
 
                //Цвет поля вывода
                color: "gray"
@@ -35,7 +35,7 @@ Rectangle {
                    objectName: "textEdit"
                    wrapMode: TextEdit.Wrap
                    width:parent.width;
-                   height: 24
+                   height: 25
                    readOnly:true
                }
            }
@@ -45,8 +45,8 @@ Rectangle {
         id: combobox_topic
         x: 257
         y: 23
-        width: 0
-        height: 0
+        width: 98
+        height: 29
         combobox_text: "Food"
         model: model_topic
         titleSelectionDialog: "Topic"
@@ -54,13 +54,13 @@ Rectangle {
     }
     AButton
     {
-      id: pushButton_2
+      id: on_pushButton_2
       x: parent.width / 4 -80
       y: parent.height/4 -40
       width: 118
       height: 30
       button_text: "Open"
-      onClicked: window.pushButton_2()
+      onClicked: window.ButtonOpen()
     }
     AButton
     {
@@ -70,7 +70,7 @@ Rectangle {
       width: 118
       height: 30
       button_text: "Back to menu"
-      onClicked: window.on_pushButton_clicked()
+      onClicked: window.ButtonBack()
     }
     AButton
     {
@@ -80,7 +80,7 @@ Rectangle {
       width: 119
       height: 30
       button_text: "Import"
-      onClicked: window.pushButton_3()
+      onClicked: window.ButtonImport()
     }
 
 }

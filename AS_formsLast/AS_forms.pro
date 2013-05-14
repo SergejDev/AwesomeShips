@@ -51,8 +51,7 @@ HEADERS  += gamewindow.h \
 
 FORMS    += \
     usernamedialog.ui \
-    tabledialog.ui \
-    gamemenu.ui
+    tabledialog.ui
 
 RESOURCES += \
     resourses.qrc

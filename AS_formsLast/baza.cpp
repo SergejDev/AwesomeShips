@@ -19,9 +19,10 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QSqlQueryModel>
+#include "WINDOW.h"
 
 QObject* textEdit;
-QObject* comboBox;
+//QObject* comboBox;
 QObject *_topicID;
 
 using namespace std;
@@ -43,16 +44,13 @@ Baza::Baza(QMainWindow *parent) :
     textEdit = Root->findChild<QObject*>("textEdit");
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
    // setWindowTitle("Awesome ships");
-   // setFixedSize(220,360);
-   // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    //setModal(true);
-//  SetWindowStyle();
+
+    connect(this, SIGNAL(ButtonBack()), this, SLOT(on_pushButton_clicked()));
+     connect(this, SIGNAL(ButtonOpen()), this, SLOT(on_pushButton_2_clicked()));
+     connect(this, SIGNAL(ButtonImport()),this, SLOT(on_pushButton_3_clicked()));
     _topicID = Root->findChild<QObject*>("combo_topic");
-    //combo_topic = new QComboBox(BazaForm);
-    //Combo_Topic->setObjectName("Combo_Topic");
-    //Combo_Topic->setGeometry(QRect(218, 180, 131, 31));
-    //Combo_Topic->insertItems(0, QStringList()<<QString::fromUtf8("Food")<<QString::fromUtf8("Weather")<<QString::fromUtf8("Animals"));
-    //Combo_Topic->setCurrentIndex(0);
+
+
 }
 
 Baza::~Baza()
@@ -82,15 +80,15 @@ void Baza::SetWindowStyle()
 
 void Baza::on_pushButton_2_clicked()
 {
-
-    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
+    //s="xfghnjstr65ty";
+  s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
  //   ui->textEdit->setText(s);
 //   memo->setProperty("textEdit",s);
    //   UserName=(_Username->property("text")).toString();
       textEdit->setProperty("text",s);
 
 }
-/*void Baza::on_pushButton_3_clicked()
+void Baza::on_pushButton_3_clicked()
 {
     QSqlDatabase db;
     db=QSqlDatabase::addDatabase("QSQLITE");
@@ -123,11 +121,8 @@ void Baza::on_pushButton_2_clicked()
                 int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
-               // comboBox->setProperty("text",list));
-               // int topicId = set
-               // int topicId = (topicId->property("comboBox")).toInt();
-                //int topicId=ui->comboBox->currentIndex()+1;
-                topicId = (topicId->property("selectedindex")).toInt();
+
+                topicId = (_topicID->property("selectedindex")).toInt();
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
@@ -153,4 +148,4 @@ void Baza::on_pushButton_2_clicked()
         db.close();
     }
 }
-*/
+

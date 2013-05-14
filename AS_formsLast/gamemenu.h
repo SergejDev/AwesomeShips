@@ -21,8 +21,8 @@ public:
     QObject *Root;//корневой элемент QML модели
 
  signals:
-  void ResumeGameButton_Pressed();
-  void BackToMenuButton_Pressed();
+ Q_INVOKABLE void ResumeGameButton_Pressed();
+ Q_INVOKABLE void BackToMenuButton_Pressed();
 
 public:
    // Ui::gamemenu *ui;
