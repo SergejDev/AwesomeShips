@@ -80,11 +80,8 @@ void Baza::SetWindowStyle()
 
 void Baza::on_pushButton_2_clicked()
 {
-    //s="xfghnjstr65ty";
+
   s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
- //   ui->textEdit->setText(s);
-//   memo->setProperty("textEdit",s);
-   //   UserName=(_Username->property("text")).toString();
       textEdit->setProperty("text",s);
 
 }
@@ -122,7 +119,7 @@ void Baza::on_pushButton_3_clicked()
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
 
-                topicId = (_topicID->property("selectedindex")).toInt();
+                topicId = (_topicID->property("selectedIndex")).toInt();
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
@@ -134,7 +131,7 @@ void Baza::on_pushButton_3_clicked()
                 }
                 if(j==0)
                 {
-                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
                     query.exec(queryString);
 
                 }
