@@ -125,7 +125,10 @@ void ToolsWindow::ButtonBackClickedSlot()
 void ToolsWindow::button_baza_clicked()
 {
    Baza *baza = new Baza;
-   baza->show();
+   //baza->show();
 
+   baza->hide();
+  baza->show();
+  // baza->show();
 }
 

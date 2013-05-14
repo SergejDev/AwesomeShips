@@ -7,6 +7,11 @@
 #include "gamecontroller.h"
 #include <QTcpSocket>
 #include "gamemenu.h"
+#include <QMainWindow>
+#include <QtDeclarative/QDeclarativeView>
+#include <QGraphicsObject>
+#include <QtGui>
+
 
 class WindowsController: public QObject
 {
@@ -28,7 +33,8 @@ public:
     WindowsController(QObject *parent=0);
     ~WindowsController();
     QStringList userData;
-
+    QDeclarativeView *ui;
+    QObject *Root;//корневой элемент QML модели
 
 public slots:
     void ShowMenuWindow(bool isGameWindowActive=false);

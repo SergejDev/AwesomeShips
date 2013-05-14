@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-
+import com.nokia.meego 1.0
 Rectangle {
     width: 386
     height: 249
@@ -15,13 +15,13 @@ Rectangle {
         sourceSize.width: 698
         sourceSize.height: 821
         anchors.fill: parent
-    }
+
     Rectangle {
                id: textEditRect //Имя поля вывода
 
                //Размещаем ниже
-               x: parent.width / 4 -70;
-               y: parent.height / 4 + 30 ;
+               x: parent.width / 4 -80
+               y: parent.height / 4 + 30
 
                //Размеры поле вывода
                width: 250
@@ -35,134 +35,71 @@ Rectangle {
                    objectName: "textEdit"
                    wrapMode: TextEdit.Wrap
                    width:parent.width;
+                   height: 24
                    readOnly:true
                }
            }
-    Rectangle {
-        width:400;
-        height: 400;
 
-        Rectangle {
-                id:comboBox
-                property variant items: ["Item 1", "Item 2", "Item 3"]
-                property alias selectedItem: chosenItemText.text;
-                property alias selectedIndex: listView.currentIndex;
-                signal comboClicked;
-                x: 259
-                y: 27
-                width: 100;
-                height: 30;
-                z: 100;
-                smooth:true;
-       }
-    }
-    //кнопка pushButton_2 open
-    Rectangle {
-        id: pushButton_2
-        x: parent.width / 4 - 70 ;
-        y: parent.height/4 -40;
+    AComboBox{
+        objectName: "combo_topic"
+        id: combobox_topic
+        x: 257
+        y: 23
+        width: 0
+        height: 0
+        combobox_text: "Food"
+        model: model_topic
+        titleSelectionDialog: "Topic"
 
-        radius:10
-        color:"#111";
-        width: 70
-        height: 30
-        border.width: 1
-        border.color: "#ffffff"
-        smooth: true
-        Text {
-            id: textpushButton_2
-            text: "Open"
-            anchors.centerIn: parent;
-            font.pixelSize: 12
-            font.family: "Segoe Print"
-            color: "white"
-        }
-        //Действие мыши
-        MouseArea {
-            anchors.fill: parent
-            id: mouseAreapushButton_2
-            onClicked: window.pushButton_2();
-            hoverEnabled: true
-            onEntered: {
-                parent.border.width = 2
-                parent.color = "#333"
-            }
-            onExited:  {
-                parent.border.width = 1
-                parent.color = "#111"
-            }
-        }
     }
-    Rectangle {
-        id: pushButton
-        x: parent.width / 4 - 70 ;
-        y: parent.height/4 +140;
+    AButton
+    {
+      id: pushButton_2
+      x: parent.width / 4 -80
+      y: parent.height/4 -40
+      width: 118
+      height: 30
+      button_text: "Open"
+      onClicked: window.pushButton_2()
+    }
+    AButton
+    {
+      id: pushButton
+      x: parent.width / 4 - 80
+      y: parent.height/4 +140
+      width: 118
+      height: 30
+      button_text: "Back to menu"
+      onClicked: window.on_pushButton_clicked()
+    }
+    AButton
+    {
+      id: pushButton_3
+      x: parent.width / 4 + 160
+      y: parent.height/4 +140
+      width: 119
+      height: 30
+      button_text: "Import"
+      onClicked: window.pushButton_3()
+    }
 
-        radius:10
-        color:"#111";
-        width: 100
-        height: 30
-        border.width: 1
-        border.color: "#ffffff"
-        smooth: true
-        Text {
-            id: textpushButton
-            text: "Back to menu"
-            anchors.centerIn: parent;
-            font.pixelSize: 12
-            font.family: "Segoe Print"
-            color: "white"
-        }
-        //Действие мыши
-        MouseArea {
-            anchors.fill: parent
-            id: mouseAreapushButton
-            onClicked: window.pushButton();
-            hoverEnabled: true
-            onEntered: {
-                parent.border.width = 2
-                parent.color = "#333"
-            }
-            onExited:  {
-                parent.border.width = 1
-                parent.color = "#111"
-            }
-        }
-    }
-    Rectangle {
-        id: pushButton_3
-        x: parent.width / 4 + 160 ;
-        y: parent.height/4 +140;
+}
+    ListModel{
+        id: model_topic
 
-        radius:10
-        color:"#111";
-        width: 100
-        height: 30
-        border.width: 1
-        border.color: "#ffffff"
-        smooth: true
-        Text {
-            id: textpushButton_3
-            text: "Import"
-            anchors.centerIn: parent;
-            font.pixelSize: 12
-            font.family: "Segoe Print"
-            color: "white"
-        }
-        //Действие мыши
-        MouseArea {
-            anchors.fill: parent
-            id: mouseAreapushButton_3
-            onClicked: window.pushButton_3();
-            hoverEnabled: true
-            onEntered: {
-                parent.border.width = 2
-                parent.color = "#333"
+            ListElement{
+                name: "Food"
             }
-            onExited:  {
-                parent.border.width = 1
-                parent.color = "#111"
+            ListElement{
+                name: "Weather"
+            }
+            ListElement{
+                name: "Animals"
             }
         }
-    }
+
+
+
+
+
 }

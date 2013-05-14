@@ -60,4 +60,8 @@ RESOURCES += \
 OTHER_FILES += \
     main.qml \
     gameWindow.qml \
-    baza.qml
+    baza.qml \
+    gamemenu.qml \
+    AButton.qml \
+    AComboBox.qml \
+    ALabel.qml
