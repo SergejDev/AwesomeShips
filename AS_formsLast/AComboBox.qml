@@ -32,7 +32,7 @@ Rectangle{
     border.color: "#ffffff"
     smooth: true
 
-    MyLabel
+    ALabel
     {
         id: combobox_style
         x: 5

@@ -26,7 +26,7 @@ Rectangle {
         source: "deepness_1600.jpg"
         anchors.fill: parent
 
-        MyLabel {
+        ALabel {
             id: label_Settings
             x:97
             y:31
@@ -35,14 +35,14 @@ Rectangle {
         }
 
         //label_Language
-        MyLabel {
+        ALabel {
             id: label_Language
             x:31
             y:103
             text: "Language"
         }
         //label_Topic
-        MyLabel {
+        ALabel {
             id: label_Topic
             x:31
             y:152
@@ -54,7 +54,7 @@ Rectangle {
 
         //combobox_Language
 
-        MyComboBox{
+        AComboBox{
             objectName: "combo_lang"
             id: combobox_lang
             x: 160
@@ -67,7 +67,7 @@ Rectangle {
 
         //combobox_Topic
 
-        MyComboBox{
+        AComboBox{
             objectName: "combo_topic"
             id: combobox_topic
             x: 160
@@ -81,7 +81,7 @@ Rectangle {
 
         //end comboboxes
 
-        MyButton
+        AButton
         {
           id: button_toMainMenu
           x: 31
@@ -94,7 +94,7 @@ Rectangle {
 
         }
 
-        MyButton
+        AButton
         {
           id: button_Save
           x: 179
@@ -105,7 +105,7 @@ Rectangle {
           onClicked: window.on_button_Save_clicked()
         }
 
-        MyButton
+        AButton
         {
           id: button_Baza
           x: 31
