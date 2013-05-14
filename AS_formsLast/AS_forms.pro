@@ -61,6 +61,6 @@ RESOURCES += \
 OTHER_FILES += \
     main.qml \
     qml_WINDOW.qml \
-    MyButton.qml \
-    MyLabel.qml \
-    MyComboBox.qml
+    AButton.qml \
+    AComboBox.qml \
+    ALabel.qml

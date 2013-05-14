@@ -7,10 +7,10 @@
         <file>dk2_darker.png</file>
         <file>gun.png</file>
         <file>plasma_bullet_small.png</file>
-        <file>main.qml</file>
-        <file>MyButton.qml</file>
-        <file>MyComboBox.qml</file>
-        <file>MyLabel.qml</file>
+        <file>AButton.qml</file>
+        <file>ALabel.qml</file>
         <file>qml_WINDOW.qml</file>
+        <file>main.qml</file>
+        <file>AComboBox.qml</file>
     </qresource>
 </RCC>
