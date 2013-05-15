@@ -37,7 +37,7 @@ Rectangle {
                    readOnly:true
                }
            }
-
+/*
     AComboBox{
         objectName: "combo_topic"
         id: combobox_topic
@@ -50,6 +50,7 @@ Rectangle {
         titleSelectionDialog: "Topic"
 
     }
+    */
     AButton
     {
       id: on_pushButton_2
