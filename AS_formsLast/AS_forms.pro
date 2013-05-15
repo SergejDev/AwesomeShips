@@ -64,6 +64,8 @@ OTHER_FILES += \
     MyComboBox.qml \
     MyButton.qml \
     main.qml \
-    gameWindow.qml
+    gameWindow.qml \
+    usernamedialog.qml \
+    tabledialog.qml
 
 

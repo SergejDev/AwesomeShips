@@ -13,5 +13,8 @@
         <file>MyComboBox.qml</file>
         <file>MyLabel.qml</file>
         <file>qml_WINDOW.qml</file>
+        <file>baza.cpp</file>
+        <file>tabledialog.qml</file>
+        <file>usernamedialog.qml</file>
     </qresource>
 </RCC>
