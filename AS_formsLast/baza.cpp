@@ -1,5 +1,5 @@
 #include "baza.h"
-#include "ui_baza.h"
+
 #include <QFile>
 #include <QFileDialog>
 #include <QtSql>
