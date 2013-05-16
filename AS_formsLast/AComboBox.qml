@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.meego 1.0
+//import com.nokia.meego 1.0
 
 Rectangle{
     id: combobox
@@ -11,11 +11,22 @@ Rectangle{
     width: 100
     height: 30
 
-    property alias model:selDial.model
-    property alias selectedIndex:selDial.selectedIndex
-    property alias titleSelectionDialog:selDial.titleText
-    property alias combobox_text:combobox_style.text
-
+   // property alias model:list_model
+   // property alias selectedIndex:
+   /// property alias titleSelectionDialog:
+    //property alias combobox_text:combobox_style.text
+property variant items: ListModel
+//    {
+//        ListElement{
+//            name: "Food"
+//        }
+//        ListElement{
+//            name: "Weather"
+//        }
+//        ListElement{
+//            name: "Animals"
+//        }
+//    }
     radius:10
     gradient: Gradient {
         GradientStop {
@@ -50,7 +61,7 @@ Rectangle{
         anchors.leftMargin: 0
         anchors.topMargin: 0
         anchors.fill: parent
-        onClicked: selDial.open()
+        //onClicked: selDial.open()
 
         hoverEnabled: true
         onEntered: {
@@ -62,17 +73,14 @@ Rectangle{
             parent.color = "#111"
         }
 
+        ListView{
+            id: dropDown
+            delegate: var_model
+        }
+
     }
 
 
-    SelectionDialog
-    {
-        id: selDial
-        anchors.fill: parent
 
-        selectedIndex: 0
-        onAccepted: { combobox_style.text = selDial.model.get(selDial.selectedIndex).name }
-        //onSelectedIndexChanged: { combobox_style.text = selDial.model.get(selDial.selectedIndex).name }
-    }
 
 }

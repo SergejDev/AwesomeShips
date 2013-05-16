@@ -62,5 +62,5 @@ OTHER_FILES += \
     main.qml \
     qml_WINDOW.qml \
     AButton.qml \
-    AComboBox.qml \
-    ALabel.qml
+    ALabel.qml \
+    NewAComboBox.qml
