@@ -11,5 +11,4 @@ Text {
     //.text_label
     font.family: "Segoe Print"
     font.pixelSize: 18
-
 }

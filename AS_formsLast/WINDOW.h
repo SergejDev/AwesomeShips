@@ -35,8 +35,8 @@ public slots:
     Q_INVOKABLE void button_baza_clicked();
 signals:
     void ButtonSaveClicked();
-    void ButtonBackClicked();
-    void ButtonBazaClicked();
+  Q_INVOKABLE  void ButtonBackClicked();
+  Q_INVOKABLE  void ButtonBazaClicked();
 };
 
 
