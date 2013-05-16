@@ -1,9 +1,5 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-//import com.nokia.meego 1.0
-
-
-
 
 //window's size&appiarance
 Rectangle {
@@ -54,28 +50,23 @@ Rectangle {
 
         //combobox_Language
 
-        AComboBox{
+        NewAComboBox{
             objectName: "combo_lang"
             id: combobox_lang
             x: 160
             y: 103
-            combobox_text: "Русский"
-            model: model_lang
-            titleSelectionDialog: "Language"
-
+            items: ["Русский", "English"]
+            z:101
         }
-
         //combobox_Topic
 
-        AComboBox{
+        NewAComboBox{
             objectName: "combo_topic"
             id: combobox_topic
             x: 160
             y: 152
-            combobox_text: "Food"
-            model: model_topic
-            titleSelectionDialog: "Topic"
 
+            items: ["Food", "Weather", "Animals"]
         }
 
 
@@ -117,33 +108,7 @@ Rectangle {
 
 
         }
-    }
-
-
-//    //List for Language
-    ListModel{
-        id: model_lang
-
-            ListElement{
-                name: "Русский"
-            }
-            ListElement{
-                name: "English"
-            }
-        }
-    ListModel{
-        id: model_topic
-
-            ListElement{
-                name: "Food"
-            }
-            ListElement{
-                name: "Weather"
-            }
-            ListElement{
-                name: "Animals"
-            }
-        }
+    }   
 }
 //end window's size&appiarance
 

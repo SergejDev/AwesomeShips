@@ -63,5 +63,5 @@ OTHER_FILES += \
     main.qml \
     gameWindow.qml \
     AButton.qml \
-    AComboBox.qml \
-    ALabel.qml
+    ALabel.qml \
+    NewAComboBox.qml
