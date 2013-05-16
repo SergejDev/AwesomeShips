@@ -65,3 +65,5 @@ OTHER_FILES += \
     AButton.qml \
     ALabel.qml \
     NewAComboBox.qml
+    usernamedialog.qml \
+    tabledialog.qml

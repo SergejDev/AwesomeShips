@@ -1,12 +1,13 @@
 #include "tabledialog.h"
-#include "ui_tabledialog.h"
 
 TableDialog::TableDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::TableDialog)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
-
+    ui = new QDeclarativeView;
+    ui->setSource(QUrl("qrc:/tabledialog.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    setCentralWidget(ui);
+    ui->rootContext()->setContextProperty("window", this);
 }
 
 TableDialog::~TableDialog()
