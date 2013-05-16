@@ -52,6 +52,8 @@ public:
     Q_INVOKABLE void PauseGame();
     Q_INVOKABLE void InputFieldTextChanged(QString word);
 
+
+
     ~GameWindow();
 
 private:
@@ -90,6 +92,8 @@ private slots:
     void EndGame();
     void render();
     void ShipDestroyedSlot(int shipIndex);
+
+    void GameOverOkClick();
 };
 
 #endif // GAMEWINDOW_H

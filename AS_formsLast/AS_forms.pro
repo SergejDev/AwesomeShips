@@ -64,6 +64,6 @@ OTHER_FILES += \
     gameWindow.qml \
     AButton.qml \
     ALabel.qml \
-    NewAComboBox.qml
+    NewAComboBox.qml \
     usernamedialog.qml \
     tabledialog.qml

@@ -13,5 +13,8 @@
         <file>NewAComboBox.qml</file>
         <file>qml_WINDOW.qml</file>
         <file>gameWindow.qml</file>
+        <file>gun.cpp</file>
+        <file>tabledialog.qml</file>
+        <file>usernamedialog.qml</file>
     </qresource>
 </RCC>

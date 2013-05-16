@@ -191,8 +191,7 @@ void WindowsController::StartRead()
                 level = 0;
             }
 
-            //gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
-            gameWindow=new GameWindow(0,0,id,level,userData.value(4).toInt(),menuWindow->addr);
+            gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
             //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
             connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
             connect(gameWindow, SIGNAL(EndGameFlag()), this, SLOT(GoToMainMenuSlot()));

@@ -55,7 +55,8 @@ void GameWindow::render()
     ui->viewport()->update();
 }
 
-void GameWindow::GameOverOkClick(){
+void GameWindow::GameOverOkClick()
+{
     QObject::disconnect(userNameDialog, SIGNAL(okButtonClicked()), this, SLOT(GameOverOkClick()));
     userNameDialog->close();
     client = new QTcpSocket(this);
