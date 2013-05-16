@@ -10,4 +10,3 @@
 снег-snow
 метель-blizzard
 отлига-otliga
-rarara-rarara

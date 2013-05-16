@@ -47,7 +47,7 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 }
 void WindowsController::ShowGameMenu(bool isGameWindowActive)
 {
-    //gameMenu->setModal(true);
+    gameMenu->setModal(true);
 
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));

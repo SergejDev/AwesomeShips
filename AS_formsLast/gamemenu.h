@@ -1,31 +1,26 @@
 #ifndef GAMEMENU_H
 #define GAMEMENU_H
 
-#include <QMainWindow>
-#include <QtDeclarative/QDeclarativeView>
-#include <QGraphicsObject>
-#include <QtGui>
-#include <QDeclarativeContext>
+#include <QDialog>
+#include "gamecontroller.h"
+
 namespace Ui {
 class gamemenu;
 }
 
-class gamemenu : public QMainWindow
+class gamemenu : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit gamemenu(QMainWindow *parent = 0);
+    explicit gamemenu(QWidget *parent = 0);
     ~gamemenu();
-    QDeclarativeView *ui;
-    QObject *Root;//корневой элемент QML модели
-
  signals:
- Q_INVOKABLE void ResumeGameButton_Pressed();
- Q_INVOKABLE void BackToMenuButton_Pressed();
+    void ResumeGameButton_Pressed();
+    void BackToMenuButton_Pressed();
 
 public:
-   // Ui::gamemenu *ui;
+    Ui::gamemenu *ui;
 };
 
 #endif // GAMEMENU_H
