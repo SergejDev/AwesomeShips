@@ -23,6 +23,7 @@ Rectangle {
             radius:parent.radius
             width:parent.width;
             height:comboBox.height;
+            smooth: true
             gradient: Gradient {
                 GradientStop {
                     position: 0
@@ -65,6 +66,7 @@ Rectangle {
             clip:true;
             radius:parent.radius;
             anchors.top: chosenItem.bottom;
+            smooth: true
             gradient: Gradient {
                 GradientStop {
                     position: 0
@@ -84,6 +86,7 @@ Rectangle {
                 height:500;
                 model: comboBox.items
                 currentIndex: 0
+                smooth: true
                 delegate: Item{
                     width:comboBox.width;
                     height: comboBox.height;

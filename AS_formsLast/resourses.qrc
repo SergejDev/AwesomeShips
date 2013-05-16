@@ -12,5 +12,6 @@
         <file>main.qml</file>
         <file>NewAComboBox.qml</file>
         <file>qml_WINDOW.qml</file>
+        <file>gameWindow.qml</file>
     </qresource>
 </RCC>

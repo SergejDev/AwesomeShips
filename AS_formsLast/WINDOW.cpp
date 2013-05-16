@@ -21,6 +21,9 @@ ToolsWindow::ToolsWindow(QMainWindow *parent):
 
     _topicID = Root->findChild<QObject*>("combo_topic");
     _langID = Root->findChild<QObject*>("combo_lang");
+
+    topicID = (_topicID->property("selectedindex")).toInt();
+    languageID = (_langID->property("selectedindex")).toInt();
 }
 
 ToolsWindow::~ToolsWindow()
@@ -38,7 +41,6 @@ int ToolsWindow::GetLanguageID()
 {
     return languageID;
 }
-
 
 void ToolsWindow::on_button_Save_clicked()
 {
