@@ -44,8 +44,8 @@ int ToolsWindow::GetLanguageID()
 
 void ToolsWindow::on_button_Save_clicked()
 {
-    topicID = (_topicID->property("selectedindex")).toInt();
-    languageID = (_langID->property("selectedindex")).toInt();
+    topicID = (_topicID->property("selectedIndex")).toInt();
+    languageID = (_langID->property("selectedIndex")).toInt();
     this->hide();
     emit ButtonSaveClicked();
 }
