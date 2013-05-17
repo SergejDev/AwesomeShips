@@ -120,7 +120,7 @@ void Baza::on_pushButton_3_clicked()
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
 
-                topicId = (_topicID->property("selectedIndex")).toInt();
+                topicId = (_topicID->property("selectedindex")).toInt();
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {

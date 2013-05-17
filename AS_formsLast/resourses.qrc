@@ -12,7 +12,7 @@
         <file>baza.qml</file>
         <file>gamemenu.qml</file>
         <file>AButton.qml</file>
-        <file>AComboBox.qml</file>
         <file>ALabel.qml</file>
+        <file>NewAComboBox.qml</file>
     </qresource>
 </RCC>

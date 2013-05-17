@@ -37,20 +37,17 @@ Rectangle {
                    readOnly:true
                }
            }
-/*
-    AComboBox{
+    NewAComboBox{
         objectName: "combo_topic"
         id: combobox_topic
         x: 257
-        y: 23
-        width: 98
-        height: 29
-        combobox_text: "Food"
-        model: model_topic
-        titleSelectionDialog: "Topic"
+        y: 25
+        width: 107
+        height: 27
 
+        items: ["Food", "Weather", "Animals"]
     }
-    */
+
     AButton
     {
       id: on_pushButton_2
@@ -83,22 +80,5 @@ Rectangle {
     }
 
 }
-    ListModel{
-        id: model_topic
-
-            ListElement{
-                name: "Food"
-            }
-            ListElement{
-                name: "Weather"
-            }
-            ListElement{
-                name: "Animals"
-            }
-        }
-
-
-
-
 
 }

@@ -62,5 +62,5 @@ OTHER_FILES += \
     baza.qml \
     gamemenu.qml \
     AButton.qml \
-    AComboBox.qml \
-    ALabel.qml
+    ALabel.qml \
+    NewAComboBox.qml
