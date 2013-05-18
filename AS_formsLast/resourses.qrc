@@ -9,8 +9,10 @@
         <file>plasma_bullet_small.png</file>
         <file>AButton.qml</file>
         <file>ALabel.qml</file>
+        <file>baza.qml</file>
         <file>main.qml</file>
         <file>NewAComboBox.qml</file>
+        <file>gamemenu.qml</file>
         <file>qml_WINDOW.qml</file>
         <file>gameWindow.qml</file>
         <file>gun.cpp</file>

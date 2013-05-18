@@ -1,5 +1,5 @@
 #include "baza.h"
-#include "ui_baza.h"
+
 #include <QFile>
 #include <QFileDialog>
 #include <QtSql>
@@ -19,16 +19,39 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QSqlQueryModel>
+#include "WINDOW.h"
+
+QObject* textEdit;
+//QObject* comboBox;
+QObject *_topicID;
 
 using namespace std;
-Baza::Baza(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Baza)
+Baza::Baza(QMainWindow *parent) :
+    QMainWindow(parent)
+   // ui(new Ui::Baza)
 {
-    ui->setupUi(this);
+   // ui->setupUi(this);
+    //Включаем QML
+    qDebug("ошщибка");
+    ui = new QDeclarativeView();
+    ui->setSource(QUrl("qrc:/baza.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    setCentralWidget(ui);
+
+    //Находим корневой элемент
+    Root = ui->rootObject();
+    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    ui->rootContext()->setContextProperty("window", this);
+    textEdit = Root->findChild<QObject*>("textEdit");
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    //setModal(true);
-    SetWindowStyle();
+   // setWindowTitle("Awesome ships");
+
+    connect(this, SIGNAL(ButtonBack()), this, SLOT(on_pushButton_clicked()));
+     connect(this, SIGNAL(ButtonOpen()), this, SLOT(on_pushButton_2_clicked()));
+     connect(this, SIGNAL(ButtonImport()),this, SLOT(on_pushButton_3_clicked()));
+    _topicID = Root->findChild<QObject*>("combo_topic");
+
+
 }
 
 Baza::~Baza()
@@ -59,8 +82,8 @@ void Baza::SetWindowStyle()
 void Baza::on_pushButton_2_clicked()
 {
 
-    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
-    ui->textEdit->setText(s);
+  s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
+      textEdit->setProperty("text",s);
 
 }
 void Baza::on_pushButton_3_clicked()
@@ -96,7 +119,8 @@ void Baza::on_pushButton_3_clicked()
                 int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
-                int topicId=ui->comboBox->currentIndex()+1;
+
+                topicId = (_topicID->property("selectedindex")).toInt();
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
@@ -108,7 +132,7 @@ void Baza::on_pushButton_3_clicked()
                 }
                 if(j==0)
                 {
-                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
                     query.exec(queryString);
 
                 }
