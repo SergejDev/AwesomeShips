@@ -1,5 +1,5 @@
 #include "gamemenu.h"
-
+#include "ui_gamemenu.h"
 #include "gamecontroller.h"
 #include "menuwindow.h"
 
