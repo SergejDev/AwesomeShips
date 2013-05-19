@@ -85,7 +85,7 @@ Rectangle {
                 id:listView
                 height:500;
                 model: comboBox.items
-                currentIndex: 0
+                //currentIndex: 0
                 smooth: true
                 delegate: Item{
                     width:comboBox.width;

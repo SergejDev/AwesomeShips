@@ -22,8 +22,8 @@ ToolsWindow::ToolsWindow(QMainWindow *parent):
     _topicID = Root->findChild<QObject*>("combo_topic");
     _langID = Root->findChild<QObject*>("combo_lang");
 
-    topicID = (_topicID->property("selectedindex")).toInt();
-    languageID = (_langID->property("selectedindex")).toInt();
+    topicID = 0;
+    languageID = 0;
 }
 
 ToolsWindow::~ToolsWindow()
@@ -34,7 +34,7 @@ ToolsWindow::~ToolsWindow()
 
 int ToolsWindow::GetTopicID()
 {
-    return topicID;
+    return topicID +1 ;
 }
 
 int ToolsWindow::GetLanguageID()
@@ -46,6 +46,9 @@ void ToolsWindow::on_button_Save_clicked()
 {
     topicID = (_topicID->property("selectedIndex")).toInt();
     languageID = (_langID->property("selectedIndex")).toInt();
+
+    qDebug()<<languageID;
+
     this->hide();
     emit ButtonSaveClicked();
 }

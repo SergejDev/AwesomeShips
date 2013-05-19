@@ -28,9 +28,7 @@
 #include <QSqlTableModel>
 #include <QPainter>
 #include "usernamedialog.h"
-#include "ui_usernamedialog.h"
 #include "tabledialog.h"
-#include "ui_tabledialog.h"
 #include "gamecontroller.h"
 #include <QTcpSocket>
 #include <QtDeclarative/QDeclarativeView>

@@ -20,6 +20,7 @@ public:
     explicit Baza(QMainWindow *parent = 0);
     ~Baza();
 private:
+    QObject *_topicID;
     int topicId;
     void SetWindowStyle();
     QDeclarativeView *ui;

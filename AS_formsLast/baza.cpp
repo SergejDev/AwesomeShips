@@ -15,7 +15,7 @@
 #include "QTextStream"
 #include <QTextCodec>
 #include <iostream>
-#include <menuwindow.h>
+#include "menuwindow.h"
 #include <QStringList>
 #include <QMessageBox>
 #include <QSqlQueryModel>
@@ -23,7 +23,7 @@
 
 QObject* textEdit;
 //QObject* comboBox;
-QObject *_topicID;
+//
 
 using namespace std;
 Baza::Baza(QMainWindow *parent) :
