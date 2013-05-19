@@ -32,7 +32,7 @@ Baza::Baza(QMainWindow *parent) :
 {
    // ui->setupUi(this);
     //Включаем QML
-    qDebug("ошщибка");
+
     ui = new QDeclarativeView();
     ui->setSource(QUrl("qrc:/baza.qml"));
     ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
