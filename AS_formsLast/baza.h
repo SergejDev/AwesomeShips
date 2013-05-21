@@ -2,7 +2,7 @@
 #define BAZA_H
 
 #include <QDialog>
-
+#include<QtSql/QSqlDatabase>
 #include <QMainWindow>
 #include <QtDeclarative/QDeclarativeView>
 #include <QGraphicsObject>
@@ -22,6 +22,11 @@ public:
 private:
     int topicId;
     void SetWindowStyle();
+    void Open();
+    void TeditS();
+    void BazaOpen();
+    void select();
+    void insert();
     QDeclarativeView *ui;
     QObject *Root;//корневой элемент QML модели
 

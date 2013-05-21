@@ -24,6 +24,13 @@
 QObject* textEdit;
 //QObject* comboBox;
 QObject *_topicID;
+QSqlDatabase db;
+QSqlQueryModel model;
+QStringList worlds;
+
+
+  QString temp;
+
 
 using namespace std;
 Baza::Baza(QMainWindow *parent) :
@@ -81,17 +88,14 @@ void Baza::SetWindowStyle()
 
 void Baza::on_pushButton_2_clicked()
 {
-
-  s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
-      textEdit->setProperty("text",s);
-
+  Open();
+  TeditS();
 }
 void Baza::on_pushButton_3_clicked()
 {
-    QSqlDatabase db;
-    db=QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("Words.s3db");
-    db.setPassword("");
+
+  BazaOpen();
+
     if (!db.open())
     {
         qDebug() << db.lastError().text();
@@ -99,7 +103,7 @@ void Baza::on_pushButton_3_clicked()
     else
     {
         QFile file(s);
-        QString temp;
+
         QTextStream out (&file);
         if (!file.open(QIODevice::ReadOnly ))
         {
@@ -111,17 +115,18 @@ void Baza::on_pushButton_3_clicked()
         }
         else
         {
-            QSqlQuery query;
-            QSqlQueryModel model;
+         //QSqlQuery query;
 
             while(!out.atEnd())
             {
                 int j=0;
                 temp = out.readLine();
-                QStringList worlds = temp.split("-");
+                worlds = temp.split("-");
 
                 topicId = (_topicID->property("selectedindex")).toInt();
-                model.setQuery("SELECT * FROM MultiLanguage");
+                select();
+
+               // model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
                     QString eng = model.record(i).value("English").toString();
@@ -132,8 +137,10 @@ void Baza::on_pushButton_3_clicked()
                 }
                 if(j==0)
                 {
-                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
-                    query.exec(queryString);
+
+                    insert();
+                 //  QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                  // query.exec(queryString);
 
                 }
             }
@@ -146,4 +153,28 @@ void Baza::on_pushButton_3_clicked()
         db.close();
     }
 }
+void Baza::Open()
+{
+    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
 
+}
+void Baza::TeditS()
+{
+         textEdit->setProperty("text",s);
+
+}
+void Baza::BazaOpen()
+{
+    db=QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("Words.s3db");
+    db.setPassword("");
+}
+void Baza::select()
+{
+    model.setQuery("SELECT * FROM MultiLanguage");
+}
+void Baza::insert()
+{   QSqlQuery query;
+   QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
+    query.exec(queryString);
+}
