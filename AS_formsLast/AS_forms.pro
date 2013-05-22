@@ -49,7 +49,7 @@ HEADERS  += gamewindow.h \
     gamemenu.h \
     shipExt.h
 
-FORMS    +=
+
 
 RESOURCES += \
     resourses.qrc
@@ -63,7 +63,6 @@ OTHER_FILES += \
     NewAComboBox.qml \
     usernamedialog.qml \
     tabledialog.qml \
-<<<<<<< HEAD
     android/AndroidManifest.xml \
     android/res/drawable/icon.png \
     android/res/drawable/logo.png \
@@ -96,9 +95,6 @@ OTHER_FILES += \
     android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
     android/src/org/kde/necessitas/origo/QtActivity.java \
     android/src/org/kde/necessitas/origo/QtApplication.java \
-    android/version.xml
-
-=======
+    android/version.xml \
     gamemenu.qml \
     baza.qml
->>>>>>> e57a267d09bf37b9f31e0fc0500031fcd8132c91
