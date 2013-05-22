@@ -4,6 +4,7 @@
 #include <QString>
 #include <QImage>
 #include <QPainter>
+#include <QCoreApplication>
 
 class ShiptestTest : public QObject
 {
@@ -80,7 +81,7 @@ void ShiptestTest::testCase5Draw() //проверка метода DrawShip
 
     QImage* canvas=new QImage(1000,1000,QImage::Format_ARGB32);
     QPainter painter(canvas);
-   // sh->DrawShip(&painter);
+    sh->DrawShip(&painter);
 
 }
 
@@ -102,9 +103,21 @@ void ShiptestTest::testCase8GetWordSpeed() //проверка методов Get
     Ship* sh = new Ship("rwrewr",4); //уровень не соответсвует скорости. Не ошибка. Так и задумано
     if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=2))
         result = false;
+    sh = new Ship("rwrewr",4); //уровень не соответсвует скорости. Не ошибка. Так и задумано
+    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=2))
+        result = false;
+    sh = new Ship("rwrewr",5);
+    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=2))
+        result = false;
+    sh = new Ship("rwrewr",8); //уровень не соответсвует скорости. Не ошибка. Так и задумано
+    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=3))
+        result = false;
+    sh = new Ship("rwrewr",9); //уровень не соответсвует скорости. Не ошибка. Так и задумано
+    if ((sh->GetWord()!="rwrewr") || (sh->GetSpeed()!=3))
+        result = false;
     QCOMPARE(result, true);
 }
 
-QTEST_APPLESS_MAIN(ShiptestTest)
+QTEST_MAIN(ShiptestTest)
 
 #include "tst_shiptesttest.moc"
