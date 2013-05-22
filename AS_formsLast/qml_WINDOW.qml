@@ -57,7 +57,7 @@ Rectangle {
             y: 103
             items: ["Русский", "English"]
             z:101
-            selectedindex: 0;
+            //selectedindex: 0;
         }
         //combobox_Topic
 
@@ -66,7 +66,7 @@ Rectangle {
             id: combobox_topic
             x: 160
             y: 152
-            selectedindex: 1;
+            //selectedindex: 0;
             items: ["Food", "Weather", "Animals"]
         }
 

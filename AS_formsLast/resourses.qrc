@@ -16,5 +16,7 @@
         <file>gun.cpp</file>
         <file>tabledialog.qml</file>
         <file>usernamedialog.qml</file>
+        <file>baza.qml</file>
+        <file>gamemenu.qml</file>
     </qresource>
 </RCC>

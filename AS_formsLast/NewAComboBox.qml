@@ -9,7 +9,7 @@ Rectangle {
 
         property variant items: ["Item 1", "Item 2", "Item 3"]
         property alias selectedItem: chosenItemText.text;
-        property alias selectedindex: listView.currentIndex;
+        property alias selectedIndex: listView.currentIndex;
         signal comboClicked;
 
         radius:10
@@ -85,7 +85,7 @@ Rectangle {
                 id:listView
                 height:500;
                 model: comboBox.items
-                currentIndex: 0
+                //currentIndex: 0
                 smooth: true
                 delegate: Item{
                     width:comboBox.width;

@@ -47,7 +47,7 @@ void WindowsController::ShowMenuWindow(bool isGameWindowActive)
 }
 void WindowsController::ShowGameMenu(bool isGameWindowActive)
 {
-    gameMenu->setModal(true);
+    //gameMenu->setModal(true);
 
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), gameWindow, SLOT(ResumeGame()));
     connect(gameMenu, SIGNAL(ResumeGameButton_Pressed()), this, SLOT(ReturnToGame()));
@@ -191,6 +191,8 @@ void WindowsController::StartRead()
                 level = 0;
             }
 
+            qDebug()<<settingsWindow->GetLanguageID()<<"settingsWindow->GetLanguageID()";
+            qDebug()<<settingsWindow->GetTopicID()<<"settingsWindow->GetTopicID()";
             gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
             //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
             connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
