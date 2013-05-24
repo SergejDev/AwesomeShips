@@ -1,9 +1,9 @@
 QMainWindow {
-background-image:url(":/deepness_1600.jpg")
+background-image:url(":/deepness_1600.png")
 }
 
 QDialog {
-background-image:url(":/deepness_1600.jpg")
+background-image:url(":/deepness_1600.png")
 }
 
 QPushButton{ 

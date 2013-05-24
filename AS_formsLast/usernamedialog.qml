@@ -16,7 +16,7 @@ Rectangle {
         anchors.bottomMargin: 0
         anchors.leftMargin: 0
         anchors.topMargin: 0
-        source: "deepness_1600.jpg"
+        source: "deepness_1600.png"
         sourceSize.width: 698
         sourceSize.height: 821
         anchors.fill: parent

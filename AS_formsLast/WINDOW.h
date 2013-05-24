@@ -31,11 +31,11 @@ private:
     void setupToolsWindow(QWidget *ToolsWindow);
 public slots:
     Q_INVOKABLE void on_button_Save_clicked();
-
+    Q_INVOKABLE void ButtonBackClickedSlot();
     Q_INVOKABLE void button_baza_clicked();
 signals:
     void ButtonSaveClicked();
-    Q_INVOKABLE void ButtonBackClicked();
+    void ButtonBackClicked();
     void ButtonBazaClicked();
 };
 

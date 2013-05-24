@@ -30,7 +30,7 @@ Baza::Baza(QMainWindow *parent) :
     QMainWindow(parent)
    // ui(new Ui::Baza)
 {
-    //ui->setupUi(this);
+   // ui->setupUi(this);
     //Включаем QML
 
     ui = new QDeclarativeView();
@@ -44,7 +44,7 @@ Baza::Baza(QMainWindow *parent) :
     ui->rootContext()->setContextProperty("window", this);
     textEdit = Root->findChild<QObject*>("textEdit");
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    //setWindowTitle("Awesome ships");
+   // setWindowTitle("Awesome ships");
 
     connect(this, SIGNAL(ButtonBack()), this, SLOT(on_pushButton_clicked()));
      connect(this, SIGNAL(ButtonOpen()), this, SLOT(on_pushButton_2_clicked()));

@@ -49,20 +49,18 @@ void ToolsWindow::on_button_Save_clicked()
 
     qDebug()<<languageID;
 
-    //this->hide();
+    this->hide();
     emit ButtonSaveClicked();
-    emit ButtonBackClicked();
 }
 
-/*void ToolsWindow::ButtonBackClickedSlot()
+void ToolsWindow::ButtonBackClickedSlot()
 {
     this->hide();
     emit ButtonBackClicked();
-}*/
-
+}
 void ToolsWindow::button_baza_clicked()
 {
-    Baza *baza = new Baza;
+   Baza *baza = new Baza;
    baza->show();
 }
 

@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>deepness_1600.jpg</file>
-        <file>deepness_1600_small.jpg</file>
         <file>Style.txt</file>
         <file>db2_darker.png</file>
         <file>dk2_darker.png</file>
@@ -18,5 +16,7 @@
         <file>usernamedialog.qml</file>
         <file>baza.qml</file>
         <file>gamemenu.qml</file>
+        <file>deepness_1600.png</file>
+        <file>deepness_1600_small.png</file>
     </qresource>
 </RCC>

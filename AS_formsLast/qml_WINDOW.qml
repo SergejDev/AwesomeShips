@@ -19,7 +19,7 @@ Rectangle {
         anchors.topMargin: 0
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
-        source: "deepness_1600.jpg"
+        source: "deepness_1600.png"
         anchors.fill: parent
 
         ALabel {
@@ -81,7 +81,7 @@ Rectangle {
           width: 80
           height: 30
           button_text: "Back"
-          onClicked: window.ButtonBackClicked()
+          onClicked: window.ButtonBackClickedSlot()
 
 
         }
