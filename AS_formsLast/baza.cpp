@@ -1,5 +1,5 @@
 #include "baza.h"
-#include "ui_baza.h"
+
 #include <QFile>
 #include <QFileDialog>
 #include <QtSql>
@@ -15,22 +15,24 @@
 #include "QTextStream"
 #include <QTextCodec>
 #include <iostream>
-#include <menuwindow.h>
+#include "menuwindow.h"
 #include <QStringList>
 #include <QMessageBox>
 #include <QSqlQueryModel>
+#include "WINDOW.h"
 
 QObject* textEdit;
-QObject* comboBox;
-QObject *_topicID;
+//QObject* comboBox;
+//
 
 using namespace std;
 Baza::Baza(QMainWindow *parent) :
     QMainWindow(parent)
    // ui(new Ui::Baza)
 {
-   // ui->setupUi(this);
+    //ui->setupUi(this);
     //Включаем QML
+
     ui = new QDeclarativeView();
     ui->setSource(QUrl("qrc:/baza.qml"));
     ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
@@ -42,17 +44,14 @@ Baza::Baza(QMainWindow *parent) :
     ui->rootContext()->setContextProperty("window", this);
     textEdit = Root->findChild<QObject*>("textEdit");
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-   // setWindowTitle("Awesome ships");
-   // setFixedSize(220,360);
-   // setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    //setModal(true);
-//  SetWindowStyle();
+    //setWindowTitle("Awesome ships");
+
+    connect(this, SIGNAL(ButtonBack()), this, SLOT(on_pushButton_clicked()));
+     connect(this, SIGNAL(ButtonOpen()), this, SLOT(on_pushButton_2_clicked()));
+     connect(this, SIGNAL(ButtonImport()),this, SLOT(on_pushButton_3_clicked()));
     _topicID = Root->findChild<QObject*>("combo_topic");
-    //combo_topic = new QComboBox(BazaForm);
-    //Combo_Topic->setObjectName("Combo_Topic");
-    //Combo_Topic->setGeometry(QRect(218, 180, 131, 31));
-    //Combo_Topic->insertItems(0, QStringList()<<QString::fromUtf8("Food")<<QString::fromUtf8("Weather")<<QString::fromUtf8("Animals"));
-    //Combo_Topic->setCurrentIndex(0);
+
+
 }
 
 Baza::~Baza()
@@ -83,14 +82,11 @@ void Baza::SetWindowStyle()
 void Baza::on_pushButton_2_clicked()
 {
 
-    s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
- //   ui->textEdit->setText(s);
-//   memo->setProperty("textEdit",s);
-   //   UserName=(_Username->property("text")).toString();
+  s = QFileDialog::getOpenFileName(this,QString::fromLocal8Bit("Открыть"), "/home","DB File(*.txt)");
       textEdit->setProperty("text",s);
 
 }
-/*void Baza::on_pushButton_3_clicked()
+void Baza::on_pushButton_3_clicked()
 {
     QSqlDatabase db;
     db=QSqlDatabase::addDatabase("QSQLITE");
@@ -123,11 +119,8 @@ void Baza::on_pushButton_2_clicked()
                 int j=0;
                 temp = out.readLine();
                 QStringList worlds = temp.split("-");
-               // comboBox->setProperty("text",list));
-               // int topicId = set
-               // int topicId = (topicId->property("comboBox")).toInt();
-                //int topicId=ui->comboBox->currentIndex()+1;
-                topicId = (topicId->property("selectedindex")).toInt();
+
+                topicId = (_topicID->property("selectedIndex")).toInt();
                 model.setQuery("SELECT * FROM MultiLanguage");
                 for(int i=0; i<model.rowCount(); i++)
                 {
@@ -139,7 +132,7 @@ void Baza::on_pushButton_2_clicked()
                 }
                 if(j==0)
                 {
-                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId) +",'"+worlds[0]+"','"+worlds[1]+"');";
+                    QString queryString="INSERT INTO MultiLanguage(topicId,Russian,English) VALUES("+ QString::number(topicId+1) +",'"+worlds[0]+"','"+worlds[1]+"');";
                     query.exec(queryString);
 
                 }
@@ -153,4 +146,4 @@ void Baza::on_pushButton_2_clicked()
         db.close();
     }
 }
-*/
+

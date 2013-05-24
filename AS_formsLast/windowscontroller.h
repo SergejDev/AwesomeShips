@@ -7,11 +7,6 @@
 #include "gamecontroller.h"
 #include <QTcpSocket>
 #include "gamemenu.h"
-#include <QMainWindow>
-#include <QtDeclarative/QDeclarativeView>
-#include <QGraphicsObject>
-#include <QtGui>
-
 
 class WindowsController: public QObject
 {
@@ -29,12 +24,11 @@ private:
     void StartAwaitTimer();
     void ConnectionEstablished();
     bool ArePassAndLoginGood();
+    QObject *Root;
 public:
     WindowsController(QObject *parent=0);
     ~WindowsController();
     QStringList userData;
-    QDeclarativeView *ui;
-    QObject *Root;//корневой элемент QML модели
 
 public slots:
     void ShowMenuWindow(bool isGameWindowActive=false);
@@ -50,6 +44,7 @@ private slots:
     void ReturnToMenuSlot();
     void StartRead();
     void ConnectionTimeout();
+        void ButtonBackClickedSlot();
 };
 
 #endif // WINDOWSCONTROLLER_H

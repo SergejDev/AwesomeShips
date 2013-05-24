@@ -20,6 +20,7 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
     initializeQmlEngine();
     MakeInterface();
     gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
+
     initializeFields();
     initializeRenderTimer();
 
@@ -41,35 +42,37 @@ void GameWindow::ResumeGame()
 
 void GameWindow::EndGame()
 {
-    ////////////////////////////////// WRITING TO SERVER
-    gameController->PauseGame();
-    userNameDialog=new UserNameDialog(this);
-    userNameDialog->setModal(true);
-    if(userNameDialog->exec() == QDialog::Accepted)
-    {
-        client = new QTcpSocket(this);
 
-        if (!client->isOpen())
-        {
-            QHostAddress addr(address);
-            client->connectToHost(addr, 9485);
-        }
-        QStringList list;
-        list.append("Update");
-        list.append(QString::number(userID));
-        list.append(QString::number(gameController->GetScore()));
-        list.append(QString::number(gameController->GetLevel()));
-        QDataStream stream(client);
-        stream << list;
-    }
-    ////////GETTING WHOLE STATISTIC TABLE AND SHOW IT
-    connect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
-    //this->close();
+    gameController->PauseGame();
+
+    userNameDialog=new UserNameDialog(this);
+    userNameDialog->show();
+    QObject::connect(userNameDialog, SIGNAL(okButtonClicked()), this, SLOT(GameOverOkClick()));
 }
 
 void GameWindow::render()
 {
     ui->viewport()->update();
+}
+
+void GameWindow::GameOverOkClick()
+{
+    QObject::disconnect(userNameDialog, SIGNAL(okButtonClicked()), this, SLOT(GameOverOkClick()));
+    userNameDialog->close();
+    client = new QTcpSocket(this);
+    if (!client->isOpen())
+    {
+        QHostAddress addr(address);
+        client->connectToHost(addr, 9485);
+    }
+    QStringList list;
+    list.append("Update");
+    list.append(QString::number(userID));
+    list.append(QString::number(gameController->GetScore()));
+    list.append(QString::number(gameController->GetLevel()));
+    QDataStream stream(client);
+    stream << list;
+    connect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
 }
 
 void GameWindow::StartRead()
@@ -81,24 +84,10 @@ void GameWindow::StartRead()
     QString string(source);
     QStringList list1 = string.split(':');
 
-    QStandardItemModel *model = new QStandardItemModel(list1.count(),3,this);
-    QStringList headers;
-    headers<<"Nickname"<<"Level"<<"Score";
-    model->setHorizontalHeaderLabels(headers);
-    for (int i = 0 ; i < list1.count() ; i++)
-    {
-        QStringList list2 = list1.value(i).split(',');
-        int c=0;
-        QStandardItem *item = new QStandardItem(QString(list2.value(0)));
-        model->setItem(i,c++,item);
-        item = new QStandardItem(QString::number((list2.value(1)).toInt()+1));
-        model->setItem(i,c++,item);
-        item = new QStandardItem(QString(list2.value(2)));
-        model->setItem(i,c++,item);
-    }
-    tableDialog->ui->tableView->setModel(model);
-    tableDialog->setModal(true);
+    tableDialog=new TableDialog(this);
     tableDialog->show();
+    tableDialog->ui->rootContext()->setContextProperty("list", list1);
+
     disconnect(client,SIGNAL(readyRead()),this,SLOT(StartRead()));
 }
 
@@ -158,7 +147,6 @@ bool GameWindow::eventFilter(QObject *target, QEvent *event)
 
 void GameWindow::initializeFields()
 {
-    tableDialog=new TableDialog(this);
     renderFrequency=20;
     setScore("Score: "+QString::number(gameController->GetScore()));
     setLevel("Level: "+QString::number(gameController->GetLevel()+1));

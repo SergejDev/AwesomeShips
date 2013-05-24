@@ -23,13 +23,16 @@ public:
     QString UserName;///перенести в привате и дописать геттеры
     QString PassWord;
     QString addr;
+    QObject* _Username;
+    QObject* _Password;
+    QObject* _IP;
     bool getCredentialsState();
+    QDeclarativeView *ui;
 
     Q_INVOKABLE void GetUserData();
 
 private:
 
-    QDeclarativeView *ui;
     void SetWindowStyle();
     bool Validate();
     QPushButton *RegisterButton;

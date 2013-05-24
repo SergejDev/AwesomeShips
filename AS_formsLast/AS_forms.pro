@@ -49,20 +49,19 @@ HEADERS  += gamewindow.h \
     gamemenu.h \
     shipExt.h
 
-FORMS    += \
-    usernamedialog.ui \
-    tabledialog.ui \
-    gamemenu.ui
+FORMS    +=
 
 RESOURCES += \
     resourses.qrc
 
 OTHER_FILES += \
+    qml_WINDOW.qml \
     main.qml \
     gameWindow.qml \
-    baza.qml \
-    gamemenu.qml \
     AButton.qml \
-    AComboBox.qml \
     ALabel.qml \
-    ATextBox.qml
+    NewAComboBox.qml \
+    usernamedialog.qml \
+    tabledialog.qml \
+    gamemenu.qml \
+    baza.qml

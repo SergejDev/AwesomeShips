@@ -1,6 +1,6 @@
 #ifndef SHIPEXT_H
 #define SHIPEXT_H
-#include <Ship.h>
+#include "Ship.h"
 
 class ShipExtended: public Ship
 {

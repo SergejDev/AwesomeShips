@@ -1,9 +1,7 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.meego 1.0
 Rectangle {
     width: 386
-    height: 249
+    height: 360
     Image {
         x: 0
         y: 0
@@ -24,8 +22,8 @@ Rectangle {
                y: parent.height / 4 + 30
 
                //Размеры поле вывода
-               width: 250
-               height: 35
+               width: 200
+               height: 25
 
                //Цвет поля вывода
                color: "gray"
@@ -35,23 +33,21 @@ Rectangle {
                    objectName: "textEdit"
                    wrapMode: TextEdit.Wrap
                    width:parent.width;
-                   height: 24
+                   height: 25
                    readOnly:true
                }
            }
-
-    AComboBox{
+    NewAComboBox{
         objectName: "combo_topic"
         id: combobox_topic
         x: 257
-        y: 23
-        width: 98
-        height: 29
-        combobox_text: "Food"
-        model: model_topic
-        titleSelectionDialog: "Topic"
+        y: 25
+        width: 107
+        height: 27
 
+        items: ["Food", "Weather", "Animals"]
     }
+
     AButton
     {
       id: on_pushButton_2
@@ -60,7 +56,7 @@ Rectangle {
       width: 118
       height: 30
       button_text: "Open"
-      onClicked: window.on_pushButton_2_clicked()
+      onClicked: window.ButtonOpen()
     }
     AButton
     {
@@ -70,7 +66,7 @@ Rectangle {
       width: 118
       height: 30
       button_text: "Back to menu"
-      onClicked: window.on_pushButton_clicked()
+      onClicked: window.ButtonBack()
     }
     AButton
     {
@@ -80,26 +76,9 @@ Rectangle {
       width: 119
       height: 30
       button_text: "Import"
-      onClicked: window.pushButton_3()
+      onClicked: window.ButtonImport()
     }
 
 }
-    ListModel{
-        id: model_topic
-
-            ListElement{
-                name: "Food"
-            }
-            ListElement{
-                name: "Weather"
-            }
-            ListElement{
-                name: "Animals"
-            }
-        }
-
-
-
-
 
 }

@@ -28,9 +28,7 @@
 #include <QSqlTableModel>
 #include <QPainter>
 #include "usernamedialog.h"
-#include "ui_usernamedialog.h"
 #include "tabledialog.h"
-#include "ui_tabledialog.h"
 #include "gamecontroller.h"
 #include <QTcpSocket>
 #include <QtDeclarative/QDeclarativeView>
@@ -51,6 +49,8 @@ public:
 
     Q_INVOKABLE void PauseGame();
     Q_INVOKABLE void InputFieldTextChanged(QString word);
+
+
 
     ~GameWindow();
 
@@ -90,6 +90,8 @@ private slots:
     void EndGame();
     void render();
     void ShipDestroyedSlot(int shipIndex);
+
+    void GameOverOkClick();
 };
 
 #endif // GAMEWINDOW_H

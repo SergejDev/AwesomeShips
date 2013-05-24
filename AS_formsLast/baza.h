@@ -20,17 +20,22 @@ public:
     explicit Baza(QMainWindow *parent = 0);
     ~Baza();
 private:
+    QObject *_topicID;
+    int topicId;
     void SetWindowStyle();
     QDeclarativeView *ui;
     QObject *Root;//корневой элемент QML модели
 
 private slots:
-  Q_INVOKABLE  void on_pushButton_clicked();
-  Q_INVOKABLE  void on_pushButton_2_clicked();
- // Q_INVOKABLE   void on_pushButton_3_clicked();
+  void on_pushButton_clicked();
+  void on_pushButton_2_clicked();
+  void on_pushButton_3_clicked();
 
 signals:
  void ButtonBackClicked();
+ Q_INVOKABLE void ButtonBack();
+ Q_INVOKABLE void ButtonOpen();
+ Q_INVOKABLE void ButtonImport();
 private:
   //  Ui::Baza *ui;
      QString s;

@@ -166,10 +166,45 @@ void WindowsController::StartGameSlot()
 
 void WindowsController::SettingsSlot()
 {
-    //qDebug()<<"settings";
     menuWindow->hide();
+
+    menuWindow->ui = new QDeclarativeView(menuWindow);
+    menuWindow->ui->setSource(QUrl("qrc:/qml_WINDOW.qml"));
+    menuWindow->ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    menuWindow->setCentralWidget(menuWindow->ui);
+
     //settingsWindow=new ToolsWindow();
-    settingsWindow->show();
+    //settingsWindow->show();
+
+    connect(settingsWindow,SIGNAL(ButtonBackClicked()),this,SLOT(ButtonBackClickedSlot()));
+
+    Root = menuWindow->ui->rootObject();
+    menuWindow->_Username = Root->findChild<QObject*>("username");
+    menuWindow->_Password = Root->findChild<QObject*>("password");
+    menuWindow->_IP = Root->findChild<QObject*>("ip");
+    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    menuWindow->ui->rootContext()->setContextProperty("window", settingsWindow);
+
+    menuWindow->show();
+}
+
+void WindowsController::ButtonBackClickedSlot()
+{
+    menuWindow->hide();
+
+    menuWindow->ui = new QDeclarativeView(menuWindow);
+    menuWindow->ui->setSource(QUrl("qrc:/main.qml"));
+    Root = menuWindow->ui->rootObject();
+    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    menuWindow->ui->rootContext()->setContextProperty("window", menuWindow);
+    menuWindow->setWindowTitle("Awesome ships");
+    menuWindow->setCentralWidget(menuWindow->ui);
+    onApplicationStart = true;
+    menuWindow->_Username = Root->findChild<QObject*>("username");
+    menuWindow->_Password = Root->findChild<QObject*>("password");
+    menuWindow->_IP = Root->findChild<QObject*>("ip");
+    menuWindow->show();
+
 }
 
 void WindowsController::StartRead()
@@ -190,11 +225,13 @@ void WindowsController::StartRead()
             {
                 level = 0;
             }
+
+            qDebug()<<settingsWindow->GetLanguageID()<<"settingsWindow->GetLanguageID()";
+            qDebug()<<settingsWindow->GetTopicID()<<"settingsWindow->GetTopicID()";
             gameWindow=new GameWindow(settingsWindow->GetLanguageID(),settingsWindow->GetTopicID(),id,level,userData.value(4).toInt(),menuWindow->addr);
             //connect(gameWindow,SIGNAL(MenuButtonPressed(bool)),this,SLOT(ShowMenuWindow(bool)));
             connect(gameWindow, SIGNAL(MenuButtonPressed(bool)), this, SLOT(ShowGameMenu(bool)));
             connect(gameWindow, SIGNAL(EndGameFlag()), this, SLOT(GoToMainMenuSlot()));
-
             gameWindow->show();
             onApplicationStart=false;
             gameStarted=true;

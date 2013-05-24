@@ -3,14 +3,10 @@
 #include <QTextStream>
 #include <QMessageBox>
 
-QObject* _Username;
-QObject* _Password;
-QObject* _IP;
-
 MenuWindow::MenuWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    //Включаем QML
+    //???????? QML
     ui = new QDeclarativeView(this);
     ui->setSource(QUrl("qrc:/main.qml"));
     ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
@@ -18,11 +14,11 @@ MenuWindow::MenuWindow(QWidget *parent) :
 
     //Находим корневой элемент
     Root = ui->rootObject();
-    //Соединяем C++ и QML, делая видимым функции С++ через элемент window
+    //????????? C++ ? QML, ????? ??????? ??????? ?++ ????? ??????? window
     ui->rootContext()->setContextProperty("window", this);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     setWindowTitle("Awesome ships");
-    setFixedSize(220,360);
+    setFixedSize(290,350);
 
     _Username = Root->findChild<QObject*>("username");
     _Password = Root->findChild<QObject*>("password");

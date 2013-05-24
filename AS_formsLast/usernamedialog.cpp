@@ -1,11 +1,14 @@
 #include "usernamedialog.h"
-#include "ui_usernamedialog.h"
 
 UserNameDialog::UserNameDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::UserNameDialog)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
+    ui = new QDeclarativeView;
+    ui->setSource(QUrl("qrc:/usernamedialog.qml"));
+    ui->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    setCentralWidget(ui);
+    Root = ui->rootObject();
+    ui->rootContext()->setContextProperty("window", this);
 }
 
 UserNameDialog::~UserNameDialog()
