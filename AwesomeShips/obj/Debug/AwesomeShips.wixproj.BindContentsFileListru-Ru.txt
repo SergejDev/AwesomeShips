@@ -1,0 +1,10 @@
+D:\VSRPP\Rel\AwesomeShips.exe
+D:\VSRPP\Rel\libgcc_s_dw2-1.dll
+D:\VSRPP\Rel\mingwm10.dll
+D:\VSRPP\Rel\QtCore4.dll
+D:\VSRPP\Rel\QtDeclarative4.dll
+D:\VSRPP\Rel\QtGui4.dll
+D:\VSRPP\Rel\QtNetwork4.dll
+D:\VSRPP\Rel\QtScript4.dll
+D:\VSRPP\Rel\QtSql4.dll
+D:\VSRPP\Rel\QtXmlPatterns4.dll

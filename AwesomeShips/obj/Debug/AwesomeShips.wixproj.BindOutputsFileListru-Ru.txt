@@ -1,0 +1,2 @@
+D:\VSRPP\AwesomeShips\AwesomeShips\bin\Debug\AwesomeShips.msi
+D:\VSRPP\AwesomeShips\AwesomeShips\bin\Debug\AwesomeShips.wixpdb
