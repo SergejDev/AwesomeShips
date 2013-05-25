@@ -4,3 +4,5 @@ D:\VSRPP\AwesomeShips\AwesomeShips\bin\Debug\AwesomeShips.wixpdb
 obj\Debug\AwesomeShips.wixproj.BindContentsFileListru-Ru.txt
 obj\Debug\AwesomeShips.wixproj.BindOutputsFileListru-Ru.txt
 obj\Debug\AwesomeShips.wixproj.BindBuiltOutputsFileListru-Ru.txt
+D:\VSRPP\AwesomeShips(wix_qt)\AwesomeShips\bin\Debug\AwesomeShips.msi
+D:\VSRPP\AwesomeShips(wix_qt)\AwesomeShips\bin\Debug\AwesomeShips.wixpdb

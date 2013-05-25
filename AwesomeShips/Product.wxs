@@ -16,18 +16,19 @@
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLLOCATION" Name="$(var.ProductName)">
 					<Component Id="ProductComponent" Guid="b11556a2-e066-4393-af5c-9c9210187eb2">
-						<File Id='AwesomeShips' DiskId='1' Source='D:\VSRPP\Rel\AwesomeShips.exe'/>
+						<File Id='AwesomeShips' DiskId='1' Source='D:\VSRPP\RelQt\AwesomeShips.exe'/>
 
-						<File Id='libgcc_s_dw2_1' DiskId='1' Source='D:\VSRPP\Rel\libgcc_s_dw2-1.dll'/>
-						<File Id='mingwm10' DiskId='1' Source='D:\VSRPP\Rel\mingwm10.dll'/>
-						<File Id='QtCored4' DiskId='1' Source='D:\VSRPP\Rel\QtCore4.dll'/>
-						<File Id='QtDeclaratived4' DiskId='1' Source='D:\VSRPP\Rel\QtDeclarative4.dll'/>
-						<File Id='QtGuid4' DiskId='1' Source='D:\VSRPP\Rel\QtGui4.dll'/>
-						<File Id='QtNetworkd4' DiskId='1' Source='D:\VSRPP\Rel\QtNetwork4.dll'/>
-						<File Id='QtScriptd4' DiskId='1' Source='D:\VSRPP\Rel\QtScript4.dll'/>
-						<File Id='QtSqld4' DiskId='1' Source='D:\VSRPP\Rel\QtSql4.dll'/>
-						<File Id='QtXmlPatternsd4' DiskId='1' Source='D:\VSRPP\Rel\QtXmlPatterns4.dll'/>
+						<File Id='libgcc_s_dw2_1' DiskId='1' Source='D:\VSRPP\RelQt\libgcc_s_dw2-1.dll'/>
+						<File Id='mingwm10' DiskId='1' Source='D:\VSRPP\RelQt\mingwm10.dll'/>
+						<File Id='QtCored4' DiskId='1' Source='D:\VSRPP\RelQt\QtCore4.dll'/>
+						<File Id='QtGuid4' DiskId='1' Source='D:\VSRPP\RelQt\QtGui4.dll'/>
+						<File Id='QtNetworkd4' DiskId='1' Source='D:\VSRPP\RelQt\QtNetwork4.dll'/>
+						<File Id='QtSqld4' DiskId='1' Source='D:\VSRPP\RelQt\QtSql4.dll'/>
 
+						<File Id='db2_darker' DiskId='1' Source='D:\VSRPP\RelQt\db2_darker.png'/>
+						<File Id='dk2_darker' DiskId='1' Source='D:\VSRPP\RelQt\dk2_darker.png'/>
+						<File Id='gun' DiskId='1' Source='D:\VSRPP\RelQt\gun.png'/>
+						<File Id='Words' DiskId='1' Source='D:\VSRPP\RelQt\Words.S3DB'/>
 					</Component>
 				</Directory>
 			</Directory>
