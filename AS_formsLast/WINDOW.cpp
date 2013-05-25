@@ -53,7 +53,7 @@ void ToolsWindow::setupToolsWindow(QWidget *ToolsWindowForm)
 
     this->setStyleSheet(str);
     QPalette pallete;
-    pallete.setBrush(ToolsWindowForm->backgroundRole(), QBrush(QPixmap(":/deepness_1600.jpg")));
+    pallete.setBrush(ToolsWindowForm->backgroundRole(), QBrush(QPixmap(":/deepness_1600.png")));
     ToolsWindowForm->setPalette(pallete);
     ToolsWindowForm->autoFillBackground();
 
