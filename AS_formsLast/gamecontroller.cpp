@@ -7,6 +7,8 @@
 GameController::GameController(int windowWidth,int level,int languageID,int topicID, int score, QObject *parrent):QObject(parrent)
 {
     wordGetter=new WorkWithDB("Words.s3db");
+    wordGetter->SetParams(3,topicID,languageID);
+    words=wordGetter->GetWords();
 
     currentScore=score;
     scorePointsForDestroyingShip=10;
@@ -17,8 +19,6 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
     allShips=new Ships(windowWidth,parrent);
     allBullets=new Bullets(windowWidth,parrent);
     gun=new Gun(windowWidth);
-    wordGetter->SetParams(3,topicID,languageID);
-    words=wordGetter->GetWords();
     currentWordIndex=0;
     background=new QImage(":/deepness_1600.jpg");
 
@@ -40,7 +40,6 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
     animationsTimer->start(animationTimerFrequency);
     addShipTimer->start(addShipTimerFrequency);
-    qDebug()<<addShipTimerFrequency<<"addShipTimerFrequency";
 }
 
 void GameController::AddShip()

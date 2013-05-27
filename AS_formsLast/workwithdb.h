@@ -37,9 +37,6 @@ public:
     int GetCount();
     int GetTopicID();
     int GetLang();
-    int GetUserID(QString name, QString pass);
-    int GetScore(int ID);
-    int GetLevel(int ID);
     ///////////////////////////////////
     bool CreateOpenDB(QString DBName);//+
     void InsertDataTopicTable();

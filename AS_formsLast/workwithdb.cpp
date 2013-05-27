@@ -66,37 +66,6 @@ QSqlQueryModel* WorkWithDB::ReadConnectedTables(QStringList TablesNames)//1st ta
     return q_model;
 }
 
-int WorkWithDB::GetUserID(QString name, QString pass)
-{
-    ReadTable("Users");
-    for (int i = 0 ; i < tableModel->rowCount(); i++)
-    {
-        if ((tableModel->record(i).value("NikName")==name)&&(tableModel->record(i).value("Password")==pass))
-        {
-            return i + 1;
-        }
-    }
-    return -1;
-}
-
-int WorkWithDB::GetScore(int ID)
-{
-    ReadTable("Statistic");
-    for (int i = 0 ; i < tableModel->rowCount(); i++)
-        if (tableModel->record(i).value("ID")==ID)
-            return tableModel->record(i).value("Scores").toInt();
-    return 0;
-}
-
-int WorkWithDB::GetLevel(int ID)
-{
-    ReadTable("Users");
-    for (int i = 0 ; i < tableModel->rowCount(); i++)
-        if (tableModel->record(i).value("ID")==ID)
-            return tableModel->record(i).value("Level").toInt();
-    return 1;
-}
-
 QStringList WorkWithDB::GetWords()
 {
     QStringList strList;
@@ -121,7 +90,6 @@ QStringList WorkWithDB::GetWords()
     int i = 0;
     while( i < Cnt )
     {
-
         int r = qrand()%cnt;
 
         if (!strList.contains(strList_tmp.at(r)))
