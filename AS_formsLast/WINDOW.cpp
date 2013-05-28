@@ -34,7 +34,7 @@ ToolsWindow::~ToolsWindow()
 
 int ToolsWindow::GetTopicID()
 {
-    return topicID +1 ;
+    return topicID;
 }
 
 int ToolsWindow::GetLanguageID()

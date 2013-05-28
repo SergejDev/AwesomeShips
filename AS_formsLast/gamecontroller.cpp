@@ -7,10 +7,7 @@
 
 GameController::GameController(int windowWidth,int level,int languageID,int topicID, int score,QString addr, QObject *parrent):QObject(parrent)
 {
-    //wordGetter=new WorkWithDB("Words.s3db");
-    //wordGetter->SetParams(3,topicID,languageID);
-    //words=wordGetter->GetWords();
-
+    /*
     client = new QTcpSocket(this);
     if (!client->isOpen())
     {
@@ -33,8 +30,27 @@ GameController::GameController(int windowWidth,int level,int languageID,int topi
 
         string = QString::QString(source);
     }
-
     words = string.split(",");
+    */
+
+    QStringList localList;
+    QString fileName=":/"+QString::number(topicID)+""+QString::number(languageID)+".txt";
+    QFile inputFile(fileName);
+    QTextStream textStream(&inputFile);
+    if(!inputFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        return;
+    }
+    while (true)
+    {
+        QString line = textStream.readLine();
+        if (line.isNull())
+            break;
+        else
+            localList.append(line);
+    }
+
+    words = localList;
 
     currentScore=score;
     scorePointsForDestroyingShip=10;

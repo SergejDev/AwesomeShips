@@ -18,5 +18,11 @@
         <file>usernamedialog.qml</file>
         <file>baza.qml</file>
         <file>gamemenu.qml</file>
+        <file>00.txt</file>
+        <file>01.txt</file>
+        <file>10.txt</file>
+        <file>11.txt</file>
+        <file>20.txt</file>
+        <file>21.txt</file>
     </qresource>
 </RCC>
