@@ -19,7 +19,7 @@ GameWindow::GameWindow(int languageID, int topicID, int userid, int level, int s
 
     initializeQmlEngine();
     MakeInterface();
-    gameController=new GameController(this->width(),level,languageID,topicID,scores,this);
+    gameController=new GameController(this->width(),level,languageID,topicID,scores, addr, this);
 
     initializeFields();
     initializeRenderTimer();

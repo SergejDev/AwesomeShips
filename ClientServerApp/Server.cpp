@@ -126,6 +126,22 @@ void Server::startRead()
         source.remove(source.size()-1,1);
         in << source;
     }
+    else if (listIn.at(0).toStdString() == "Words"){
+        QString language;
+        if (listIn.at(2).toStdString() == "0") language = "Russian";
+        if (listIn.at(2).toStdString() == "1") language = "English";
+        query.exec("Select topicID, Russian, English From MultiLanguage");
+        QByteArray source;
+        while(query.next())
+        {
+            if (query.record().value(0).toString().toStdString() == listIn.at(1).toStdString()){
+                source.append(query.record().value(listIn.at(2).toInt()+1).toString().toUtf8());
+                source.append(',');
+            }
+        }
+        source.remove(source.size()-1,1);
+        in << source;
+    }
 }
 
 void Server::stopConnection()//Nikita fix this!!!!!!!!!!

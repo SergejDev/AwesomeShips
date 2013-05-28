@@ -3,16 +3,42 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QString>
+#include <QHostAddress>
 
-GameController::GameController(int windowWidth,int level,int languageID,int topicID, int score, QObject *parrent):QObject(parrent)
+GameController::GameController(int windowWidth,int level,int languageID,int topicID, int score,QString addr, QObject *parrent):QObject(parrent)
 {
-    wordGetter=new WorkWithDB("Words.s3db");
-    wordGetter->SetParams(3,topicID,languageID);
-    words=wordGetter->GetWords();
+    //wordGetter=new WorkWithDB("Words.s3db");
+    //wordGetter->SetParams(3,topicID,languageID);
+    //words=wordGetter->GetWords();
+
+    client = new QTcpSocket(this);
+    if (!client->isOpen())
+    {
+        QHostAddress address(addr);
+        client->connectToHost(address, 9485);
+    }
+    QStringList list;
+    list.append("Words");
+    list.append(QString::number(topicID));
+    list.append(QString::number(languageID));
+    QDataStream stream(client);
+    stream << list;
+
+    QString string("");
+    while (string.length() < 1){
+        qApp->processEvents();
+        QDataStream stream(client);
+        QByteArray source;
+        stream >> source;
+
+        string = QString::QString(source);
+    }
+
+    words = string.split(",");
 
     currentScore=score;
     scorePointsForDestroyingShip=10;
-    //qDebug()<<level<<"---";
+
     currentLevel=level;
     scoresPerLevel=100;
 
@@ -142,7 +168,6 @@ QString GameController::GetWordForShip()//TO DO: Get words from DB (don't forget
 {
     if(currentWordIndex>=words.size())
     {
-        words=wordGetter->GetWords();
         currentWordIndex=0;
     }
     //qDebug()<<currentWordIndex<<" word index";

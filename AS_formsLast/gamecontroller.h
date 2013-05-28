@@ -5,6 +5,7 @@
 #include "bullets.h"
 #include "gun.h"
 #include "workwithdb.h"
+#include <QTcpSocket>
 
 class GameController: public QObject
 {
@@ -36,7 +37,7 @@ private:
     //int RandInt(int low, int high);//!!!!!!
 
 public:
-    GameController(int windowWidth, int level, int languageID, int topicID, int score, QObject *parrent=0);
+    GameController(int windowWidth, int level, int languageID, int topicID, int score,QString addr, QObject *parrent=0);
     ~GameController();
     void AddShip();
     void Draw(QPainter *painter);
@@ -48,6 +49,7 @@ public:
     void ResumeGame();
     WorkWithDB *wordGetter;
     int ID;
+    QTcpSocket *client;
 
 signals:
     void GameAreaUpdate();
